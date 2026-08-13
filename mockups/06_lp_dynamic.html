@@ -40,9 +40,8 @@
         .hero-content { position: relative; z-index: 10; max-width: 900px; padding: 0 20px; animation: fadeInUp 1s ease forwards; }
         .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 400; letter-spacing: 1px; line-height: 1.2; margin-bottom: 1.5rem; color: #ffffff; }
         .hero p { font-size: 1.1rem; color: #d0d5e0; font-weight: 300; letter-spacing: 1px; line-height: 1.8; margin-bottom: 3rem; max-width: 700px; margin-left: auto; margin-right: auto; }
-        .youtube-btn { display: inline-flex; align-items: center; justify-content: center; background: #e02a24; color: #fff; padding: 1.2rem 3rem; font-size: 0.95rem; font-weight: 600; letter-spacing: 2px; text-decoration: none; border-radius: 6px; transition: var(--transition); gap: 0.8rem; }
-        .youtube-btn svg { width: 24px; height: 24px; fill: currentColor; }
-        .youtube-btn:hover { background: #ff0000; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(224, 42, 36, 0.4); }
+        .cta-btn { display: inline-flex; align-items: center; background: var(--accent); color: #fff; padding: 1.2rem 3rem; font-size: 0.95rem; font-weight: 600; letter-spacing: 2px; text-decoration: none; border-radius: 6px; transition: var(--transition); }
+        
 
         /* --- Content Section --- */
         .content-section { padding: 8rem 5%; position: relative; transition: background 1s ease; }
@@ -87,8 +86,8 @@
         
         /* リッチテキスト用のスタイル */
         .card-desc { font-size: 0.85rem; color: #aaa; margin-bottom: 1.5rem; line-height: 1.6; flex-grow: 1; }
-        .card-desc a { color: var(--text-main); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 4px; transition: 0.3s; font-weight: 500; }
-        .card-desc a:hover { color: var(--accent); background: rgba(168, 117, 255, 0.1); }
+        .card-desc a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(224, 42, 36, 0.3); transition: 0.3s; }
+        .card-desc a:hover { border-bottom-color: var(--accent); }
         .card-desc p { margin-bottom: 0.5rem; }
 
         .card-btn { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 600; color: var(--text-main); letter-spacing: 1px; transition: var(--transition); text-decoration: none; }
@@ -99,7 +98,7 @@
         .about-section { padding: 8rem 5%; background-color: var(--bg-color); border-top: 1px solid var(--border); }
         .about-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 4rem; }
         .about-card { background: var(--surface); padding: 3rem; border: 1px solid var(--border); border-radius: 4px; position: relative; }
-        .about-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent-red); }
+        .about-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent); }
         .about-card p { font-size: 1.05rem; line-height: 1.8; color: var(--text-main); margin-bottom: 1.5rem; text-align: justify; }
         .about-card p.text-en { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0; }
         
