@@ -26,9 +26,9 @@
         header { position: absolute; top: 0; left: 0; width: 100%; padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
         .logo-wrapper { display: inline-block; text-decoration: none; color: var(--text-main); }
         .site-logo {
-            mix-blend-mode: screen; /* 鮟定レ譎ｯ繧帝城℃縺励※蜈峨→譁・ｭ励□縺代ｒ谿九☆ */
+            mix-blend-mode: screen; /* 黒背景を透過して光と文字だけを残す */
             width: 400px;
-            max-width: 80vw; /* 繧ｹ繝槭・逕ｻ髱｢縺ｧ縺ｯ逕ｻ髱｢蟷・・80%縺ｾ縺ｧ縺ｫ謚代∴縺ｦ蝨ｧ霑ｫ諢溘ｒ縺ｪ縺上☆ */
+            max-width: 80vw; /* スマホ画面では画面幅の80%までに抑えて圧迫感をなくす */
             height: auto;
             display: block;
         }
@@ -83,7 +83,7 @@
         .card-category { font-size: 0.75rem; color: var(--accent-red); letter-spacing: 2px; margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase; }
         .card-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 400; line-height: 1.4; margin-bottom: 1rem; color: var(--text-main); }
         
-        /* 繝ｪ繝・メ繝・く繧ｹ繝育畑縺ｮ繧ｹ繧ｿ繧､繝ｫ */
+        /* リッチテキスト用のスタイル */
         .card-desc { font-size: 0.85rem; color: #888; margin-bottom: 1.5rem; line-height: 1.6; flex-grow: 1; }
         .card-desc a { color: var(--accent-red); text-decoration: none; border-bottom: 1px solid rgba(224, 42, 36, 0.3); transition: 0.3s; }
         .card-desc a:hover { border-bottom-color: var(--accent-red); }
@@ -127,7 +127,6 @@
 <body>
     <header>
         <a href="#" class="logo-wrapper">
-            <!-- 繝ｦ繝ｼ繧ｶ繝ｼ謖・ｮ壹・繝ｭ繧ｴ逕ｻ蜒上るｻ定レ譎ｯ繧辰SS縺ｧ騾城℃ -->
             <img src="uploads/logo.png" alt="STUDIO 222 MUSIC" class="site-logo">
         </a>
     </header>
@@ -135,7 +134,7 @@
     <section class="hero">
         <div class="hero-content">
             <h1>Music for Deep Focus & Meditation</h1>
-            <p>髮・ｸｭ縺ｨ繝ｪ繝ｩ繝・け繧ｹ縺ｮ縺溘ａ縺ｮ鬮伜刀雉ｪ縺ｪ繧ｵ繧ｦ繝ｳ繝峨せ繧ｱ繝ｼ繝励ゅ・繝ｭ繧ｰ繝ｩ繝溘Φ繧ｰ縲∬ｪｭ譖ｸ縲√◎縺励※迸第Φ縺ｮ譎る俣繧堤音蛻･縺ｪ繧ゅ・縺ｫ縲・/p>
+            <p>集中とリラックスのための高品質なサウンドスケープ。プログラミング、読書、そして瞑想の時間を特別なものに。</p>
             <a href="#library" class="cta-btn">LISTEN NOW</a>
         </div>
     </section>
@@ -157,17 +156,17 @@
             <!-- Middle and Small Selectors -->
             <div id="select-filters" class="select-group" style="display: none;">
                 <select id="middle-filter" class="custom-select">
-                    <option value="all">蜈ｨ縺ｦ縺ｮ繧ｫ繝・ざ繝ｪ</option>
+                    <option value="all">全てのカテゴリ</option>
                 </select>
                 <select id="small-filter" class="custom-select" style="display: none;">
-                    <option value="all">蜈ｨ縺ｦ縺ｮ繧ｵ繝悶き繝・ざ繝ｪ</option>
+                    <option value="all">全てのサブカテゴリ</option>
                 </select>
             </div>
         </div>
 
         <!-- Content Grid -->
         <div class="grid" id="content-grid">
-            <!-- 繧ｫ繝ｼ繝峨・JavaScript縺九ｉ蜍慕噪縺ｫ逕滓・縺輔ｌ縺ｾ縺・-->
+            <!-- カードはJavaScriptから動的に生成されます -->
         </div>
     </main>
 
@@ -178,7 +177,7 @@
         </div>
         <div class="about-grid">
             <div class="about-card">
-                <p>遘√◆縺｡縺ｯ縲瑚ｨ闡峨・謖√▽蜉帙阪→縲碁浹髻ｿ遨ｺ髢薙・蠢・慍繧医＆縲阪ｒ霑ｽ豎ゅ☆繧九し繧ｦ繝ｳ繝峨・繝ｭ繧ｸ繧ｧ繧ｯ繝医〒縺吶よ怙譁ｰ縺ｮAI繝・け繝弱Ο繧ｸ繝ｼ縺ｨ豺ｱ縺・徐諠・ｧ繧定檮蜷医＆縺帙◆縲後が繝ｪ繧ｸ繝翫Ν繝医Λ繝・け縲阪ゅ◎縺励※縲√け繝ｪ繧ｨ繧､繧ｿ繝ｼ閾ｪ霄ｫ縺梧律縲・・繝励Ο繧ｰ繝ｩ繝溘Φ繧ｰ繧・ｪｭ譖ｸ縺ｮ譛荳ｭ縺ｫ縲悟ｿ・°繧芽・縺阪◆縺・阪→諤昴∴繧九け繧ｪ繝ｪ繝・ぅ縺縺代ｒ霑ｽ豎ゅ＠縺溘御ｽ懈･ｭ逕ｨ繝ｻ迸第Φ逕ｨ繧｢繝ｳ繝薙お繝ｳ繝医阪ゅ％縺ｮ2縺､縺ｮ譟ｱ縺後√≠縺ｪ縺溘・譌･蟶ｸ縺ｨ繧ｯ繝ｪ繧ｨ繧､繝・ぅ繝薙ユ繧｣縺ｫ蟇・ｊ豺ｻ縺・∪縺吶・/p>
+                <p>私たちは「言葉の持つ力」と「音響空間の心地よさ」を追求するサウンドプロジェクトです。最新のAIテクノロジーと深い叙情性を融合させた「オリジナルトラック」。そして、クリエイター自身が日々のプログラミングや読書の最中に「心から聴きたい」と思えるクオリティだけを追求した「作業用・瞑想用アンビエント」。この2つの柱が、あなたの日常とクリエイティビティに寄り添います。</p>
                 <p class="text-en">We are a sound project pursuing the "power of words" and the "comfort of acoustic spaces." Combining the latest AI technology with deep lyricism in our Original Tracks, and pursuing the highest quality Ambient for work and meditation that creators themselves truly want to listen to during programming and reading. These two pillars accompany your daily life and creativity.</p>
             </div>
             
@@ -186,7 +185,7 @@
                 <img src="uploads/creator_icon.jpg" alt="Creator Profile" class="creator-icon" onerror="this.src='https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop'">
                 <div class="creator-info">
                     <span class="about-name">Creator / Sound Designer</span>
-                    <p>縺ｯ縺倥ａ縺ｾ縺励※縲４tudio 222 Music 縺ｸ繧医≧縺薙◎縲・I縺ｮ貍皮ｮ怜鴨縺九ｉ邏｡縺主・縺輔ｌ繧九瑚ｩ槭・諠・勹縲阪→縲・撕蟇ゅｒ繝・じ繧､繝ｳ縺吶ｋ縲後い繝ｳ繝薙お繝ｳ繝医阪ゅ％縺ｮ繝√Ε繝ｳ繝阪Ν縺ｮ髻ｳ縺後√≠縺ｪ縺溘・繧､繝ｳ繧ｹ繝斐Ξ繝ｼ繧ｷ繝ｧ繝ｳ繧貞刈騾溘＆縺帙ｋ譛鬮倥・BGM縺ｨ縺ｪ繧九％縺ｨ繧帝｡倥▲縺ｦ縺・∪縺吶・/p>
+                    <p>はじめまして。Studio 222 Music へようこそ。AIの演算力から紡ぎ出される「詞の情景」と、静寂をデザインする「アンビエント」。このチャンネルの音が、あなたのインスピレーションを加速させる最高のBGMとなることを願っています。</p>
                     <p class="text-en">Nice to meet you. Welcome to Studio 222 Music. The scenery of words spun from the computational power of AI, and the ambient that designs silence. I hope the sounds of this channel will become the ultimate BGM that accelerates your inspiration.</p>
                 </div>
             </div>
@@ -198,12 +197,12 @@
             <a href="#" title="YouTube"><svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg></a>
             <a href="#" title="X (Twitter)"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
             <a href="#" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
-250:         </div>
-251:         <div class="copyright">&copy; 2026 Studio 222 Music. All Rights Reserved.</div>
-252:         <a href="admin.php" class="admin-link">Admin</a>
-253:     </footer>
-254: 
-255:     <script>
+        </div>
+        <div class="copyright">&copy; 2026 Studio 222 Music. All Rights Reserved.</div>
+        <a href="admin.php" class="admin-link">Admin</a>
+    </footer>
+
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             const grid = document.getElementById('content-grid');
             const contentSection = document.querySelector('.content-section');
@@ -249,8 +248,8 @@
                         const smallN = catNameMap[item.small_category] || '';
                         
                         let catLabel = mainN.toUpperCase();
-                        if (midN) catLabel += ` / ${midN}`;
-                        if (smallN) catLabel += ` - ${smallN}`;
+                        if (midN) catLabel += ' / ' + midN;
+                        if (smallN) catLabel += ' - ' + smallN;
 
                         const thumbSrc = item.thumbnail ? item.thumbnail : "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=800&auto=format&fit=crop";
                         const mainLink = item.link_url || '#';
@@ -284,12 +283,12 @@
                 })
                 .catch(err => {
                     console.error(err);
-                    grid.innerHTML = '<p style="text-align:center; color:red; grid-column:1/-1;">繝・・繧ｿ縺ｮ隱ｭ縺ｿ霎ｼ縺ｿ縺ｫ螟ｱ謨励＠縺ｾ縺励◆縲・/p>';
+                    grid.innerHTML = '<p style="text-align:center; color:red; grid-column:1/-1;">データの読み込みに失敗しました。</p>';
                 });
 
             function updateMiddleOptions() {
-                middleSelect.innerHTML = '<option value="all">蜈ｨ縺ｦ縺ｮ繧ｫ繝・ざ繝ｪ</option>';
-                smallSelect.innerHTML = '<option value="all">蜈ｨ縺ｦ縺ｮ繧ｵ繝悶き繝・ざ繝ｪ</option>';
+                middleSelect.innerHTML = '<option value="all">全てのカテゴリ</option>';
+                smallSelect.innerHTML = '<option value="all">全てのサブカテゴリ</option>';
                 smallSelect.style.display = 'none';
 
                 if (currentMain === 'all') {
@@ -307,7 +306,7 @@
             }
 
             function updateSmallOptions() {
-                smallSelect.innerHTML = '<option value="all">蜈ｨ縺ｦ縺ｮ繧ｵ繝悶き繝・ざ繝ｪ</option>';
+                smallSelect.innerHTML = '<option value="all">全てのサブカテゴリ</option>';
                 if (currentMid === 'all') {
                     smallSelect.style.display = 'none';
                     return;
@@ -377,8 +376,6 @@
                 });
             }
         });
-
-</script>
-436: </body>
-437: </html>
-
+    </script>
+</body>
+</html>
