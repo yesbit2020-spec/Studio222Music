@@ -26,9 +26,9 @@
         header { position: absolute; top: 0; left: 0; width: 100%; padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
         .logo-wrapper { display: inline-block; text-decoration: none; color: var(--text-main); }
         .site-logo {
-            mix-blend-mode: screen; /* 黒背景を透過して光と斁E��だけを残す */
+            mix-blend-mode: screen; /* 鮟定レ譎ｯ繧帝城℃縺励※蜈峨→譁・ｭ励□縺代ｒ谿九☆ */
             width: 400px;
-            max-width: 80vw; /* スマ�E画面では画面幁E�E80%までに抑えて圧迫感をなくす */
+            max-width: 80vw; /* 繧ｹ繝槭・逕ｻ髱｢縺ｧ縺ｯ逕ｻ髱｢蟷・・80%縺ｾ縺ｧ縺ｫ謚代∴縺ｦ蝨ｧ霑ｫ諢溘ｒ縺ｪ縺上☆ */
             height: auto;
             display: block;
         }
@@ -69,7 +69,7 @@
         .custom-select:hover, .custom-select:focus { border-color: var(--accent-red); }
 
         /* --- Grid & Cards --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 3rem 2rem; position: relative; z-index: 1; }
+        .grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 3rem 2rem; position: relative; z-index: 1; }
         
         .card { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: var(--transition); text-decoration: none; color: inherit; }
         .card:hover { transform: translateY(-5px); border-color: #444; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
@@ -83,7 +83,7 @@
         .card-category { font-size: 0.75rem; color: var(--accent-red); letter-spacing: 2px; margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase; }
         .card-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 400; line-height: 1.4; margin-bottom: 1rem; color: var(--text-main); }
         
-        /* リチE��チE��スト用のスタイル */
+        /* 繝ｪ繝・メ繝・く繧ｹ繝育畑縺ｮ繧ｹ繧ｿ繧､繝ｫ */
         .card-desc { font-size: 0.85rem; color: #888; margin-bottom: 1.5rem; line-height: 1.6; flex-grow: 1; }
         .card-desc a { color: var(--accent-red); text-decoration: none; border-bottom: 1px solid rgba(224, 42, 36, 0.3); transition: 0.3s; }
         .card-desc a:hover { border-bottom-color: var(--accent-red); }
@@ -127,7 +127,7 @@
 <body>
     <header>
         <a href="#" class="logo-wrapper">
-            <!-- ユーザー持E���Eロゴ画像。黒背景をCSSで透過 -->
+            <!-- 繝ｦ繝ｼ繧ｶ繝ｼ謖・ｮ壹・繝ｭ繧ｴ逕ｻ蜒上るｻ定レ譎ｯ繧辰SS縺ｧ騾城℃ -->
             <img src="uploads/logo.png" alt="STUDIO 222 MUSIC" class="site-logo">
         </a>
     </header>
@@ -135,7 +135,7 @@
     <section class="hero">
         <div class="hero-content">
             <h1>Music for Deep Focus & Meditation</h1>
-            <p>雁E��とリラチE��スのための高品質なサウンドスケープ。�Eログラミング、読書、そして瞑想の時間を特別なも�Eに、E/p>
+            <p>髮・ｸｭ縺ｨ繝ｪ繝ｩ繝・け繧ｹ縺ｮ縺溘ａ縺ｮ鬮伜刀雉ｪ縺ｪ繧ｵ繧ｦ繝ｳ繝峨せ繧ｱ繝ｼ繝励ゅ・繝ｭ繧ｰ繝ｩ繝溘Φ繧ｰ縲∬ｪｭ譖ｸ縲√◎縺励※迸第Φ縺ｮ譎る俣繧堤音蛻･縺ｪ繧ゅ・縺ｫ縲・/p>
             <a href="#library" class="cta-btn">LISTEN NOW</a>
         </div>
     </section>
@@ -157,17 +157,17 @@
             <!-- Middle and Small Selectors -->
             <div id="select-filters" class="select-group" style="display: none;">
                 <select id="middle-filter" class="custom-select">
-                    <option value="all">全てのカチE��リ</option>
+                    <option value="all">蜈ｨ縺ｦ縺ｮ繧ｫ繝・ざ繝ｪ</option>
                 </select>
                 <select id="small-filter" class="custom-select" style="display: none;">
-                    <option value="all">全てのサブカチE��リ</option>
+                    <option value="all">蜈ｨ縺ｦ縺ｮ繧ｵ繝悶き繝・ざ繝ｪ</option>
                 </select>
             </div>
         </div>
 
         <!-- Content Grid -->
         <div class="grid" id="content-grid">
-            <!-- カード�EJavaScriptから動的に生�EされまぁE-->
+            <!-- 繧ｫ繝ｼ繝峨・JavaScript縺九ｉ蜍慕噪縺ｫ逕滓・縺輔ｌ縺ｾ縺・-->
         </div>
     </main>
 
@@ -178,7 +178,7 @@
         </div>
         <div class="about-grid">
             <div class="about-card">
-                <p>私たちは「言葉�E持つ力」と「音響空間�E忁E��よさ」を追求するサウンド�Eロジェクトです。最新のAIチE��ノロジーと深ぁE��惁E��を融合させた「オリジナルトラチE��」。そして、クリエイター自身が日、E�EプログラミングめE��書の最中に「忁E��ら�EきたぁE��と思えるクオリチE��だけを追求した「作業用・瞑想用アンビエント」。この2つの柱が、あなた�E日常とクリエイチE��ビティに寁E��添ぁE��す、E/p>
+                <p>遘√◆縺｡縺ｯ縲瑚ｨ闡峨・謖√▽蜉帙阪→縲碁浹髻ｿ遨ｺ髢薙・蠢・慍繧医＆縲阪ｒ霑ｽ豎ゅ☆繧九し繧ｦ繝ｳ繝峨・繝ｭ繧ｸ繧ｧ繧ｯ繝医〒縺吶よ怙譁ｰ縺ｮAI繝・け繝弱Ο繧ｸ繝ｼ縺ｨ豺ｱ縺・徐諠・ｧ繧定檮蜷医＆縺帙◆縲後が繝ｪ繧ｸ繝翫Ν繝医Λ繝・け縲阪ゅ◎縺励※縲√け繝ｪ繧ｨ繧､繧ｿ繝ｼ閾ｪ霄ｫ縺梧律縲・・繝励Ο繧ｰ繝ｩ繝溘Φ繧ｰ繧・ｪｭ譖ｸ縺ｮ譛荳ｭ縺ｫ縲悟ｿ・°繧芽・縺阪◆縺・阪→諤昴∴繧九け繧ｪ繝ｪ繝・ぅ縺縺代ｒ霑ｽ豎ゅ＠縺溘御ｽ懈･ｭ逕ｨ繝ｻ迸第Φ逕ｨ繧｢繝ｳ繝薙お繝ｳ繝医阪ゅ％縺ｮ2縺､縺ｮ譟ｱ縺後√≠縺ｪ縺溘・譌･蟶ｸ縺ｨ繧ｯ繝ｪ繧ｨ繧､繝・ぅ繝薙ユ繧｣縺ｫ蟇・ｊ豺ｻ縺・∪縺吶・/p>
                 <p class="text-en">We are a sound project pursuing the "power of words" and the "comfort of acoustic spaces." Combining the latest AI technology with deep lyricism in our Original Tracks, and pursuing the highest quality Ambient for work and meditation that creators themselves truly want to listen to during programming and reading. These two pillars accompany your daily life and creativity.</p>
             </div>
             
@@ -186,7 +186,7 @@
                 <img src="uploads/creator_icon.jpg" alt="Creator Profile" class="creator-icon" onerror="this.src='https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop'">
                 <div class="creator-info">
                     <span class="about-name">Creator / Sound Designer</span>
-                    <p>はじめまして。Studio 222 Music へようこそ、EIの演算力から紡ぎ�Eされる「詞�E惁E��」と、E��寂をチE��インする「アンビエント」。このチャンネルの音が、あなた�Eインスピレーションを加速させる最高�EBGMとなることを願ってぁE��す、E/p>
+                    <p>縺ｯ縺倥ａ縺ｾ縺励※縲４tudio 222 Music 縺ｸ繧医≧縺薙◎縲・I縺ｮ貍皮ｮ怜鴨縺九ｉ邏｡縺主・縺輔ｌ繧九瑚ｩ槭・諠・勹縲阪→縲・撕蟇ゅｒ繝・じ繧､繝ｳ縺吶ｋ縲後い繝ｳ繝薙お繝ｳ繝医阪ゅ％縺ｮ繝√Ε繝ｳ繝阪Ν縺ｮ髻ｳ縺後√≠縺ｪ縺溘・繧､繝ｳ繧ｹ繝斐Ξ繝ｼ繧ｷ繝ｧ繝ｳ繧貞刈騾溘＆縺帙ｋ譛鬮倥・BGM縺ｨ縺ｪ繧九％縺ｨ繧帝｡倥▲縺ｦ縺・∪縺吶・/p>
                     <p class="text-en">Nice to meet you. Welcome to Studio 222 Music. The scenery of words spun from the computational power of AI, and the ambient that designs silence. I hope the sounds of this channel will become the ultimate BGM that accelerates your inspiration.</p>
                 </div>
             </div>
@@ -284,12 +284,12 @@
                 })
                 .catch(err => {
                     console.error(err);
-                    grid.innerHTML = '<p style="text-align:center; color:red; grid-column:1/-1;">チE�Eタの読み込みに失敗しました、E/p>';
+                    grid.innerHTML = '<p style="text-align:center; color:red; grid-column:1/-1;">繝・・繧ｿ縺ｮ隱ｭ縺ｿ霎ｼ縺ｿ縺ｫ螟ｱ謨励＠縺ｾ縺励◆縲・/p>';
                 });
 
             function updateMiddleOptions() {
-                middleSelect.innerHTML = '<option value="all">全てのカチE��リ</option>';
-                smallSelect.innerHTML = '<option value="all">全てのサブカチE��リ</option>';
+                middleSelect.innerHTML = '<option value="all">蜈ｨ縺ｦ縺ｮ繧ｫ繝・ざ繝ｪ</option>';
+                smallSelect.innerHTML = '<option value="all">蜈ｨ縺ｦ縺ｮ繧ｵ繝悶き繝・ざ繝ｪ</option>';
                 smallSelect.style.display = 'none';
 
                 if (currentMain === 'all') {
@@ -307,7 +307,7 @@
             }
 
             function updateSmallOptions() {
-                smallSelect.innerHTML = '<option value="all">全てのサブカチE��リ</option>';
+                smallSelect.innerHTML = '<option value="all">蜈ｨ縺ｦ縺ｮ繧ｵ繝悶き繝・ざ繝ｪ</option>';
                 if (currentMid === 'all') {
                     smallSelect.style.display = 'none';
                     return;
