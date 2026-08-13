@@ -78,7 +78,7 @@
         /* --- Grid & Cards --- */
         .grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 3rem 2rem; position: relative; z-index: 1; }
         
-        .card { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: var(--transition); text-decoration: none; color: inherit; }
+        .card { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: var(--transition); text-decoration: none; color: inherit; position: relative; /* added for new-badge */ }
         .card:hover { transform: translateY(-5px); border-color: #444; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .card.hidden { display: none; }
         
@@ -124,6 +124,42 @@
         }
         .creator-info { flex: 1; color: var(--text-dim); line-height: 1.7; }
         .about-name { display: block; font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--text-main); margin-bottom: 0.5rem; }
+        
+        
+        /* --- NEW Badge --- */
+        .new-badge {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            background: linear-gradient(135deg, #a875ff, #ff75d8);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(168, 117, 255, 0.5);
+            z-index: 10;
+            overflow: hidden;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255,255,255,0.3);
+            pointer-events: none;
+        }
+        .new-badge::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            animation: shine 3s infinite;
+        }
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
         
         /* --- Footer --- */
         footer { padding: 4rem 5%; text-align: center; border-top: 1px solid var(--border); position: relative; }
@@ -273,7 +309,20 @@
 
                         const descHtml = item.description || '';
 
+                        // NEW badge logic (3 weeks = 21 days)
+                        let newBadgeHtml = '';
+                        if (item.created_at) {
+                            const createdDate = new Date(item.created_at);
+                            const now = new Date();
+                            const diffTime = Math.abs(now - createdDate);
+                            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                            if (diffDays <= 21) {
+                                newBadgeHtml = '<div class="new-badge">NEW</div>';
+                            }
+                        }
+
                         card.innerHTML = `
+                            ${newBadgeHtml}
                             <a href="${mainLink}" target="_blank" style="display:block; text-decoration:none; color:inherit; flex-grow:1; display:flex; flex-direction:column;">
                                 <div class="card-thumb-wrapper">
                                     <img src="${thumbSrc}" class="card-thumb" alt="${item.title}">
