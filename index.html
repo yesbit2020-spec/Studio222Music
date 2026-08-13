@@ -6,102 +6,206 @@
     <title>Studio 222 Music</title>
     <style>
         :root {
-            --bg: #0a0a0a;
-            --surface: #111111;
-            --border: #222222;
-            --text: #f5f5f5;
-            --text-dim: #888888;
+            --bg-color: #050505;
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
             --accent: #d4af37;
-            --transition: all 0.3s ease;
+            --surface: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --youtube-red: #ff0000;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            background-color: var(--bg-color);
+            color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
         }
-        header {
-            padding: 4rem 5%;
-            text-align: center;
-            border-bottom: 1px solid var(--border);
-        }
-        h1 { font-size: 3rem; font-weight: 300; letter-spacing: 4px; margin-bottom: 1rem; }
-        p.subtitle { color: var(--accent); letter-spacing: 2px; text-transform: uppercase; font-size: 0.9rem; }
-        
-        main { padding: 4rem 5%; max-width: 1400px; margin: 0 auto; }
-        
-        .category-section { margin-bottom: 5rem; }
-        .category-title {
-            font-size: 2rem; font-weight: 300; border-bottom: 1px solid var(--border);
-            padding-bottom: 1rem; margin-bottom: 2rem; color: var(--text);
-        }
-        .category-desc { color: var(--text-dim); margin-bottom: 2rem; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
+        /* Header / Nav */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            transition: background 0.3s;
+        }
+        header.scrolled { background: rgba(5,5,5,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
         
-        .card {
-            background: var(--surface);
+        .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 3px; color: var(--text-main); text-decoration: none; }
+        .logo span { color: var(--accent); }
+        
+        .admin-link {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-decoration: none;
             border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
             border-radius: 4px;
-            overflow: hidden;
             transition: var(--transition);
         }
-        .card:hover { border-color: rgba(212, 175, 55, 0.4); transform: translateY(-5px); }
-        .card-img { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid var(--border); background: #222; }
-        .card-body { padding: 1.5rem; }
-        .card-title { font-size: 1.25rem; font-weight: 500; margin-bottom: 0.5rem; }
-        .card-text { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1.5rem; }
-        
-        .card-actions { display: flex; gap: 1rem; }
-        .btn {
-            flex: 1; text-align: center; padding: 0.5rem; font-size: 0.8rem;
-            text-decoration: none; text-transform: uppercase; letter-spacing: 1px;
-            border: 1px solid var(--accent); color: var(--accent); transition: var(--transition);
+        .admin-link:hover { border-color: var(--text-main); color: var(--text-main); }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-image: url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
-        .btn:hover { background: var(--accent); color: var(--bg); }
-        .btn-outline { border-color: var(--text-dim); color: var(--text-dim); }
-        .btn-outline:hover { background: var(--text-dim); color: var(--bg); border-color: var(--text-dim); }
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(5,5,5,0.3) 0%, rgba(5,5,5,1) 100%);
+        }
+        .hero-content {
+            position: relative; z-index: 10; max-width: 800px; padding: 0 20px;
+        }
+        .hero h1 { font-size: clamp(3rem, 8vw, 5rem); font-weight: 200; letter-spacing: 2px; line-height: 1.2; margin-bottom: 1.5rem; }
+        .hero p { font-size: 1.2rem; color: var(--text-dim); margin-bottom: 3rem; }
         
-        .empty-message { color: var(--text-dim); font-style: italic; }
+        .cta-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            background: var(--youtube-red); color: #fff;
+            padding: 1rem 2.5rem; font-size: 1.1rem; font-weight: bold; letter-spacing: 1px;
+            text-decoration: none; text-transform: uppercase; border-radius: 50px;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(255,0,0,0.3);
+        }
+        .cta-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(255,0,0,0.5); }
+        .cta-btn::before {
+            content: '▶'; margin-right: 10px; font-size: 0.9rem;
+        }
+
+        /* Dynamic Categories */
+        main { padding-bottom: 100px; }
         
-        footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 0.8rem; }
+        .category-section { padding: 6rem 5%; border-bottom: 1px solid var(--border); }
+        /* Alternate background for odd sections */
+        .category-section:nth-child(odd) { background-color: rgba(255,255,255,0.01); }
+        
+        .section-header { margin-bottom: 3rem; text-align: center; }
+        .category-title { font-size: 2.5rem; font-weight: 300; letter-spacing: 3px; margin-bottom: 0.5rem; }
+        .category-title span { color: var(--accent); }
+        .category-desc { color: var(--text-dim); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+        /* Card Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* YouTube-style Card */
+        .card {
+            background: transparent;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            group: hover;
+            transition: var(--transition);
+        }
+        .card:hover { transform: translateY(-5px); }
+
+        .card-thumb-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .card-thumb {
+            width: 100%; height: 100%; object-fit: cover; transition: var(--transition);
+        }
+        .card:hover .card-thumb { transform: scale(1.05); filter: brightness(0.7); }
+
+        /* Play Button Overlay */
+        .play-overlay {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 60px; height: 60px; background: rgba(0,0,0,0.7); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: var(--transition);
+        }
+        .play-overlay::after {
+            content: ''; border-top: 10px solid transparent; border-bottom: 10px solid transparent;
+            border-left: 15px solid #fff; margin-left: 5px;
+        }
+        .card:hover .play-overlay { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+        .card:hover .play-overlay:hover { background: var(--youtube-red); }
+
+        .card-info { padding: 0 0.5rem; }
+        .card-title { font-size: 1.2rem; font-weight: 500; color: var(--text-main); margin-bottom: 0.5rem; line-height: 1.4; }
+        .card-desc { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        .pdf-link {
+            display: inline-block; font-size: 0.8rem; color: var(--text-dim); text-decoration: none;
+            border: 1px solid var(--border); padding: 0.3rem 0.8rem; border-radius: 4px; transition: var(--transition);
+        }
+        .pdf-link:hover { color: var(--text-main); border-color: var(--text-main); }
+
+        footer { text-align: center; padding: 3rem; color: var(--text-dim); font-size: 0.9rem; border-top: 1px solid var(--border); }
     </style>
 </head>
 <body>
 
-    <header style="position: relative;">
-        <div style="position: absolute; top: 1rem; right: 2rem;">
-            <a href="admin.php" class="btn btn-outline" style="font-size: 0.8rem; border-color: #444;">Control Panel (Admin)</a>
-        </div>
-        <h1>Studio 222 Music</h1>
-        <p class="subtitle">Sound Architecture Database</p>
+    <header id="header">
+        <a href="#" class="logo">STUDIO <span>222</span></a>
+        <a href="admin.php" class="admin-link">Command Center (Admin)</a>
     </header>
 
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Sound That Defines<br>Your World.</h1>
+            <p>集中、瞑想、そしてクリエイティブなインスピレーション。Studio 222 Music が提供する極上のサウンドスケープを体験してください。</p>
+            <a href="https://youtube.com/" target="_blank" class="cta-btn">Official YouTube Channel</a>
+        </div>
+    </section>
+
     <main id="app-content">
-        <!-- JSでここにコンテンツが注入されます -->
-        <p style="text-align:center; color:#888;">Loading database...</p>
+        <!-- JSでここにカテゴリとコンテンツが注入されます -->
     </main>
 
     <footer>
-        &copy; 2026 Studio 222 Music. All Rights Reserved. <br>
-        <a href="admin.php" style="color:#444; text-decoration:none; margin-top:10px; display:inline-block;">[ Command Center ]</a>
+        &copy; 2026 Studio 222 Music. All Rights Reserved.
     </footer>
 
     <script>
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) { header.classList.add('scrolled'); }
+            else { header.classList.remove('scrolled'); }
+        });
+
+        // Load content
         document.addEventListener('DOMContentLoaded', async () => {
             const container = document.getElementById('app-content');
             
             try {
-                // キャッシュ回避のためクエリパラメータをつける
                 const response = await fetch('data.json?t=' + new Date().getTime());
                 if (!response.ok) throw new Error('Data not found');
                 const data = await response.json();
-                
                 renderContent(data, container);
             } catch (error) {
-                container.innerHTML = `<p class="empty-message">データの読み込みに失敗しました。まだコンテンツがないか、エラーが発生しています。</p>`;
+                container.innerHTML = `<p style="text-align:center; padding: 5rem; color:#888;">コンテンツの読み込みに失敗しました。</p>`;
                 console.error(error);
             }
         });
@@ -111,48 +215,48 @@
             const categories = data.categories || [];
             const contents = data.contents || [];
 
-            categories.forEach(cat => {
+            categories.forEach((cat, index) => {
                 const section = document.createElement('section');
                 section.className = 'category-section';
                 
                 // カテゴリ見出し
                 section.innerHTML = `
-                    <h2 class="category-title">${cat.name}</h2>
-                    ${cat.description ? `<p class="category-desc">${cat.description}</p>` : ''}
+                    <div class="section-header">
+                        <h2 class="category-title"><span>/</span> ${cat.name}</h2>
+                        ${cat.description ? `<p class="category-desc">${cat.description}</p>` : ''}
+                    </div>
                 `;
                 
-                // 該当するコンテンツをフィルタリング
                 const catContents = contents.filter(c => c.category === cat.id);
                 
                 if (catContents.length === 0) {
-                    section.innerHTML += `<p class="empty-message">このカテゴリにはまだコンテンツがありません。</p>`;
+                    section.innerHTML += `<p style="text-align:center; color:#555; font-style:italic;">Coming Soon...</p>`;
                 } else {
                     const grid = document.createElement('div');
                     grid.className = 'grid';
                     
                     catContents.forEach(item => {
-                        // 画像URLのフォールバック
-                        const imgSrc = item.thumbnail ? item.thumbnail : 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22300%22%20height%3D%22200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20300%20200%22%20preserveAspectRatio%3D%22none%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23222%22%2F%3E%3Ctext%20x%3D%22150%22%20y%3D%22100%22%20fill%3D%22%23555%22%20font-family%3D%22sans-serif%22%20font-size%3D%2216%22%20text-anchor%3D%22middle%22%3ENo%20Image%3C%2Ftext%3E%3C%2Fsvg%3E';
+                        const imgSrc = item.thumbnail ? item.thumbnail : 'https://images.unsplash.com/photo-1614149162883-504ce4d13909?q=80&w=600&auto=format&fit=crop';
+                        // Youtubeへのリンクを優先、なければダミー
+                        const targetUrl = item.link_url || 'https://youtube.com/';
                         
-                        let linksHtml = '';
-                        if (item.link_url) {
-                            linksHtml += `<a href="${item.link_url}" target="_blank" class="btn">View Content</a>`;
-                        }
+                        let pdfHtml = '';
                         if (item.pdf_url) {
-                            linksHtml += `<a href="${item.pdf_url}" target="_blank" class="btn btn-outline">PDF</a>`;
+                            pdfHtml = `<a href="${item.pdf_url}" target="_blank" class="pdf-link" onclick="event.stopPropagation();">PDF資料を見る</a>`;
                         }
 
                         grid.innerHTML += `
-                            <div class="card">
-                                <img src="${imgSrc}" alt="${item.title}" class="card-img" loading="lazy">
-                                <div class="card-body">
-                                    <h3 class="card-title">${item.title}</h3>
-                                    <p class="card-text">${item.description}</p>
-                                    <div class="card-actions">
-                                        ${linksHtml}
-                                    </div>
+                            <a href="${targetUrl}" target="_blank" class="card">
+                                <div class="card-thumb-wrapper">
+                                    <img src="${imgSrc}" alt="${item.title}" class="card-thumb" loading="lazy">
+                                    <div class="play-overlay"></div>
                                 </div>
-                            </div>
+                                <div class="card-info">
+                                    <h3 class="card-title">${item.title}</h3>
+                                    <p class="card-desc">${item.description}</p>
+                                    ${pdfHtml}
+                                </div>
+                            </a>
                         `;
                     });
                     section.appendChild(grid);
