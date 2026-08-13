@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Presentations - Studio 222</title>
+    <style>
+        :root {
+            --bg-main: #0a0a0a;
+            --bg-card: #141414;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --accent: #d4af37;
+            --border: #333333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Presentation Header */
+        header {
+            padding: 5rem 5% 3rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(180deg, #111 0%, #0a0a0a 100%);
+        }
+        h1 { font-size: 2.5rem; font-weight: 300; letter-spacing: 3px; margin-bottom: 1rem; }
+        h1 span { color: var(--accent); }
+        .subtitle { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 5%;
+        }
+
+        /* Section Layout */
+        .mockup-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 6rem;
+            padding-bottom: 6rem;
+            border-bottom: 1px solid var(--border);
+        }
+        @media (min-width: 900px) {
+            .mockup-section { flex-direction: row; align-items: flex-start; }
+            .mockup-image { flex: 1.2; position: sticky; top: 2rem; }
+            .mockup-info { flex: 1; padding-left: 2rem; }
+        }
+
+        /* Numbering & Title */
+        .number {
+            font-size: 4rem;
+            font-weight: 100;
+            color: rgba(212, 175, 55, 0.2);
+            line-height: 1;
+            margin-bottom: -1rem;
+            letter-spacing: -2px;
+        }
+        .title {
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+
+        /* Image / Link */
+        .image-link {
+            display: block;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            position: relative;
+        }
+        .image-link::after {
+            content: 'VIEW PROTOTYPE ↗';
+            position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8); color: var(--accent);
+            padding: 1rem 2rem; border-radius: 50px;
+            font-size: 0.9rem; font-weight: bold; letter-spacing: 2px;
+            opacity: 0; transition: all 0.3s;
+        }
+        .image-link:hover { border-color: var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .image-link:hover img { filter: brightness(0.5); }
+        .image-link:hover::after { opacity: 1; }
+
+        .image-link img {
+            width: 100%;
+            display: block;
+            transition: filter 0.3s;
+            background: #222;
+        }
+
+        /* Concept Content */
+        .concept-block {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .concept-heading {
+            font-size: 0.9rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+        .concept-text {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-list { list-style: none; margin-bottom: 1.5rem; }
+        .feature-list li {
+            position: relative; padding-left: 1.5rem; color: var(--text-main); font-size: 0.95rem; margin-bottom: 0.8rem;
+        }
+        .feature-list li::before {
+            content: ''; position: absolute; left: 0; top: 0.5rem; width: 6px; height: 6px;
+            background: var(--accent); border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>STUDIO <span>222</span> MOCKUPS</h1>
+        <p class="subtitle">構築専用プレゼンテーション画面 / デザイン設計とコンセプトの比較</p>
+    </header>
+
+    <div class="container">
+
+        <!-- ==================== MOCKUP 01 ==================== -->
+        <section class="mockup-section">
+            <div class="mockup-image">
+                <a href="01_landing_page.html" class="image-link">
+                    <!-- Thumbnail for 01 (Dashboard) -->
+                    <img src="thumb_01.jpg" alt="01 Initial Dashboard" style="min-height:300px; object-fit:cover;">
+                </a>
+            </div>
+            
+            <div class="mockup-info">
+                <div class="number">01</div>
+                <h2 class="title">Initial Dashboard</h2>
+                
+                <div class="concept-block">
+                    <h3 class="concept-heading">Concept / 設計意図</h3>
+                    <p class="concept-text">
+                        プロジェクト初期に構築された、管理画面・ダッシュボード寄りのUIデザイン。
+                        多数のコンテンツを整理・分類して一覧表示することに特化しており、機能性と情報の一覧性を重視しています。
+                    </p>
+                    
+                    <h3 class="concept-heading">Key Features / 特徴</h3>
+                    <ul class="feature-list">
+                        <li>情報密度の高いグリッドレイアウト</li>
+                        <li>アプリライクなヘッダーとナビゲーション</li>
+                        <li>各コンテンツの情報をシンプルに一覧化</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== MOCKUP 02 ==================== -->
+        <section class="mockup-section">
+            <div class="mockup-image">
+                <a href="02_lp_design.html" class="image-link">
+                    <!-- Thumbnail for 02 (LP) using Unsplash placeholder -->
+                    <img src="https://images.unsplash.com/photo-1614149162883-504ce4d13909?q=80&w=800&auto=format&fit=crop" alt="02 Promotional LP" style="min-height:300px; object-fit:cover;">
+                </a>
+            </div>
+            
+            <div class="mockup-info">
+                <div class="number">02</div>
+                <h2 class="title">Promotional LP (YouTube Focus)</h2>
+                
+                <div class="concept-block">
+                    <h3 class="concept-heading">Concept / 設計意図</h3>
+                    <p class="concept-text">
+                        訪問者を「YouTubeでの視聴」へ強く誘導するための、プロモーション特化型ランディングページ。
+                        大きなヒーロービジュアルと、没入感のあるセクションごとの展開により、音楽の世界観を視覚的に伝えます。
+                    </p>
+                    
+                    <h3 class="concept-heading">Key Features / 特徴</h3>
+                    <ul class="feature-list">
+                        <li>画面全体を使った没入型ヒーローセクション</li>
+                        <li>目立つYouTube誘導ボタン（CTA）</li>
+                        <li>サムネイル上の再生ボタンUIによる動画感の演出</li>
+                        <li>カテゴリごとの世界観を表現したダイナミックなセクション</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Mockups can be added below by copying a section block -->
+
+    </div>
+
+</body>
+</html>
