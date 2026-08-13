@@ -195,17 +195,7 @@
 
         <!-- Content Grid -->
         <div class="grid" id="content-grid">
-                    <img src="https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=800&auto=format&fit=crop" class="card-thumb" alt="Nature">
-                </div>
-                <div class="card-info">
-                    <span class="card-category">MEDITATION / 432Hz</span>
-                    <h3 class="card-title">Morning Calmness: 432Hz Healing</h3>
-                    <div class="card-btn">
-                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> WATCH ON YOUTUBE
-                    </div>
-                </div>
-            </a>
-
+            <!-- カードはJavaScriptから動的に生成されます -->
         </div>
     </main>
 
@@ -260,63 +250,68 @@
             let currentSub = 'all';
             let cardItems = []; // 動的に生成されたカードの配列
 
-            // データの取得と描画
-            fetch('mock_data.json')
-                .then(response => response.json())
-                .then(data => {
-                    const contents = data.contents;
-                    const categories = data.categories; // 将来的にはこれも動的に生成可能
+            // ローカルファイル（file://）でのCORSエラーを回避するため、モックデータを直接定義
+            const mockData = {
+                "categories": [
+                    { "id": "work", "name": "作業用", "sub_categories": [ {"id": "deep-focus", "name": "Deep Focus"}, {"id": "coding", "name": "Coding/Tech"}, {"id": "cafe", "name": "Cafe Ambience"} ] },
+                    { "id": "meditation", "name": "瞑想", "sub_categories": [ {"id": "sleep", "name": "Deep Sleep"}, {"id": "zen", "name": "Zen & Nature"}, {"id": "432hz", "name": "432Hz Healing"} ] },
+                    { "id": "original", "name": "オリジナル", "sub_categories": [ {"id": "vocal", "name": "Vocal Tracks"}, {"id": "instrumental", "name": "Instrumental"} ] }
+                ],
+                "contents": [
+                    { "id": "c_mock1", "title": "Deep Focus: Ambient for Work", "category": "work", "sub_category": "deep-focus", "description": "プログラミングや執筆作業に最適なアンビエント", "thumbnail": "https://images.unsplash.com/photo-1517511620798-cec17d428bc0?q=80&w=800&auto=format&fit=crop" },
+                    { "id": "c_mock2", "title": "Zen Garden: Meditative Waves", "category": "meditation", "sub_category": "zen", "description": "水滴の音とシンセパッドを組み合わせた瞑想用サウンド", "thumbnail": "https://images.unsplash.com/photo-1520110120835-c96534a4c984?q=80&w=800&auto=format&fit=crop" },
+                    { "id": "c_mock3", "title": "Code & Flow: Electronic Beats", "category": "work", "sub_category": "coding", "description": "リズムに乗りながらコーディングを進めるためのビート", "thumbnail": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop" },
+                    { "id": "c_mock4", "title": "Silent Words", "category": "original", "sub_category": "vocal", "description": "詞の世界観をAIボーカルで表現したオリジナルトラック", "thumbnail": "https://images.unsplash.com/photo-1470229722913-7c090be5c5a4?q=80&w=800&auto=format&fit=crop" }
+                ]
+            };
 
-                    // カテゴリ名をIDから引くためのマップ作成
-                    const catMap = {};
-                    const subCatMap = {};
-                    categories.forEach(cat => {
-                        catMap[cat.id] = cat.name;
-                        if(cat.sub_categories) {
-                            cat.sub_categories.forEach(sub => {
-                                subCatMap[sub.id] = sub.name;
-                            });
-                        }
+            const contents = mockData.contents;
+            const categories = mockData.categories;
+
+            // カテゴリ名をIDから引くためのマップ作成
+            const catMap = {};
+            const subCatMap = {};
+            categories.forEach(cat => {
+                catMap[cat.id] = cat.name;
+                if(cat.sub_categories) {
+                    cat.sub_categories.forEach(sub => {
+                        subCatMap[sub.id] = sub.name;
                     });
+                }
+            });
 
-                    // カードの生成
-                    contents.forEach(item => {
-                        const card = document.createElement('a');
-                        card.href = item.link_url || '#';
-                        card.className = 'card item';
-                        card.setAttribute('data-main', item.category);
-                        card.setAttribute('data-sub', item.sub_category || 'all');
-                        card.target = "_blank";
+            // カードの生成
+            contents.forEach(item => {
+                const card = document.createElement('a');
+                card.href = '#';
+                card.className = 'card item';
+                card.setAttribute('data-main', item.category);
+                card.setAttribute('data-sub', item.sub_category || 'all');
+                card.target = "_blank";
 
-                        // カテゴリ表示用ラベルの生成 (例: WORK / Deep Focus)
-                        const mainName = catMap[item.category] || item.category;
-                        const subName = subCatMap[item.sub_category] ? subCatMap[item.sub_category] : '';
-                        const catLabel = subName ? `${mainName.toUpperCase()} / ${subName}` : mainName.toUpperCase();
+                const mainName = catMap[item.category] || item.category;
+                const subName = subCatMap[item.sub_category] ? subCatMap[item.sub_category] : '';
+                const catLabel = subName ? `${mainName.toUpperCase()} / ${subName}` : mainName.toUpperCase();
 
-                        card.innerHTML = `
-                            <div class="card-thumb-wrapper">
-                                <img src="${item.thumbnail}" class="card-thumb" alt="${item.title}">
-                            </div>
-                            <div class="card-info">
-                                <span class="card-category">${catLabel}</span>
-                                <h3 class="card-title">${item.title}</h3>
-                                <p style="font-size:0.8rem; color:#888; margin-bottom:1rem; flex-grow:1;">${item.description}</p>
-                                <div class="card-btn">
-                                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> WATCH ON YOUTUBE
-                                </div>
-                            </div>
-                        `;
-                        grid.appendChild(card);
-                        cardItems.push(card);
-                    });
+                card.innerHTML = `
+                    <div class="card-thumb-wrapper">
+                        <img src="${item.thumbnail}" class="card-thumb" alt="${item.title}">
+                    </div>
+                    <div class="card-info">
+                        <span class="card-category">${catLabel}</span>
+                        <h3 class="card-title">${item.title}</h3>
+                        <p style="font-size:0.8rem; color:#888; margin-bottom:1rem; flex-grow:1;">${item.description}</p>
+                        <div class="card-btn">
+                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> WATCH ON YOUTUBE
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+                cardItems.push(card);
+            });
 
-                    // 初回フィルター適用
-                    filterItems();
-                })
-                .catch(err => {
-                    console.error("データの読み込みに失敗しました:", err);
-                    grid.innerHTML = '<p style="text-align:center; color:red; grid-column:1/-1;">データの読み込みに失敗しました。</p>';
-                });
+            // 初回フィルター適用
+            filterItems();
 
             // メインカテゴリのクリックイベント
             mainTabs.forEach(tab => {
