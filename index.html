@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Studio 222 Music</title>
+    <link rel="icon" href="uploads/creator_icon.jpg" type="image/jpeg">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         /* --- Base & Tokens --- */
@@ -39,8 +40,9 @@
         .hero-content { position: relative; z-index: 10; max-width: 900px; padding: 0 20px; animation: fadeInUp 1s ease forwards; }
         .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 400; letter-spacing: 1px; line-height: 1.2; margin-bottom: 1.5rem; color: #ffffff; }
         .hero p { font-size: 1.1rem; color: #d0d5e0; font-weight: 300; letter-spacing: 1px; line-height: 1.8; margin-bottom: 3rem; max-width: 700px; margin-left: auto; margin-right: auto; }
-        .cta-btn { display: inline-flex; align-items: center; background: var(--accent); color: #fff; padding: 1.2rem 3rem; font-size: 0.95rem; font-weight: 600; letter-spacing: 2px; text-decoration: none; border-radius: 6px; transition: var(--transition); }
-        .cta-btn:hover { background: #b98fff; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(168, 117, 255, 0.3); }
+        .youtube-btn { display: inline-flex; align-items: center; justify-content: center; background: #e02a24; color: #fff; padding: 1.2rem 3rem; font-size: 0.95rem; font-weight: 600; letter-spacing: 2px; text-decoration: none; border-radius: 6px; transition: var(--transition); gap: 0.8rem; }
+        .youtube-btn svg { width: 24px; height: 24px; fill: currentColor; }
+        .youtube-btn:hover { background: #ff0000; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(224, 42, 36, 0.4); }
 
         /* --- Content Section --- */
         .content-section { padding: 8rem 5%; position: relative; transition: background 1s ease; }
@@ -142,7 +144,10 @@
         <div class="hero-content">
             <h1>Music for Deep Focus & Meditation</h1>
             <p>集中とリラックスのための高品質なサウンドスケープ。プログラミング、読書、そして瞑想の時間を特別なものに。</p>
-            <a href="#library" class="cta-btn">LISTEN NOW</a>
+            <a href="https://www.youtube.com/channel/UCy1UxGTM7pPc-JNfzQW7oHg" target="_blank" class="youtube-btn">
+                <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                OFFICIAL YOUTUBE CHANNEL
+            </a>
         </div>
     </section>
 
