@@ -24,6 +24,7 @@ $message = '';
 if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_content'])) {
     $title = htmlspecialchars($_POST['title'] ?? '');
     $category = htmlspecialchars($_POST['category'] ?? '');
+    $sub_category = htmlspecialchars($_POST['sub_category'] ?? '');
     $description = htmlspecialchars($_POST['description'] ?? '');
     $link_url = htmlspecialchars($_POST['link_url'] ?? '');
     $pdf_url = htmlspecialchars($_POST['pdf_url'] ?? '');
@@ -61,6 +62,7 @@ if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_
             'id' => uniqid('c_'),
             'title' => $title,
             'category' => $category,
+            'sub_category' => $sub_category,
             'description' => $description,
             'link_url' => $link_url,
             'pdf_url' => $pdf_url,
@@ -173,13 +175,18 @@ if (file_exists($json_file)) {
                     </div>
                     
                     <div class="form-group">
-                        <label>カテゴリ</label>
+                        <label>カテゴリ (大カテゴリ)</label>
                         <select name="category" required>
                             <option value="">選択してください</option>
                             <?php foreach ($categories as $cat): ?>
                                 <option value="<?php echo htmlspecialchars($cat['id']); ?>"><?php echo htmlspecialchars($cat['name']); ?></option>
                             <?php endforeach; ?>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>サブカテゴリID (小カテゴリ) <small style="color:var(--text-dim); font-size:0.8rem;">※英数字ハイフン小文字 (例: deep-focus, zen)</small></label>
+                        <input type="text" name="sub_category" placeholder="例: deep-focus">
                     </div>
 
                     <div class="form-group">

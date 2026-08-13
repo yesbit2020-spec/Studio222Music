@@ -3,184 +3,385 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mockup Portal - Studio 222 Music</title>
+    <title>Studio 222 Music - Advanced LP</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-color: #0f1115;
-            --card-bg: #1a1d24;
-            --text-main: #f5f6f8;
-            --text-muted: #8b92a5;
-            --accent: #d4af37;
-            --border: rgba(255, 255, 255, 0.05);
-            --transition: all 0.3s ease;
+            --bg-color: #07050f;
+            --surface: #12101a;
+            --surface-hover: #1a1824;
+            --text-main: #ffffff;
+            --text-dim: #9ba1b0;
+            --accent-red: #e02a24;
+            --glow-color: rgba(224, 42, 36, 0.15);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding: 4rem 5%;
-            line-height: 1.6;
-        }
+        /* --- Header --- */
+        header { position: absolute; top: 0; left: 0; width: 100%; padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
+        .logo-wrapper { display: inline-block; text-decoration: none; color: var(--text-main); }
+        .logo-text { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; }
+        .logo-text span { color: var(--text-dim); font-weight: 400; font-style: italic; }
 
-        header {
-            margin-bottom: 4rem;
-            text-align: center;
+        /* --- Hero Section --- */
+        .hero { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; background-image: url('https://images.unsplash.com/photo-1520523839897-bd0b52f945a0'); background-size: cover; background-position: center; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(30, 20, 60, 0.7) 0%, rgba(15, 15, 30, 0.9) 100%); }
+        .hero-content { position: relative; z-index: 10; max-width: 900px; padding: 0 20px; animation: fadeInUp 1s ease forwards; }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 400; letter-spacing: 1px; line-height: 1.2; margin-bottom: 1.5rem; color: #ffffff; }
+        .hero p { font-size: 1.1rem; color: #d0d5e0; font-weight: 300; letter-spacing: 1px; line-height: 1.8; margin-bottom: 3rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .cta-btn { display: inline-flex; align-items: center; background: var(--accent-red); color: #fff; padding: 1.2rem 3rem; font-size: 0.95rem; font-weight: 600; letter-spacing: 2px; text-decoration: none; border-radius: 6px; transition: var(--transition); }
+        .cta-btn:hover { background: #f0332b; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(224, 42, 36, 0.3); }
+        .cta-btn svg { width: 18px; height: 18px; margin-right: 10px; fill: currentColor; }
+
+        /* --- About Us Section --- */
+        .about-section { padding: 4rem 5%; max-width: 1200px; margin: 0 auto; }
+        .about-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .about-card {
+            background: var(--surface); padding: 3rem; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05); line-height: 1.8; color: var(--text-main); font-weight: 300;
+        }
+        .creator-card { display: flex; align-items: center; gap: 3rem; }
+        @media (max-width: 768px) { .creator-card { flex-direction: column; text-align: center; gap: 1.5rem; } }
+        .creator-icon {
+            width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
+            border: 2px solid var(--accent-red); padding: 4px; flex-shrink: 0;
+        }
+        .creator-info { flex: 1; color: var(--text-dim); line-height: 1.7; }
+        .about-name { display: block; font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--text-main); margin-bottom: 0.5rem; }
+
+        /* --- Content Area --- */
+        .content-section {
+            padding: 6rem 5%; max-width: 1400px; margin: 0 auto;
             position: relative;
+            transition: background 0.8s ease;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-            margin-bottom: 0.5rem;
-        }
+        /* Ambient Glow Backgrounds */
+        .content-section.bg-work { background: radial-gradient(circle at center 10%, rgba(15, 45, 120, 0.15) 0%, transparent 70%); }
+        .content-section.bg-meditation { background: radial-gradient(circle at center 10%, rgba(80, 20, 110, 0.15) 0%, transparent 70%); }
+        .content-section.bg-original { background: radial-gradient(circle at center 10%, rgba(150, 20, 30, 0.12) 0%, transparent 70%); }
+        .content-section.bg-all { background: transparent; }
 
-        p.subtitle {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-        }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 400; }
 
-        .admin-btn {
-            position: absolute;
-            top: 0;
-            right: 0;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            border: 1px solid var(--border);
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            transition: var(--transition);
-        }
-
-        .admin-btn:hover {
-            border-color: var(--text-main);
-            color: var(--text-main);
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: var(--transition);
-            text-decoration: none;
-            display: block;
-            position: relative;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(212, 175, 55, 0.4);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .card-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-bottom: 1px solid var(--border);
-            background-color: #111;
-        }
-
-        .card-content {
-            padding: 1.5rem;
-        }
-
-        .card-number {
-            font-size: 0.8rem;
-            color: var(--accent);
-            font-weight: 600;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .card-title {
-            color: var(--text-main);
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .card-desc {
-            color: var(--text-muted);
+        /* Dual Language Typography */
+        .text-en {
             font-size: 0.9rem;
-        }
-
-        /* Initial empty state placeholder for future items */
-        .card.empty {
-            border: 1px dashed var(--border);
-            background: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 310px;
-            cursor: default;
-        }
-
-        .card.empty:hover {
-            transform: none;
-            border-color: var(--border);
-            box-shadow: none;
-        }
-
-        .card.empty .card-title {
             color: var(--text-muted);
-            font-weight: 400;
+            margin-top: 1.5rem;
+            line-height: 1.8;
+            letter-spacing: 0.02em;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
         }
+
+        /* Filter Menus (Main & Sub with Swipe support for Mobile) */
+        .filter-container { margin-bottom: 3rem; }
+        
+        .filter-menu, .sub-filter-menu {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 1rem;
+            scrollbar-width: none; /* Firefox */
+        }
+        .filter-menu::-webkit-scrollbar, .sub-filter-menu::-webkit-scrollbar { display: none; /* Chrome/Safari */ }
+        
+        /* Main Category Tabs */
+        .filter-menu { gap: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 1.5rem; }
+        .filter-menu li {
+            position: relative; padding-bottom: 1rem; color: var(--text-dim);
+            font-size: 0.85rem; font-weight: 600; letter-spacing: 2px; cursor: pointer; transition: var(--transition);
+        }
+        .filter-menu li:hover { color: var(--text-main); }
+        .filter-menu li.active { color: var(--text-main); }
+        .filter-menu li::after {
+            content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px;
+            background: var(--accent-red); transform: scaleX(0); transition: transform 0.3s ease;
+        }
+        .filter-menu li.active::after { transform: scaleX(1); }
+
+        /* Sub Category Tabs (Pills) */
+        .sub-filter-menu { gap: 1rem; justify-content: center; display: none; }
+        .sub-filter-menu.show { display: flex; }
+        @media (max-width: 768px) { .sub-filter-menu.show { justify-content: flex-start; padding-left: 20px; padding-right: 20px; } .filter-menu { justify-content: flex-start; padding-left: 20px; padding-right: 20px; } }
+        
+        .sub-filter-menu li {
+            padding: 0.5rem 1.2rem; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-dim); font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; cursor: pointer; transition: var(--transition);
+        }
+        .sub-filter-menu li:hover { border-color: rgba(255,255,255,0.3); color: var(--text-main); }
+        .sub-filter-menu li.active { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: var(--text-main); }
+
+        /* Grid */
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; min-height: 500px; }
+        @media (max-width: 1024px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+
+        /* Card */
+        .card { background: var(--surface); border-radius: 8px; overflow: hidden; text-decoration: none; transition: var(--transition); display: flex; flex-direction: column; border: 1px solid transparent; }
+        .card:hover { background: var(--surface-hover); transform: translateY(-5px); border-color: rgba(255,255,255,0.05); box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 20px var(--glow-color); }
+        .card-thumb-wrapper { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
+        .card-thumb { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .card:hover .card-thumb { transform: scale(1.05); }
+        .card-info { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-title { font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.5rem; line-height: 1.4; }
+        .card-category { font-size: 0.75rem; color: var(--accent-red); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+        .card-btn { margin-top: auto; display: inline-flex; align-items: center; font-size: 0.8rem; font-weight: 600; color: var(--text-dim); transition: var(--transition); }
+        .card:hover .card-btn { color: var(--text-main); }
+        .card-btn svg { width: 14px; height: 14px; margin-right: 6px; fill: currentColor; }
+
+        /* --- Footer --- */
+        footer { padding: 4rem 5% 2rem; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; position: relative; }
+        .social-icons { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; }
+        .social-icons a { color: var(--text-main); opacity: 0.6; transition: var(--transition); display: inline-block; }
+        .social-icons a:hover { opacity: 1; transform: translateY(-2px); }
+        .social-icons svg { width: 20px; height: 20px; fill: currentColor; }
+        .copyright { font-size: 0.85rem; color: var(--text-dim); }
+        .admin-link { position: absolute; bottom: 2rem; right: 5%; font-size: 10px; color: #222; text-decoration: none; transition: color 0.3s; }
+        .admin-link:hover { color: #555; }
+        .hidden { display: none !important; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="admin.php" class="admin-btn">Control Panel (Admin)</a>
-        <h1>Studio 222 Mockups</h1>
-        <p class="subtitle">Project Design Concepts & Iterations</p>
+        <a href="#" class="logo-wrapper">
+            <div class="logo-text">STUDIO 222 <span>MUSIC</span></div>
+        </a>
     </header>
 
-    <div class="grid">
-        <!-- Mockup 01 -->
-        <a href="mockups/01_landing_page.html" class="card">
-            <img src="mockups/thumb_01.jpg" alt="Mockup 01 Thumbnail" class="card-img">
-            <div class="card-content">
-                <span class="card-number">01</span>
-                <h2 class="card-title">Initial Dashboard (App)</h2>
-                <p class="card-desc">Initial concept designed as a dashboard/app interface.</p>
-            </div>
-        </a>
-
-        <!-- Mockup 02 -->
-        <a href="mockups/02_lp_design.html" class="card">
-            <!-- Using unsplash placeholder since we don't have a thumbnail yet -->
-            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=600&auto=format&fit=crop" alt="Mockup 02 Thumbnail" class="card-img">
-            <div class="card-content">
-                <span class="card-number">02</span>
-                <h2 class="card-title">Landing Page (LP)</h2>
-                <p class="card-desc">Redesigned promotional landing page focused on YouTube integration.</p>
-            </div>
-        </a>
-
-        <!-- Placeholder for future mockups -->
-        <div class="card empty">
-            <h2 class="card-title">+ New Mockup</h2>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Crafting Words with AI.<br>Designing Ambience for Focus.</h1>
+            <p>オリジナル楽曲は詞の世界観を最重視し、AIの性能を極限まで引き出して構築。<br>アンビエントは、クリエイター自身が「作業中に本当に聴きたい音」だけを追求して生まれました。</p>
+            <a href="https://youtube.com" target="_blank" class="cta-btn">
+                <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                OFFICIAL YOUTUBE CHANNEL
+            </a>
         </div>
-    </div>
+    </section>
 
+    <main class="content-section">
+        <div class="section-header">
+            <h2>Sound Library</h2>
+        </div>
+
+        <div class="filter-container">
+            <!-- Main Category Filter (Swipeable on Mobile) -->
+            <ul class="filter-menu" id="main-filter">
+                <li class="active" data-main="all">ALL</li>
+                <li data-main="work">FOR WORK</li>
+                <li data-main="meditation">MEDITATION</li>
+                <li data-main="original">ORIGINAL</li>
+            </ul>
+
+            <!-- Sub Category Filters (Dynamic & Swipeable) -->
+            <ul class="sub-filter-menu" id="sub-filter-work">
+                <li class="active" data-sub="all">ALL WORK</li>
+                <li data-sub="deep-focus">Deep Focus</li>
+                <li data-sub="coding">Coding/Tech</li>
+                <li data-sub="cafe">Cafe Ambience</li>
+            </ul>
+
+            <ul class="sub-filter-menu" id="sub-filter-meditation">
+                <li class="active" data-sub="all">ALL MEDITATION</li>
+                <li data-sub="sleep">Deep Sleep</li>
+                <li data-sub="zen">Zen & Nature</li>
+                <li data-sub="432hz">432Hz Healing</li>
+            </ul>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="grid" id="content-grid">
+            <!-- カードはJavaScriptから動的に生成されます -->
+        </div>
+    </main>
+
+    <!-- About Us Section -->
+    <section class="about-section">
+        <div class="section-header">
+            <h2>About Us</h2>
+        </div>
+        <div class="about-grid">
+            <div class="about-card">
+                <p>私たちは「言葉の持つ力」と「音響空間の心地よさ」を追求するサウンドプロジェクトです。最新のAIテクノロジーと深い叙情性を融合させた「オリジナルトラック」。そして、クリエイター自身が日々のプログラミングや読書の最中に「心から聴きたい」と思えるクオリティだけを追求した「作業用・瞑想用アンビエント」。この2つの柱が、あなたの日常とクリエイティビティに寄り添います。</p>
+                <p class="text-en">We are a sound project pursuing the "power of words" and the "comfort of acoustic spaces." Combining the latest AI technology with deep lyricism in our Original Tracks, and pursuing the highest quality Ambient for work and meditation that creators themselves truly want to listen to during programming and reading. These two pillars accompany your daily life and creativity.</p>
+            </div>
+            
+            <div class="about-card creator-card">
+                <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop" alt="Creator Profile" class="creator-icon">
+                <div class="creator-info">
+                    <span class="about-name">Creator / Sound Designer</span>
+                    <p>はじめまして。Studio 222 Music へようこそ。AIの演算力から紡ぎ出される「詞の情景」と、静寂をデザインする「アンビエント」。このチャンネルの音が、あなたのインスピレーションを加速させる最高のBGMとなることを願っています。</p>
+                    <p class="text-en">Nice to meet you. Welcome to Studio 222 Music. The scenery of words spun from the computational power of AI, and the ambient that designs silence. I hope the sounds of this channel will become the ultimate BGM that accelerates your inspiration.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="social-icons">
+            <a href="#" title="YouTube"><svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg></a>
+            <a href="#" title="X (Twitter)"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            <a href="#" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        </div>
+        <div class="copyright">&copy; 2026 Studio 222 Music. All Rights Reserved.</div>
+        <a href="admin.php" class="admin-link">Admin</a>
+    </footer>
+
+    <script>
+        // JSONデータからの動的描画とフィルターロジック
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('content-grid');
+            const contentSection = document.querySelector('.content-section');
+            const mainTabs = document.querySelectorAll('#main-filter li');
+            const subMenus = document.querySelectorAll('.sub-filter-menu');
+
+            let currentMain = 'all';
+            let currentSub = 'all';
+            let cardItems = []; // 動的に生成されたカードの配列
+
+            // データの取得と描画
+            fetch('data.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const contents = data.contents || [];
+                    const categories = data.categories || [];
+
+                    // カテゴリ名をIDから引くためのマップ作成
+                    const catMap = {};
+                    const subCatMap = {};
+                    categories.forEach(cat => {
+                        catMap[cat.id] = cat.name;
+                        if(cat.sub_categories) {
+                            cat.sub_categories.forEach(sub => {
+                                subCatMap[sub.id] = sub.name;
+                            });
+                        }
+                    });
+
+                    // カードの生成
+                    contents.forEach(item => {
+                        const card = document.createElement('a');
+                        card.href = item.link_url || '#';
+                        card.className = 'card item';
+                        card.setAttribute('data-main', item.category);
+                        card.setAttribute('data-sub', item.sub_category || 'all');
+                        if (item.link_url) { card.target = "_blank"; }
+
+                        const mainName = catMap[item.category] || item.category;
+                        const subName = subCatMap[item.sub_category] ? subCatMap[item.sub_category] : '';
+                        const catLabel = subName ? `${mainName.toUpperCase()} / ${subName}` : mainName.toUpperCase();
+
+                        // 実際の表示用画像のフォールバック
+                        const thumbSrc = item.thumbnail ? item.thumbnail : "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=800&auto=format&fit=crop";
+
+                        card.innerHTML = `
+                            <div class="card-thumb-wrapper">
+                                <img src="${thumbSrc}" class="card-thumb" alt="${item.title}">
+                            </div>
+                            <div class="card-info">
+                                <span class="card-category">${catLabel}</span>
+                                <h3 class="card-title">${item.title}</h3>
+                                <p style="font-size:0.8rem; color:#888; margin-bottom:1rem; flex-grow:1;">${item.description}</p>
+                                <div class="card-btn">
+                                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> WATCH ON YOUTUBE
+                                </div>
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                        cardItems.push(card);
+                    });
+
+                    // 初回フィルター適用
+                    filterItems();
+                })
+                .catch(err => {
+                    console.error("データの読み込みに失敗しました:", err);
+                    grid.innerHTML = '<p style="text-align:center; color:red; grid-column:1/-1;">データの読み込みに失敗しました。サーバーにアップロードしてから確認するか、ローカルサーバー経由で開いてください。</p>';
+                });
+
+            // メインカテゴリのクリックイベント
+            mainTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    mainTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    currentMain = tab.getAttribute('data-main');
+                    currentSub = 'all';
+
+                    // 背景オーラの切り替え
+                    contentSection.className = `content-section bg-${currentMain}`;
+
+                    // サブメニューの表示切替
+                    subMenus.forEach(menu => menu.classList.remove('show'));
+                    const targetSubMenu = document.getElementById(`sub-filter-${currentMain}`);
+                    if (targetSubMenu) {
+                        targetSubMenu.classList.add('show');
+                        const subTabs = targetSubMenu.querySelectorAll('li');
+                        subTabs.forEach(t => t.classList.remove('active'));
+                        if(subTabs.length > 0) subTabs[0].classList.add('active');
+                    }
+
+                    filterItems();
+                });
+            });
+
+            // サブカテゴリのクリックイベント
+            subMenus.forEach(menu => {
+                const subTabs = menu.querySelectorAll('li');
+                subTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        subTabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        currentSub = tab.getAttribute('data-sub');
+                        filterItems();
+                    });
+                });
+            });
+
+            // フィルター適用関数
+            function filterItems() {
+                cardItems.forEach(item => {
+                    const itemMain = item.getAttribute('data-main');
+                    const itemSub = item.getAttribute('data-sub');
+                    
+                    let show = false;
+                    if (currentMain === 'all') {
+                        show = true;
+                    } else if (itemMain === currentMain) {
+                        if (currentSub === 'all' || itemSub === currentSub) {
+                            show = true;
+                        }
+                    }
+
+                    if (show) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
