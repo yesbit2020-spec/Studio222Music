@@ -18,6 +18,19 @@ if (isset($_POST['login'])) {
     }
 }
 
+
+if (isset($_GET['download_template']) && isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+    header('Content-Type: text/csv; charset=UTF-8');
+    header('Content-Disposition: attachment; filename="import_template.csv"');
+    // Excelで文字化けさせないためのBOM
+    echo "\xEF\xBB\xBF";
+    $out = fopen('php://output', 'w');
+    fputcsv($out, ['タイトル', '大カテゴリID', '中カテゴリID', '小カテゴリID', '説明文(HTML可)', 'メインURL', 'PDF資料URL', '画像URL']);
+    fputcsv($out, ['サンプルサウンド', 'original', 'ambient', 'deep-focus', '<p>ここに説明文を書きます</p>', 'https://youtube.com/...', '', 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=800&auto=format&fit=crop']);
+    fclose($out);
+    exit;
+}
+
 $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 $message = '';
 $error = $error ?? '';
@@ -27,6 +40,73 @@ $data = file_exists($json_file) ? json_decode(file_get_contents($json_file), tru
 
 if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST') {
     
+    
+    // --- CSV一括インポート ---
+    if (isset($_POST['import_csv'])) {
+        if (isset($_FILES['csv_file']) && $_FILES['csv_file']['error'] === UPLOAD_ERR_OK) {
+            $tmp_name = $_FILES['csv_file']['tmp_name'];
+            $csv_content = file_get_contents($tmp_name);
+            // 文字化け対策: エンコーディングをUTF-8に変換
+            $csv_content = mb_convert_encoding($csv_content, 'UTF-8', 'auto');
+            
+            $temp_utf8_file = tempnam(sys_get_temp_dir(), 'csv');
+            file_put_contents($temp_utf8_file, $csv_content);
+            
+            $handle = fopen($temp_utf8_file, "r");
+            $header_skipped = false;
+            $new_items = [];
+            
+            while (($row = fgetcsv($handle)) !== false) {
+                if (empty(array_filter($row))) continue;
+                if (!$header_skipped) {
+                    $header_skipped = true;
+                    continue;
+                }
+                
+                $title = isset($row[0]) ? htmlspecialchars(trim($row[0])) : '';
+                $cat_main = isset($row[1]) ? htmlspecialchars(trim($row[1])) : '';
+                $cat_mid = isset($row[2]) ? htmlspecialchars(trim($row[2])) : '';
+                $cat_small = isset($row[3]) ? htmlspecialchars(trim($row[3])) : '';
+                $desc = isset($row[4]) ? strip_tags(trim($row[4]), '<p><a><br><strong><em><ul><ol><li>') : '';
+                $link = isset($row[5]) ? htmlspecialchars(trim($row[5])) : '';
+                $pdf = isset($row[6]) ? htmlspecialchars(trim($row[6])) : '';
+                $thumb = isset($row[7]) ? htmlspecialchars(trim($row[7])) : '';
+                
+                if ($title !== '') {
+                    $new_items[] = [
+                        'id' => uniqid('c_'),
+                        'title' => $title,
+                        'category' => $cat_main,
+                        'middle_category' => $cat_mid,
+                        'small_category' => $cat_small,
+                        'description' => $desc,
+                        'link_url' => $link,
+                        'pdf_url' => $pdf,
+                        'thumbnail' => $thumb,
+                        'created_at' => date('c')
+                    ];
+                }
+            }
+            fclose($handle);
+            unlink($temp_utf8_file);
+            
+            if (!empty($new_items)) {
+                // CSVの上からの並びをサイトの上からの並びに一致させるため、逆順にして先頭に追加
+                $new_items = array_reverse($new_items);
+                foreach ($new_items as $item) {
+                    array_unshift($data['contents'], $item);
+                }
+                if (file_put_contents($json_file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT))) {
+                    $message = count($new_items) . " 件のデータを一括インポートしました！";
+                }
+            } else {
+                $message = "有効なデータが見つかりませんでした。";
+            }
+        } else {
+            $message = "CSVファイルのアップロードに失敗しました。";
+        }
+    }
+
     // --- コンテンツ追加・更新 ---
     if (isset($_POST['add_content'])) {
         $edit_id = $_POST['edit_id'] ?? '';
@@ -317,6 +397,7 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
             <div class="nav-tabs">
                 <div class="nav-tab active" onclick="switchTab('content')">コンテンツ配備</div>
                 <div class="nav-tab" onclick="switchTab('list')">コンテンツ一覧・管理</div>
+                <div class="nav-tab" onclick="switchTab('import')">一括インポート</div>
                 <div class="nav-tab" onclick="switchTab('category')">カテゴリ管理</div>
                 <div class="nav-tab" onclick="switchTab('tools')">関連ツール・確認</div>
             </div>
@@ -434,6 +515,38 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
                 </div>
             </div>
 
+            
+            <!-- 新設: 一括インポートタブ -->
+            <div id="tab-import" class="tab-content">
+                <div class="card">
+                    <h2 style="margin-bottom: 1.5rem; font-weight: 300;">CSV一括インポート</h2>
+                    <p style="margin-bottom: 1rem; color: var(--text-dim); line-height: 1.6;">
+                        スプレッドシートやExcelから出力したCSVファイルを使って、複数のデータを一括で登録できます。<br>
+                        画像のURLも直接指定可能です。
+                    </p>
+                    
+                    <div style="margin-bottom: 2rem;">
+                        <a href="?download_template=1" class="btn btn-small" style="text-decoration: none;">📥 テンプレート(CSV)をダウンロード</a>
+                    </div>
+                    
+                    <form method="post" enctype="multipart/form-data" style="border: 1px dashed var(--border); padding: 2rem; border-radius: 4px;">
+                        <div class="form-group">
+                            <label>CSVファイルを選択</label>
+                            <input type="file" name="csv_file" accept=".csv" required style="border: none; padding: 0;">
+                        </div>
+                        <button type="submit" name="import_csv" class="btn">データを一括配備する</button>
+                    </form>
+
+                    <div style="margin-top: 2rem; padding: 1rem; background: var(--bg); border-left: 4px solid var(--accent);">
+                        <h4 style="margin-bottom: 0.5rem; color: var(--accent);">■ 登録順と表示順について</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-dim);">
+                            CSVファイルの<strong>1行目のデータがサイトの一番上（最新）</strong>に表示されます。<br>
+                            上から順番に新しいデータとして処理されるため、スプレッドシートで見ている通りの順番でサイトに並びます。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
             <!-- 2. カテゴリ管理タブ -->
             <div id="tab-category" class="tab-content">
                 <div class="card">
