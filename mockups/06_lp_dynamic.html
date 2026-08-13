@@ -67,7 +67,18 @@
         .about-name { display: block; font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--text-main); margin-bottom: 0.5rem; }
 
         /* --- Content Area --- */
-        .content-section { padding: 6rem 5%; max-width: 1400px; margin: 0 auto; }
+        .content-section {
+            padding: 6rem 5%; max-width: 1400px; margin: 0 auto;
+            position: relative;
+            transition: background 0.8s ease;
+        }
+
+        /* Ambient Glow Backgrounds */
+        .content-section.bg-work { background: radial-gradient(circle at center 10%, rgba(15, 45, 120, 0.15) 0%, transparent 70%); }
+        .content-section.bg-meditation { background: radial-gradient(circle at center 10%, rgba(80, 20, 110, 0.15) 0%, transparent 70%); }
+        .content-section.bg-original { background: radial-gradient(circle at center 10%, rgba(150, 20, 30, 0.12) 0%, transparent 70%); }
+        .content-section.bg-all { background: transparent; }
+
         .section-header { text-align: center; margin-bottom: 4rem; }
         .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 400; }
 
@@ -243,6 +254,7 @@
         // JSONデータからの動的描画とフィルターロジック
         document.addEventListener('DOMContentLoaded', () => {
             const grid = document.getElementById('content-grid');
+            const contentSection = document.querySelector('.content-section');
             const mainTabs = document.querySelectorAll('#main-filter li');
             const subMenus = document.querySelectorAll('.sub-filter-menu');
 
@@ -321,6 +333,9 @@
                     
                     currentMain = tab.getAttribute('data-main');
                     currentSub = 'all';
+
+                    // 背景オーラの切り替え
+                    contentSection.className = `content-section bg-${currentMain}`;
 
                     // サブメニューの表示切替
                     subMenus.forEach(menu => menu.classList.remove('show'));
