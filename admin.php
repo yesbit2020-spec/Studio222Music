@@ -25,8 +25,8 @@ if (isset($_GET['download_template']) && isset($_SESSION['logged_in']) && $_SESS
     // Excelで文字化けさせないためのBOM
     echo "\xEF\xBB\xBF";
     $out = fopen('php://output', 'w');
-    fputcsv($out, ['タイトル', '大カテゴリID', '中カテゴリID', '小カテゴリID', '説明文(HTML可)', 'メインURL', 'PDF資料URL', '画像URL']);
-    fputcsv($out, ['サンプルサウンド', 'original', 'ambient', 'deep-focus', '<p>ここに説明文を書きます</p>', 'https://youtube.com/...', '', 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=800&auto=format&fit=crop']);
+    fputcsv($out, ['タイトル', '大カテゴリID', '中カテゴリID', '小カテゴリID', '日本語説明文(HTML可)', '英語説明文(HTML可)', 'メインURL', 'PDF資料URL', '画像(ファイル名またはURL)']);
+    fputcsv($out, ['サンプルサウンド', 'original', 'ambient', 'deep-focus', 'ここに日本語の説明を書きます。', 'Here is the English description.', 'https://youtube.com/...', '', 'example.jpg']);
     fclose($out);
     exit;
 }
@@ -67,10 +67,38 @@ if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST') {
                 $cat_main = isset($row[1]) ? htmlspecialchars(trim($row[1])) : '';
                 $cat_mid = isset($row[2]) ? htmlspecialchars(trim($row[2])) : '';
                 $cat_small = isset($row[3]) ? htmlspecialchars(trim($row[3])) : '';
-                $desc = isset($row[4]) ? strip_tags(trim($row[4]), '<p><a><br><strong><em><ul><ol><li>') : '';
-                $link = isset($row[5]) ? htmlspecialchars(trim($row[5])) : '';
-                $pdf = isset($row[6]) ? htmlspecialchars(trim($row[6])) : '';
-                $thumb = isset($row[7]) ? htmlspecialchars(trim($row[7])) : '';
+                $desc_ja = isset($row[4]) ? strip_tags(trim($row[4]), '<p><a><br><strong><em><ul><ol><li>') : '';
+                $desc_en = isset($row[5]) ? strip_tags(trim($row[5]), '<p><a><br><strong><em><ul><ol><li>') : '';
+                $link = isset($row[6]) ? htmlspecialchars(trim($row[6])) : '';
+                $pdf = isset($row[7]) ? htmlspecialchars(trim($row[7])) : '';
+                $thumb_raw = isset($row[8]) ? trim($row[8]) : '';
+                
+                // 日英説明文の結合
+                $desc = '';
+                if ($desc_ja !== '' || $desc_en !== '') {
+                    $desc_html = '';
+                    if ($desc_ja !== '') {
+                        $desc_html .= '<div style="font-family: \'Noto Sans JP\', sans-serif;">' . $desc_ja . '</div>';
+                    }
+                    if ($desc_ja !== '' && $desc_en !== '') {
+                        $desc_html .= '<br>';
+                    }
+                    if ($desc_en !== '') {
+                        $desc_html .= '<div class="text-en">' . $desc_en . '</div>';
+                    }
+                    $desc = $desc_html;
+                }
+                
+                // 画像URLの補完
+                $thumb = '';
+                if ($thumb_raw !== '') {
+                    if (strpos($thumb_raw, 'http://') === 0 || strpos($thumb_raw, 'https://') === 0) {
+                        $thumb = htmlspecialchars($thumb_raw);
+                    } else {
+                        // ファイル名だけの場合は uploads/ を付加
+                        $thumb = 'uploads/' . htmlspecialchars(basename($thumb_raw));
+                    }
+                }
                 
                 if ($title !== '') {
                     $new_items[] = [
