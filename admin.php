@@ -159,7 +159,10 @@ if (file_exists($json_file)) {
         <?php else: ?>
             <div class="header-actions">
                 <h1>COMMAND CENTER</h1>
-                <a href="?logout=1" class="btn btn-small">LOGOUT</a>
+                <div style="display: flex; gap: 10px;">
+                    <a href="index.html" target="_blank" class="btn btn-small" style="text-decoration: none; display: inline-flex; align-items: center;">サイトを確認 ↗</a>
+                    <a href="?logout=1" class="btn btn-small" style="text-decoration: none; display: inline-flex; align-items: center;">LOGOUT</a>
+                </div>
             </div>
 
             <?php if ($message): ?>

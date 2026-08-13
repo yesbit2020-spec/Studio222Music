@@ -261,8 +261,8 @@
             let currentSub = 'all';
             let cardItems = []; // 動的に生成されたカードの配列
 
-            // データの取得と描画
-            fetch('data.json')
+            // データの取得と描画 (キャッシュ回避のためにタイムスタンプを付与)
+            fetch('data.json?t=' + new Date().getTime())
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
