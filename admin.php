@@ -547,10 +547,7 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
                             <div style="font-size:1.2rem; margin-bottom:0.5rem; color:var(--text);">サイトを確認 ↗</div>
                             <small>本番のフロントページを別タブで開きます</small>
                         </a>
-                        <a href="../mockups/mockup_portal.html" target="_blank" class="tool-card">
-                            <div style="font-size:1.2rem; margin-bottom:0.5rem; color:var(--text);">モックアップ・ポータル</div>
-                            <small>Design Archive</small>
-                        </a>
+                        
                         <a href="youtube-generator/index.html" target="_blank" class="tool-card">
                             <div style="font-size:1.2rem; margin-bottom:0.5rem; color:var(--text);">YouTubeジェネレータ</div>
                             <small>YouTube Description Maker</small>
