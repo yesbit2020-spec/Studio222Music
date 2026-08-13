@@ -41,29 +41,19 @@
         .cta-btn svg { width: 18px; height: 18px; margin-right: 10px; fill: currentColor; }
 
         /* --- About Us Section --- */
-        .about-section {
-            padding: 6rem 5%;
-            background: rgba(255,255,255,0.01);
-            border-top: 1px solid rgba(255,255,255,0.05);
+        .about-section { padding: 4rem 5%; max-width: 1200px; margin: 0 auto; }
+        .about-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .about-card {
+            background: var(--surface); padding: 3rem; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05); line-height: 1.8; color: var(--text-main); font-weight: 300;
         }
-        .about-container { max-width: 900px; margin: 0 auto; }
-        .about-intro {
-            background: var(--surface); padding: 3rem; border-radius: 8px; margin-bottom: 2rem;
-            text-align: center; border: 1px solid rgba(255,255,255,0.05);
-        }
-        .about-intro-text { color: var(--text-main); font-size: 1.1rem; line-height: 1.8; font-weight: 300; }
-        
-        .about-author-area {
-            display: flex; align-items: center; gap: 3rem; padding: 2rem; background: var(--surface);
-            border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);
-        }
-        @media (max-width: 768px) { .about-author-area { flex-direction: column; text-align: center; gap: 1.5rem; } }
-        
-        .profile-icon {
+        .creator-card { display: flex; align-items: center; gap: 3rem; }
+        @media (max-width: 768px) { .creator-card { flex-direction: column; text-align: center; gap: 1.5rem; } }
+        .creator-icon {
             width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
             border: 2px solid var(--accent-red); padding: 4px; flex-shrink: 0;
         }
-        .about-greeting-text { color: var(--text-dim); font-size: 1rem; line-height: 1.7; text-align: left; }
+        .creator-info { flex: 1; color: var(--text-dim); line-height: 1.7; }
         .about-name { display: block; font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--text-main); margin-bottom: 0.5rem; }
 
         /* --- Content Area --- */
