@@ -3,152 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mockup Portal - Studio 222 Music</title>
+    <title>Studio 222 Music</title>
     <style>
         :root {
-            --bg-color: #0f1115;
-            --card-bg: #1a1d24;
-            --text-main: #f5f6f8;
-            --text-muted: #8b92a5;
+            --bg: #0a0a0a;
+            --surface: #111111;
+            --border: #222222;
+            --text: #f5f5f5;
+            --text-dim: #888888;
             --accent: #d4af37;
-            --border: rgba(255, 255, 255, 0.05);
             --transition: all 0.3s ease;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding: 4rem 5%;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             line-height: 1.6;
+            overflow-x: hidden;
         }
-
         header {
-            margin-bottom: 4rem;
+            padding: 4rem 5%;
             text-align: center;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-            margin-bottom: 0.5rem;
-        }
-
-        p.subtitle {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: var(--transition);
-            text-decoration: none;
-            display: block;
-            position: relative;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(212, 175, 55, 0.4);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .card-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
             border-bottom: 1px solid var(--border);
         }
-
-        .card-content {
-            padding: 1.5rem;
+        h1 { font-size: 3rem; font-weight: 300; letter-spacing: 4px; margin-bottom: 1rem; }
+        p.subtitle { color: var(--accent); letter-spacing: 2px; text-transform: uppercase; font-size: 0.9rem; }
+        
+        main { padding: 4rem 5%; max-width: 1400px; margin: 0 auto; }
+        
+        .category-section { margin-bottom: 5rem; }
+        .category-title {
+            font-size: 2rem; font-weight: 300; border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem; margin-bottom: 2rem; color: var(--text);
         }
+        .category-desc { color: var(--text-dim); margin-bottom: 2rem; }
 
-        .card-number {
-            font-size: 0.8rem;
-            color: var(--accent);
-            font-weight: 600;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-            display: block;
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
+        
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: var(--transition);
         }
-
-        .card-title {
-            color: var(--text-main);
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+        .card:hover { border-color: rgba(212, 175, 55, 0.4); transform: translateY(-5px); }
+        .card-img { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid var(--border); background: #222; }
+        .card-body { padding: 1.5rem; }
+        .card-title { font-size: 1.25rem; font-weight: 500; margin-bottom: 0.5rem; }
+        .card-text { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1.5rem; }
+        
+        .card-actions { display: flex; gap: 1rem; }
+        .btn {
+            flex: 1; text-align: center; padding: 0.5rem; font-size: 0.8rem;
+            text-decoration: none; text-transform: uppercase; letter-spacing: 1px;
+            border: 1px solid var(--accent); color: var(--accent); transition: var(--transition);
         }
-
-        .card-desc {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        /* Initial empty state placeholder for future items */
-        .card.empty {
-            border: 1px dashed var(--border);
-            background: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 310px;
-            cursor: default;
-        }
-
-        .card.empty:hover {
-            transform: none;
-            border-color: var(--border);
-            box-shadow: none;
-        }
-
-        .card.empty .card-title {
-            color: var(--text-muted);
-            font-weight: 400;
-        }
+        .btn:hover { background: var(--accent); color: var(--bg); }
+        .btn-outline { border-color: var(--text-dim); color: var(--text-dim); }
+        .btn-outline:hover { background: var(--text-dim); color: var(--bg); border-color: var(--text-dim); }
+        
+        .empty-message { color: var(--text-dim); font-style: italic; }
+        
+        footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Studio 222 Mockups</h1>
-        <p class="subtitle">Project Design Concepts & Iterations</p>
+        <h1>Studio 222 Music</h1>
+        <p class="subtitle">Sound Architecture Database</p>
     </header>
 
-    <div class="grid">
-        <!-- Mockup 01 -->
-        <a href="mockups/01_landing_page.html" class="card">
-            <img src="mockups/thumb_01.jpg" alt="Mockup 01 Thumbnail" class="card-img">
-            <div class="card-content">
-                <span class="card-number">01</span>
-                <h2 class="card-title">Landing Page (Dark)</h2>
-                <p class="card-desc">Initial concept for the premium music studio landing page.</p>
-            </div>
-        </a>
+    <main id="app-content">
+        <!-- JSでここにコンテンツが注入されます -->
+        <p style="text-align:center; color:#888;">Loading database...</p>
+    </main>
 
-        <!-- Placeholder for future mockups -->
-        <div class="card empty">
-            <h2 class="card-title">+ New Mockup</h2>
-        </div>
-    </div>
+    <footer>
+        &copy; 2026 Studio 222 Music. All Rights Reserved. <br>
+        <a href="admin.php" style="color:#444; text-decoration:none; margin-top:10px; display:inline-block;">[ Command Center ]</a>
+    </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('app-content');
+            
+            try {
+                // キャッシュ回避のためクエリパラメータをつける
+                const response = await fetch('data.json?t=' + new Date().getTime());
+                if (!response.ok) throw new Error('Data not found');
+                const data = await response.json();
+                
+                renderContent(data, container);
+            } catch (error) {
+                container.innerHTML = `<p class="empty-message">データの読み込みに失敗しました。まだコンテンツがないか、エラーが発生しています。</p>`;
+                console.error(error);
+            }
+        });
+
+        function renderContent(data, container) {
+            container.innerHTML = '';
+            const categories = data.categories || [];
+            const contents = data.contents || [];
+
+            categories.forEach(cat => {
+                const section = document.createElement('section');
+                section.className = 'category-section';
+                
+                // カテゴリ見出し
+                section.innerHTML = `
+                    <h2 class="category-title">${cat.name}</h2>
+                    ${cat.description ? `<p class="category-desc">${cat.description}</p>` : ''}
+                `;
+                
+                // 該当するコンテンツをフィルタリング
+                const catContents = contents.filter(c => c.category === cat.id);
+                
+                if (catContents.length === 0) {
+                    section.innerHTML += `<p class="empty-message">このカテゴリにはまだコンテンツがありません。</p>`;
+                } else {
+                    const grid = document.createElement('div');
+                    grid.className = 'grid';
+                    
+                    catContents.forEach(item => {
+                        // 画像URLのフォールバック
+                        const imgSrc = item.thumbnail ? item.thumbnail : 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22300%22%20height%3D%22200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20300%20200%22%20preserveAspectRatio%3D%22none%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23222%22%2F%3E%3Ctext%20x%3D%22150%22%20y%3D%22100%22%20fill%3D%22%23555%22%20font-family%3D%22sans-serif%22%20font-size%3D%2216%22%20text-anchor%3D%22middle%22%3ENo%20Image%3C%2Ftext%3E%3C%2Fsvg%3E';
+                        
+                        let linksHtml = '';
+                        if (item.link_url) {
+                            linksHtml += `<a href="${item.link_url}" target="_blank" class="btn">View Content</a>`;
+                        }
+                        if (item.pdf_url) {
+                            linksHtml += `<a href="${item.pdf_url}" target="_blank" class="btn btn-outline">PDF</a>`;
+                        }
+
+                        grid.innerHTML += `
+                            <div class="card">
+                                <img src="${imgSrc}" alt="${item.title}" class="card-img" loading="lazy">
+                                <div class="card-body">
+                                    <h3 class="card-title">${item.title}</h3>
+                                    <p class="card-text">${item.description}</p>
+                                    <div class="card-actions">
+                                        ${linksHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    section.appendChild(grid);
+                }
+                
+                container.appendChild(section);
+            });
+        }
+    </script>
 </body>
 </html>

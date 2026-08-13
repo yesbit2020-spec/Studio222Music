@@ -1,0 +1,20 @@
+{
+    "categories": [
+        {
+            "id": "work",
+            "name": "作業用",
+            "description": "集中力を高めるための作業用BGM"
+        },
+        {
+            "id": "meditation",
+            "name": "瞑想",
+            "description": "心を落ち着かせるメディテーションサウンド"
+        },
+        {
+            "id": "original",
+            "name": "オリジナル",
+            "description": "Studio222 オリジナルトラック"
+        }
+    ],
+    "contents": []
+}
