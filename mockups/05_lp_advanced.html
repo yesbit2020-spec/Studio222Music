@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio 222 Music - Advanced LP</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #07050f;
+            --surface: #12101a;
+            --surface-hover: #1a1824;
+            --text-main: #ffffff;
+            --text-dim: #9ba1b0;
+            --accent-red: #e02a24;
+            --glow-color: rgba(224, 42, 36, 0.15);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+
+        /* --- Header --- */
+        header { position: absolute; top: 0; left: 0; width: 100%; padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
+        .logo-wrapper { display: inline-block; text-decoration: none; color: var(--text-main); }
+        .logo-text { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; }
+        .logo-text span { color: var(--text-dim); font-weight: 400; font-style: italic; }
+
+        /* --- Hero Section --- */
+        .hero { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; background-image: url('https://images.unsplash.com/photo-1598653222000-6b7b7a552625?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(30, 20, 60, 0.6) 0%, rgba(15, 15, 30, 0.8) 100%); }
+        .hero-content { position: relative; z-index: 10; max-width: 900px; padding: 0 20px; animation: fadeInUp 1s ease forwards; }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 400; letter-spacing: 1px; line-height: 1.1; margin-bottom: 1.5rem; color: #ffffff; }
+        .hero p { font-size: 1.1rem; color: #d0d5e0; font-weight: 300; letter-spacing: 1px; margin-bottom: 3rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .cta-btn { display: inline-flex; align-items: center; background: var(--accent-red); color: #fff; padding: 1.2rem 3rem; font-size: 0.95rem; font-weight: 600; letter-spacing: 2px; text-decoration: none; border-radius: 6px; transition: var(--transition); }
+        .cta-btn:hover { background: #f0332b; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(224, 42, 36, 0.3); }
+        .cta-btn svg { width: 18px; height: 18px; margin-right: 10px; fill: currentColor; }
+
+        /* --- About Us Section --- */
+        .about-section {
+            padding: 6rem 5%;
+            background: rgba(255,255,255,0.01);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+        }
+        .about-container { max-width: 800px; margin: 0 auto; }
+        .profile-icon {
+            width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
+            margin: 0 auto 1.5rem; border: 2px solid var(--accent-red); padding: 4px;
+        }
+        .about-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 400; margin-bottom: 0.5rem; color: var(--text-main); }
+        .about-subtitle { color: var(--accent-red); font-size: 0.85rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 2rem; display: block; }
+        .about-text { color: var(--text-dim); font-size: 1.1rem; line-height: 1.8; font-weight: 300; text-align: left; padding: 0 20px; }
+        .about-text p { margin-bottom: 1rem; }
+
+        /* --- Content Area --- */
+        .content-section { padding: 6rem 5%; max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 400; }
+
+        /* Filter Menus (Main & Sub with Swipe support for Mobile) */
+        .filter-container { margin-bottom: 3rem; }
+        
+        .filter-menu, .sub-filter-menu {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 1rem;
+            scrollbar-width: none; /* Firefox */
+        }
+        .filter-menu::-webkit-scrollbar, .sub-filter-menu::-webkit-scrollbar { display: none; /* Chrome/Safari */ }
+        
+        /* Main Category Tabs */
+        .filter-menu { gap: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 1.5rem; }
+        .filter-menu li {
+            position: relative; padding-bottom: 1rem; color: var(--text-dim);
+            font-size: 0.85rem; font-weight: 600; letter-spacing: 2px; cursor: pointer; transition: var(--transition);
+        }
+        .filter-menu li:hover { color: var(--text-main); }
+        .filter-menu li.active { color: var(--text-main); }
+        .filter-menu li::after {
+            content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px;
+            background: var(--accent-red); transform: scaleX(0); transition: transform 0.3s ease;
+        }
+        .filter-menu li.active::after { transform: scaleX(1); }
+
+        /* Sub Category Tabs (Pills) */
+        .sub-filter-menu { gap: 1rem; justify-content: center; display: none; }
+        .sub-filter-menu.show { display: flex; }
+        @media (max-width: 768px) { .sub-filter-menu.show { justify-content: flex-start; padding-left: 20px; padding-right: 20px; } .filter-menu { justify-content: flex-start; padding-left: 20px; padding-right: 20px; } }
+        
+        .sub-filter-menu li {
+            padding: 0.5rem 1.2rem; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-dim); font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; cursor: pointer; transition: var(--transition);
+        }
+        .sub-filter-menu li:hover { border-color: rgba(255,255,255,0.3); color: var(--text-main); }
+        .sub-filter-menu li.active { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: var(--text-main); }
+
+        /* Grid */
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; min-height: 500px; }
+        @media (max-width: 1024px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+
+        /* Card */
+        .card { background: var(--surface); border-radius: 8px; overflow: hidden; text-decoration: none; transition: var(--transition); display: flex; flex-direction: column; border: 1px solid transparent; }
+        .card:hover { background: var(--surface-hover); transform: translateY(-5px); border-color: rgba(255,255,255,0.05); box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 20px var(--glow-color); }
+        .card-thumb-wrapper { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
+        .card-thumb { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .card:hover .card-thumb { transform: scale(1.05); }
+        .card-info { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-title { font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.5rem; line-height: 1.4; }
+        .card-category { font-size: 0.75rem; color: var(--accent-red); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+        .card-btn { margin-top: auto; display: inline-flex; align-items: center; font-size: 0.8rem; font-weight: 600; color: var(--text-dim); transition: var(--transition); }
+        .card:hover .card-btn { color: var(--text-main); }
+        .card-btn svg { width: 14px; height: 14px; margin-right: 6px; fill: currentColor; }
+
+        /* --- Footer --- */
+        footer { padding: 4rem 5% 2rem; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; position: relative; }
+        .social-icons { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; }
+        .social-icons a { color: var(--text-main); opacity: 0.6; transition: var(--transition); display: inline-block; }
+        .social-icons a:hover { opacity: 1; transform: translateY(-2px); }
+        .social-icons svg { width: 20px; height: 20px; fill: currentColor; }
+        .copyright { font-size: 0.85rem; color: var(--text-dim); }
+        .admin-link { position: absolute; bottom: 2rem; right: 5%; font-size: 10px; color: #222; text-decoration: none; transition: color 0.3s; }
+        .admin-link:hover { color: #555; }
+        .hidden { display: none !important; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo-wrapper">
+            <div class="logo-text">STUDIO 222 <span>MUSIC</span></div>
+        </a>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Sound That Defines<br>Your World.</h1>
+            <p>集中、瞑想、そしてクリエイティブなインスピレーション。<br>Studio 222 Musicが提供する極上のサウンドスケープを体験してください。</p>
+            <a href="https://youtube.com" target="_blank" class="cta-btn">
+                <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                OFFICIAL YOUTUBE CHANNEL
+            </a>
+        </div>
+    </section>
+
+    <!-- NEW: About Us Section -->
+    <section class="about-section">
+        <div class="about-container">
+            <!-- Icon Image -->
+            <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop" alt="Profile" class="profile-icon">
+            
+            <h2 class="about-title">About Studio 222</h2>
+            <span class="about-subtitle">Creator / Sound Designer</span>
+            
+            <div class="about-text">
+                <p>
+                    はじめまして。Studio 222 Music へようこそ。<br>
+                    私たちは「音の持つ力」を信じ、日々の生活を豊かにするためのサウンドスケープを制作しています。
+                </p>
+                <p>
+                    プログラミングや読書に没頭したい時のための「作業用BGM」、心を落ち着かせ、自分と向き合うための「メディテーション・サウンド」、そして私たち自身の感情を音楽として表現した「オリジナルトラック」。<br>
+                    これら3つの柱を通じて、あなたの日常に寄り添う音をお届けします。
+                </p>
+                <p style="text-align: center; margin-top: 2rem;">
+                    <em>"Music is the silence between the notes."</em>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <main class="content-section">
+        <div class="section-header">
+            <h2>Sound Library</h2>
+        </div>
+
+        <div class="filter-container">
+            <!-- Main Category Filter (Swipeable on Mobile) -->
+            <ul class="filter-menu" id="main-filter">
+                <li class="active" data-main="all">ALL</li>
+                <li data-main="work">FOR WORK</li>
+                <li data-main="meditation">MEDITATION</li>
+                <li data-main="original">ORIGINAL</li>
+            </ul>
+
+            <!-- Sub Category Filters (Dynamic & Swipeable) -->
+            <ul class="sub-filter-menu" id="sub-filter-work">
+                <li class="active" data-sub="all">ALL WORK</li>
+                <li data-sub="deep-focus">Deep Focus</li>
+                <li data-sub="coding">Coding/Tech</li>
+                <li data-sub="cafe">Cafe Ambience</li>
+            </ul>
+
+            <ul class="sub-filter-menu" id="sub-filter-meditation">
+                <li class="active" data-sub="all">ALL MEDITATION</li>
+                <li data-sub="sleep">Deep Sleep</li>
+                <li data-sub="zen">Zen & Nature</li>
+                <li data-sub="432hz">432Hz Healing</li>
+            </ul>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="grid" id="content-grid">
+            
+            <a href="#" class="card item" data-main="work" data-sub="deep-focus">
+                <div class="card-thumb-wrapper">
+                    <img src="https://images.unsplash.com/photo-1517511620798-cec17d428bc0?q=80&w=800&auto=format&fit=crop" class="card-thumb" alt="Night city">
+                </div>
+                <div class="card-info">
+                    <span class="card-category">WORK / Deep Focus</span>
+                    <h3 class="card-title">Deep Focus: Ambient for Work</h3>
+                    <div class="card-btn">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> WATCH ON YOUTUBE
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="card item" data-main="meditation" data-sub="zen">
+                <div class="card-thumb-wrapper">
+                    <img src="https://images.unsplash.com/photo-1520110120835-c96534a4c984?q=80&w=800&auto=format&fit=crop" class="card-thumb" alt="Waves">
+                </div>
+                <div class="card-info">
+                    <span class="card-category">MEDITATION / Zen</span>
+                    <h3 class="card-title">Zen Garden: Meditative Waves</h3>
+                    <div class="card-btn">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> WATCH ON YOUTUBE
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="card item" data-main="work" data-sub="coding">
+                <div class="card-thumb-wrapper">
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop" class="card-thumb" alt="Coding">
+                </div>
+                <div class="card-info">
+                    <span class="card-category">WORK / Coding</span>
+                    <h3 class="card-title">Code & Flow: Electronic Beats</h3>
+                    <div class="card-btn">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> WATCH ON YOUTUBE
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="card item" data-main="original" data-sub="all">
+                <div class="card-thumb-wrapper">
+                    <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=800&auto=format&fit=crop" class="card-thumb" alt="Studio Gear">
+                </div>
+                <div class="card-info">
+                    <span class="card-category">ORIGINAL</span>
+                    <h3 class="card-title">Studio 222: Cinematic Textures</h3>
+                    <div class="card-btn">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> WATCH ON YOUTUBE
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="card item" data-main="meditation" data-sub="432hz">
+                <div class="card-thumb-wrapper">
+                    <img src="https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=800&auto=format&fit=crop" class="card-thumb" alt="Nature">
+                </div>
+                <div class="card-info">
+                    <span class="card-category">MEDITATION / 432Hz</span>
+                    <h3 class="card-title">Morning Calmness: 432Hz Healing</h3>
+                    <div class="card-btn">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> WATCH ON YOUTUBE
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="social-icons">
+            <a href="#" title="YouTube"><svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg></a>
+            <a href="#" title="X (Twitter)"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            <a href="#" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        </div>
+        <div class="copyright">&copy; 2026 Studio 222 Music. All Rights Reserved.</div>
+        <a href="../admin.php" class="admin-link">Admin</a>
+    </footer>
+
+    <script>
+        // Hierarchical Category Filter Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainTabs = document.querySelectorAll('#main-filter li');
+            const subMenus = document.querySelectorAll('.sub-filter-menu');
+            const items = document.querySelectorAll('.card.item');
+
+            let currentMain = 'all';
+            let currentSub = 'all';
+
+            // Main Category Click
+            mainTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    mainTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    currentMain = tab.getAttribute('data-main');
+                    currentSub = 'all'; // Reset sub filter when main changes
+
+                    // Show corresponding sub menu
+                    subMenus.forEach(menu => menu.classList.remove('show'));
+                    const targetSubMenu = document.getElementById(`sub-filter-${currentMain}`);
+                    if (targetSubMenu) {
+                        targetSubMenu.classList.add('show');
+                        // Reset active state of sub menu
+                        const subTabs = targetSubMenu.querySelectorAll('li');
+                        subTabs.forEach(t => t.classList.remove('active'));
+                        if(subTabs.length > 0) subTabs[0].classList.add('active');
+                    }
+
+                    filterItems();
+                });
+            });
+
+            // Sub Category Click (Event delegation since there are multiple sub menus)
+            subMenus.forEach(menu => {
+                const subTabs = menu.querySelectorAll('li');
+                subTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        subTabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        currentSub = tab.getAttribute('data-sub');
+                        filterItems();
+                    });
+                });
+            });
+
+            function filterItems() {
+                items.forEach(item => {
+                    const itemMain = item.getAttribute('data-main');
+                    const itemSub = item.getAttribute('data-sub');
+                    
+                    let show = false;
+
+                    if (currentMain === 'all') {
+                        show = true;
+                    } else if (itemMain === currentMain) {
+                        if (currentSub === 'all' || itemSub === currentSub) {
+                            show = true;
+                        }
+                    }
+
+                    if (show) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

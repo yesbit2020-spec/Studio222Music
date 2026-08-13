@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Variations - Studio 222</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --accent-red: #e02a24;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #000; overflow-x: hidden; }
+
+        /* Navigation overlay for jumping to patterns */
+        .pattern-nav {
+            position: fixed;
+            top: 50%; right: 2rem;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .pattern-nav a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            transition: var(--transition);
+            text-align: right;
+            padding: 0.5rem;
+        }
+        .pattern-nav a:hover { color: #fff; }
+        .pattern-nav a::after {
+            content: ''; display: inline-block; width: 30px; height: 1px; background: currentColor; margin-left: 10px; vertical-align: middle;
+        }
+
+        /* Hero Common */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-size: cover;
+            background-position: center;
+            border-bottom: 5px solid #000;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            padding: 0 20px;
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 400;
+            letter-spacing: 1px;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto; margin-right: auto;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            background: var(--accent-red);
+            color: #fff;
+            padding: 1.2rem 3rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .cta-btn:hover {
+            background: #f0332b;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(224, 42, 36, 0.3);
+        }
+        .cta-btn svg { width: 18px; height: 18px; margin-right: 10px; fill: currentColor; }
+
+        .pattern-label {
+            position: absolute; top: 2rem; left: 2rem;
+            color: rgba(255,255,255,0.3); font-size: 0.9rem; letter-spacing: 3px; z-index: 10;
+        }
+
+        /* ================= Patterns ================= */
+
+        /* Pattern 1: Original Modern Dark (Purple/Blue + Studio Gear) */
+        #pattern-1 { background-image: url('https://images.unsplash.com/photo-1598653222000-6b7b7a552625?q=80&w=2000&auto=format&fit=crop'); }
+        #pattern-1::before { background: linear-gradient(135deg, rgba(30, 20, 60, 0.6) 0%, rgba(15, 15, 30, 0.8) 100%); }
+
+        /* Pattern 2: Deep Meditation (Nature/Stars + Indigo/Teal) */
+        #pattern-2 { background-image: url('https://images.unsplash.com/photo-1505322747495-6afdd3b70760?q=80&w=2000&auto=format&fit=crop'); }
+        #pattern-2::before { background: linear-gradient(135deg, rgba(10, 25, 40, 0.7) 0%, rgba(5, 15, 20, 0.9) 100%); }
+
+        /* Pattern 3: Acoustic Organic (Wood/Instruments + Warm Amber/Black) */
+        #pattern-3 { background-image: url('https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=2000&auto=format&fit=crop'); }
+        #pattern-3::before { background: linear-gradient(135deg, rgba(40, 25, 10, 0.6) 0%, rgba(10, 5, 0, 0.9) 100%); }
+
+        /* Pattern 4: Abstract Electronic (Neon/Waveforms + Pure Black/Red) */
+        #pattern-4 { background-image: url('https://images.unsplash.com/photo-1614149162883-504ce4d13909?q=80&w=2000&auto=format&fit=crop'); }
+        #pattern-4::before { background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.9) 100%); }
+
+        /* Pattern 5: Artist Silhouette (Live/Creative + Desaturated Blue) */
+        #pattern-5 { background-image: url('https://images.unsplash.com/photo-1501281668745-f7f5792203b2?q=80&w=2000&auto=format&fit=crop'); }
+        #pattern-5::before { background: linear-gradient(135deg, rgba(15, 20, 30, 0.7) 0%, rgba(5, 5, 10, 0.9) 100%); }
+
+    </style>
+</head>
+<body>
+
+    <div class="pattern-nav">
+        <a href="#pattern-1">PATTERN 1</a>
+        <a href="#pattern-2">PATTERN 2</a>
+        <a href="#pattern-3">PATTERN 3</a>
+        <a href="#pattern-4">PATTERN 4</a>
+        <a href="#pattern-5">PATTERN 5</a>
+    </div>
+
+    <!-- Pattern 1 -->
+    <section class="hero" id="pattern-1">
+        <div class="pattern-label">PATTERN 01 - MODERN DARK STUDIO</div>
+        <div class="hero-content">
+            <h1>Sound That Defines<br>Your World.</h1>
+            <p>集中、瞑想、そしてクリエイティブなインスピレーション。<br>Studio 222 Musicが提供する極上のサウンドスケープを体験してください。</p>
+            <a href="#" class="cta-btn">
+                <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                OFFICIAL YOUTUBE CHANNEL
+            </a>
+        </div>
+    </section>
+
+    <!-- Pattern 2 -->
+    <section class="hero" id="pattern-2">
+        <div class="pattern-label">PATTERN 02 - DEEP MEDITATION (NATURE)</div>
+        <div class="hero-content">
+            <h1>Immerse in Deep<br>Tranquility.</h1>
+            <p>心を落ち着かせる波の音、星空の静寂、深いマインドフルネスの領域へ。<br>あなたのためのメディテーション・サウンドトラック。</p>
+            <a href="#" class="cta-btn">
+                <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                LISTEN ON YOUTUBE
+            </a>
+        </div>
+    </section>
+
+    <!-- Pattern 3 -->
+    <section class="hero" id="pattern-3">
+        <div class="pattern-label">PATTERN 03 - ACOUSTIC ORGANIC</div>
+        <div class="hero-content">
+            <h1>The Raw Emotion<br>of Sound.</h1>
+            <p>木目と弦が響き合う、アコースティックでオーガニックな温もり。<br>Studio 222 が紡ぎ出す、飾り気のない本物の音色を。</p>
+            <a href="#" class="cta-btn">
+                <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                DISCOVER MORE
+            </a>
+        </div>
+    </section>
+
+    <!-- Pattern 4 -->
+    <section class="hero" id="pattern-4">
+        <div class="pattern-label">PATTERN 04 - ABSTRACT ELECTRONIC</div>
+        <div class="hero-content">
+            <h1>Focus Engineered<br>by Frequencies.</h1>
+            <p>集中力を極限まで高める、精密に計算されたビートとアンビエント。<br>作業用BGMの概念を覆す、プログラマのための音響空間。</p>
+            <a href="#" class="cta-btn">
+                <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                ENTER THE ZONE
+            </a>
+        </div>
+    </section>
+
+    <!-- Pattern 5 -->
+    <section class="hero" id="pattern-5">
+        <div class="pattern-label">PATTERN 05 - CREATIVE & LIVE</div>
+        <div class="hero-content">
+            <h1>Where Creativity<br>Meets Rhythm.</h1>
+            <p>すべてのトラックに宿る、アーティストの息遣い。<br>オリジナル楽曲から瞑想サウンドまで、唯一無二のコレクション。</p>
+            <a href="#" class="cta-btn">
+                <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                OFFICIAL YOUTUBE CHANNEL
+            </a>
+        </div>
+    </section>
+
+</body>
+</html>
