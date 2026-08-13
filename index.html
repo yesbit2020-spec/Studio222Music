@@ -3,268 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio 222 Music</title>
+    <title>Mockup Portal - Studio 222 Music</title>
     <style>
         :root {
-            --bg-color: #050505;
-            --text-main: #ffffff;
-            --text-dim: #a0a0a0;
+            --bg-color: #0f1115;
+            --card-bg: #1a1d24;
+            --text-main: #f5f6f8;
+            --text-muted: #8b92a5;
             --accent: #d4af37;
-            --surface: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
-            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --youtube-red: #ff0000;
+            --border: rgba(255, 255, 255, 0.05);
+            --transition: all 0.3s ease;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
+            padding: 4rem 5%;
             line-height: 1.6;
-            overflow-x: hidden;
         }
 
-        /* Header / Nav */
         header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.5rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
-            transition: background 0.3s;
+            margin-bottom: 4rem;
+            text-align: center;
+            position: relative;
         }
-        header.scrolled { background: rgba(5,5,5,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
-        
-        .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 3px; color: var(--text-main); text-decoration: none; }
-        .logo span { color: var(--accent); }
-        
-        .admin-link {
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .admin-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
             font-size: 0.8rem;
-            color: var(--text-dim);
+            color: var(--text-muted);
             text-decoration: none;
             border: 1px solid var(--border);
             padding: 0.5rem 1rem;
             border-radius: 4px;
             transition: var(--transition);
         }
-        .admin-link:hover { border-color: var(--text-main); color: var(--text-main); }
 
-        /* Hero Section */
-        .hero {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            background-image: url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=2000&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        .hero::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(5,5,5,0.3) 0%, rgba(5,5,5,1) 100%);
-        }
-        .hero-content {
-            position: relative; z-index: 10; max-width: 800px; padding: 0 20px;
-        }
-        .hero h1 { font-size: clamp(3rem, 8vw, 5rem); font-weight: 200; letter-spacing: 2px; line-height: 1.2; margin-bottom: 1.5rem; }
-        .hero p { font-size: 1.2rem; color: var(--text-dim); margin-bottom: 3rem; }
-        
-        .cta-btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            background: var(--youtube-red); color: #fff;
-            padding: 1rem 2.5rem; font-size: 1.1rem; font-weight: bold; letter-spacing: 1px;
-            text-decoration: none; text-transform: uppercase; border-radius: 50px;
-            transition: var(--transition);
-            box-shadow: 0 4px 15px rgba(255,0,0,0.3);
-        }
-        .cta-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(255,0,0,0.5); }
-        .cta-btn::before {
-            content: '▶'; margin-right: 10px; font-size: 0.9rem;
+        .admin-btn:hover {
+            border-color: var(--text-main);
+            color: var(--text-main);
         }
 
-        /* Dynamic Categories */
-        main { padding-bottom: 100px; }
-        
-        .category-section { padding: 6rem 5%; border-bottom: 1px solid var(--border); }
-        /* Alternate background for odd sections */
-        .category-section:nth-child(odd) { background-color: rgba(255,255,255,0.01); }
-        
-        .section-header { margin-bottom: 3rem; text-align: center; }
-        .category-title { font-size: 2.5rem; font-weight: 300; letter-spacing: 3px; margin-bottom: 0.5rem; }
-        .category-title span { color: var(--accent); }
-        .category-desc { color: var(--text-dim); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
-
-        /* Card Grid */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2.5rem;
-            max-width: 1400px;
+            gap: 2rem;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* YouTube-style Card */
         .card {
-            background: transparent;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            group: hover;
-            transition: var(--transition);
-        }
-        .card:hover { transform: translateY(-5px); }
-
-        .card-thumb-wrapper {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16 / 9;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
             border-radius: 12px;
             overflow: hidden;
-            margin-bottom: 1rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: var(--transition);
+            text-decoration: none;
+            display: block;
+            position: relative;
         }
-        .card-thumb {
-            width: 100%; height: 100%; object-fit: cover; transition: var(--transition);
-        }
-        .card:hover .card-thumb { transform: scale(1.05); filter: brightness(0.7); }
 
-        /* Play Button Overlay */
-        .play-overlay {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 60px; height: 60px; background: rgba(0,0,0,0.7); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; transition: var(--transition);
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .play-overlay::after {
-            content: ''; border-top: 10px solid transparent; border-bottom: 10px solid transparent;
-            border-left: 15px solid #fff; margin-left: 5px;
-        }
-        .card:hover .play-overlay { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
-        .card:hover .play-overlay:hover { background: var(--youtube-red); }
 
-        .card-info { padding: 0 0.5rem; }
-        .card-title { font-size: 1.2rem; font-weight: 500; color: var(--text-main); margin-bottom: 0.5rem; line-height: 1.4; }
-        .card-desc { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        
-        .pdf-link {
-            display: inline-block; font-size: 0.8rem; color: var(--text-dim); text-decoration: none;
-            border: 1px solid var(--border); padding: 0.3rem 0.8rem; border-radius: 4px; transition: var(--transition);
+        .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border);
+            background-color: #111;
         }
-        .pdf-link:hover { color: var(--text-main); border-color: var(--text-main); }
 
-        footer { text-align: center; padding: 3rem; color: var(--text-dim); font-size: 0.9rem; border-top: 1px solid var(--border); }
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-number {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .card-title {
+            color: var(--text-main);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .card-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Initial empty state placeholder for future items */
+        .card.empty {
+            border: 1px dashed var(--border);
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 310px;
+            cursor: default;
+        }
+
+        .card.empty:hover {
+            transform: none;
+            border-color: var(--border);
+            box-shadow: none;
+        }
+
+        .card.empty .card-title {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
     </style>
 </head>
 <body>
 
-    <header id="header">
-        <a href="#" class="logo">STUDIO <span>222</span></a>
-        <a href="admin.php" class="admin-link">Command Center (Admin)</a>
+    <header>
+        <a href="admin.php" class="admin-btn">Control Panel (Admin)</a>
+        <h1>Studio 222 Mockups</h1>
+        <p class="subtitle">Project Design Concepts & Iterations</p>
     </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Sound That Defines<br>Your World.</h1>
-            <p>集中、瞑想、そしてクリエイティブなインスピレーション。Studio 222 Music が提供する極上のサウンドスケープを体験してください。</p>
-            <a href="https://youtube.com/" target="_blank" class="cta-btn">Official YouTube Channel</a>
+    <div class="grid">
+        <!-- Mockup 01 -->
+        <a href="mockups/01_landing_page.html" class="card">
+            <img src="mockups/thumb_01.jpg" alt="Mockup 01 Thumbnail" class="card-img">
+            <div class="card-content">
+                <span class="card-number">01</span>
+                <h2 class="card-title">Initial Dashboard (App)</h2>
+                <p class="card-desc">Initial concept designed as a dashboard/app interface.</p>
+            </div>
+        </a>
+
+        <!-- Mockup 02 -->
+        <a href="mockups/02_lp_design.html" class="card">
+            <!-- Using unsplash placeholder since we don't have a thumbnail yet -->
+            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=600&auto=format&fit=crop" alt="Mockup 02 Thumbnail" class="card-img">
+            <div class="card-content">
+                <span class="card-number">02</span>
+                <h2 class="card-title">Landing Page (LP)</h2>
+                <p class="card-desc">Redesigned promotional landing page focused on YouTube integration.</p>
+            </div>
+        </a>
+
+        <!-- Placeholder for future mockups -->
+        <div class="card empty">
+            <h2 class="card-title">+ New Mockup</h2>
         </div>
-    </section>
+    </div>
 
-    <main id="app-content">
-        <!-- JSでここにカテゴリとコンテンツが注入されます -->
-    </main>
-
-    <footer>
-        &copy; 2026 Studio 222 Music. All Rights Reserved.
-    </footer>
-
-    <script>
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            if (window.scrollY > 50) { header.classList.add('scrolled'); }
-            else { header.classList.remove('scrolled'); }
-        });
-
-        // Load content
-        document.addEventListener('DOMContentLoaded', async () => {
-            const container = document.getElementById('app-content');
-            
-            try {
-                const response = await fetch('data.json?t=' + new Date().getTime());
-                if (!response.ok) throw new Error('Data not found');
-                const data = await response.json();
-                renderContent(data, container);
-            } catch (error) {
-                container.innerHTML = `<p style="text-align:center; padding: 5rem; color:#888;">コンテンツの読み込みに失敗しました。</p>`;
-                console.error(error);
-            }
-        });
-
-        function renderContent(data, container) {
-            container.innerHTML = '';
-            const categories = data.categories || [];
-            const contents = data.contents || [];
-
-            categories.forEach((cat, index) => {
-                const section = document.createElement('section');
-                section.className = 'category-section';
-                
-                // カテゴリ見出し
-                section.innerHTML = `
-                    <div class="section-header">
-                        <h2 class="category-title"><span>/</span> ${cat.name}</h2>
-                        ${cat.description ? `<p class="category-desc">${cat.description}</p>` : ''}
-                    </div>
-                `;
-                
-                const catContents = contents.filter(c => c.category === cat.id);
-                
-                if (catContents.length === 0) {
-                    section.innerHTML += `<p style="text-align:center; color:#555; font-style:italic;">Coming Soon...</p>`;
-                } else {
-                    const grid = document.createElement('div');
-                    grid.className = 'grid';
-                    
-                    catContents.forEach(item => {
-                        const imgSrc = item.thumbnail ? item.thumbnail : 'https://images.unsplash.com/photo-1614149162883-504ce4d13909?q=80&w=600&auto=format&fit=crop';
-                        // Youtubeへのリンクを優先、なければダミー
-                        const targetUrl = item.link_url || 'https://youtube.com/';
-                        
-                        let pdfHtml = '';
-                        if (item.pdf_url) {
-                            pdfHtml = `<a href="${item.pdf_url}" target="_blank" class="pdf-link" onclick="event.stopPropagation();">PDF資料を見る</a>`;
-                        }
-
-                        grid.innerHTML += `
-                            <a href="${targetUrl}" target="_blank" class="card">
-                                <div class="card-thumb-wrapper">
-                                    <img src="${imgSrc}" alt="${item.title}" class="card-thumb" loading="lazy">
-                                    <div class="play-overlay"></div>
-                                </div>
-                                <div class="card-info">
-                                    <h3 class="card-title">${item.title}</h3>
-                                    <p class="card-desc">${item.description}</p>
-                                    ${pdfHtml}
-                                </div>
-                            </a>
-                        `;
-                    });
-                    section.appendChild(grid);
-                }
-                
-                container.appendChild(section);
-            });
-        }
-    </script>
 </body>
 </html>
