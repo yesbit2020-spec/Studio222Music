@@ -27,8 +27,13 @@
         /* --- Header --- */
         header { position: absolute; top: 0; left: 0; width: 100%; padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
         .logo-wrapper { display: inline-block; text-decoration: none; color: var(--text-main); }
-        .logo-text { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; }
-        .logo-text span { color: var(--text-dim); font-weight: 400; font-style: italic; }
+        .site-logo {
+            mix-blend-mode: screen; /* 黒背景を透過して光と文字だけを残す */
+            max-height: 50px;
+            width: auto;
+            max-width: 100%;
+            display: block;
+        }
 
         /* --- Hero Section --- */
         .hero { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; background-image: url('https://images.unsplash.com/photo-1520523839897-bd0b52f945a0'); background-size: cover; background-position: center; }
@@ -160,7 +165,8 @@
 
     <header>
         <a href="#" class="logo-wrapper">
-            <div class="logo-text">STUDIO 222 <span>MUSIC</span></div>
+            <!-- ユーザー指定のロゴ画像。黒背景をCSSで透過 -->
+            <img src="uploads/logo.png" alt="STUDIO 222 MUSIC" class="site-logo">
         </a>
     </header>
 
@@ -223,7 +229,7 @@
             </div>
             
             <div class="about-card creator-card">
-                <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop" alt="Creator Profile" class="creator-icon">
+                <img src="uploads/creator_icon.jpg" alt="Creator Profile" class="creator-icon">
                 <div class="creator-info">
                     <span class="about-name">Creator / Sound Designer</span>
                     <p>はじめまして。Studio 222 Music へようこそ。AIの演算力から紡ぎ出される「詞の情景」と、静寂をデザインする「アンビエント」。このチャンネルの音が、あなたのインスピレーションを加速させる最高のBGMとなることを願っています。</p>
