@@ -27,8 +27,9 @@ $data = file_exists($json_file) ? json_decode(file_get_contents($json_file), tru
 
 if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    // --- コンテンツ追加 ---
+    // --- コンテンツ追加・更新 ---
     if (isset($_POST['add_content'])) {
+        $edit_id = $_POST['edit_id'] ?? '';
         $title = htmlspecialchars($_POST['title'] ?? '');
         $category = htmlspecialchars($_POST['category'] ?? '');
         $middle_category = htmlspecialchars($_POST['middle_category'] ?? '');
@@ -54,22 +55,77 @@ if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (empty($message)) {
-            $new_content = [
-                'id' => uniqid('c_'),
-                'title' => $title,
-                'category' => $category,
-                'middle_category' => $middle_category,
-                'small_category' => $small_category,
-                'description' => $description,
-                'link_url' => $link_url,
-                'pdf_url' => $pdf_url,
-                'thumbnail' => $thumbnail_path,
-                'created_at' => date('c')
-            ];
-            array_unshift($data['contents'], $new_content);
-            if (file_put_contents($json_file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT))) {
-                $message = "コンテンツを配備しました。";
+            if ($edit_id !== '') {
+                // 既存のコンテンツの更新
+                foreach ($data['contents'] as &$item) {
+                    if ($item['id'] === $edit_id) {
+                        $item['title'] = $title;
+                        $item['category'] = $category;
+                        $item['middle_category'] = $middle_category;
+                        $item['small_category'] = $small_category;
+                        $item['description'] = $description;
+                        $item['link_url'] = $link_url;
+                        $item['pdf_url'] = $pdf_url;
+                        
+                        // 画像が新しくアップロードされた場合のみ更新
+                        if ($thumbnail_path !== '') {
+                            // 古い画像を削除
+                            if (!empty($item['thumbnail'])) {
+                                $old_path = __DIR__ . '/' . $item['thumbnail'];
+                                if (file_exists($old_path)) { unlink($old_path); }
+                            }
+                            $item['thumbnail'] = $thumbnail_path;
+                        }
+                        break;
+                    }
+                }
+                if (file_put_contents($json_file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT))) {
+                    $message = "コンテンツを更新しました。";
+                }
+            } else {
+                // 新規コンテンツの追加
+                $new_content = [
+                    'id' => uniqid('c_'),
+                    'title' => $title,
+                    'category' => $category,
+                    'middle_category' => $middle_category,
+                    'small_category' => $small_category,
+                    'description' => $description,
+                    'link_url' => $link_url,
+                    'pdf_url' => $pdf_url,
+                    'thumbnail' => $thumbnail_path,
+                    'created_at' => date('c')
+                ];
+                array_unshift($data['contents'], $new_content);
+                if (file_put_contents($json_file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT))) {
+                    $message = "コンテンツを配備しました。";
+                }
             }
+        }
+    }
+
+    // --- コンテンツ削除 ---
+    if (isset($_POST['delete_content'])) {
+        $content_id = $_POST['content_id'];
+        $deleted = false;
+        
+        $data['contents'] = array_filter($data['contents'], function($item) use ($content_id, &$deleted) {
+            if ($item['id'] === $content_id) {
+                // 画像ファイルの削除
+                if (!empty($item['thumbnail'])) {
+                    $thumb_path = __DIR__ . '/' . $item['thumbnail'];
+                    if (file_exists($thumb_path)) { unlink($thumb_path); }
+                }
+                $deleted = true;
+                return false;
+            }
+            return true;
+        });
+        
+        if ($deleted) {
+            $data['contents'] = array_values($data['contents']);
+            file_put_contents($json_file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+            $message = "コンテンツを削除しました。";
         }
     }
 
@@ -260,6 +316,7 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
             <!-- タブナビゲーション -->
             <div class="nav-tabs">
                 <div class="nav-tab active" onclick="switchTab('content')">コンテンツ配備</div>
+                <div class="nav-tab" onclick="switchTab('list')">コンテンツ一覧・管理</div>
                 <div class="nav-tab" onclick="switchTab('category')">カテゴリ管理</div>
                 <div class="nav-tab" onclick="switchTab('tools')">関連ツール・確認</div>
             </div>
@@ -268,7 +325,8 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
             <div id="tab-content" class="tab-content active">
                 <div class="card">
                     <h2 style="margin-bottom: 1.5rem; font-weight: 300;">新着コンテンツ配備</h2>
-                    <form method="post" enctype="multipart/form-data">
+                    <form method="post" enctype="multipart/form-data" id="content-form">
+                        <input type="hidden" name="edit_id" id="edit-id" value="">
                         <div class="form-group">
                             <label>タイトル</label>
                             <input type="text" name="title" required>
@@ -300,7 +358,8 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
 
                         <div class="form-group">
                             <label>サムネイル画像</label>
-                            <input type="file" name="thumbnail" accept="image/*" required>
+                            <input type="file" name="thumbnail" accept="image/*" required id="thumbnail-input">
+                            <p id="thumb-hint" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem;"></p>
                         </div>
 
                         <div class="form-group">
@@ -321,6 +380,57 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
 
                         <button type="submit" name="add_content" class="btn">データアップロード実行</button>
                     </form>
+                </div>
+            </div>
+
+            
+            <!-- 新設: コンテンツ一覧・管理タブ -->
+            <div id="tab-list" class="tab-content">
+                <div class="card">
+                    <h2 style="margin-bottom: 1.5rem; font-weight: 300;">登録済みコンテンツ一覧</h2>
+                    <?php if(empty($data['contents'])): ?>
+                        <p style="color: var(--text-dim);">配備されたコンテンツはまだありません。</p>
+                    <?php else: ?>
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 700px;">
+                                <thead>
+                                    <tr style="border-bottom: 1px solid var(--border);">
+                                        <th style="padding: 1rem; color: var(--text-dim); width: 100px;">画像</th>
+                                        <th style="padding: 1rem; color: var(--text-dim);">タイトル</th>
+                                        <th style="padding: 1rem; color: var(--text-dim);">カテゴリ (大/中/小)</th>
+                                        <th style="padding: 1rem; color: var(--text-dim); width: 150px;">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach($data['contents'] as $item): ?>
+                                    <tr style="border-bottom: 1px solid #222;">
+                                        <td style="padding: 1rem;">
+                                            <?php if(!empty($item['thumbnail'])): ?>
+                                                <img src="<?php echo htmlspecialchars($item['thumbnail']); ?>" style="width: 80px; height: 45px; object-fit: cover; border-radius: 4px; border: 1px solid #333;">
+                                            <?php else: ?>
+                                                <div style="width: 80px; height: 45px; background: #222; border-radius: 4px; border: 1px solid #333;"></div>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td style="padding: 1rem; font-weight: bold;"><?php echo htmlspecialchars($item['title']); ?></td>
+                                        <td style="padding: 1rem; font-size: 0.85rem; color: var(--accent);">
+                                            <?php echo htmlspecialchars($item['category'] . ' / ' . $item['middle_category'] . ' / ' . $item['small_category']); ?>
+                                        </td>
+                                        <td style="padding: 1rem; display: flex; gap: 0.5rem;">
+                                            <!-- Edit button -->
+                                            <button type="button" class="btn btn-small" onclick='editContent(<?php echo json_encode($item, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE); ?>)'>編集</button>
+                                            
+                                            <!-- Delete button -->
+                                            <form method="post" onsubmit="return confirm('本当に削除しますか？\n※画像も完全に削除されます。');" style="margin: 0;">
+                                                <input type="hidden" name="content_id" value="<?php echo htmlspecialchars($item['id']); ?>">
+                                                <button type="submit" name="delete_content" class="btn btn-small btn-danger">削除</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -463,6 +573,55 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
 
         // 3階層カテゴリ連動プルダウンのロジック
         const categoriesData = <?php echo $categories_json; ?>;
+
+        
+        // 編集モードへの切り替え
+        function editContent(item) {
+            switchTab('content');
+            
+            // フォームに値を流し込む
+            document.getElementById('edit-id').value = item.id;
+            document.querySelector('input[name="title"]').value = item.title;
+            document.querySelector('input[name="link_url"]').value = item.link_url || '';
+            document.querySelector('input[name="pdf_url"]').value = item.pdf_url || '';
+            
+            // カテゴリの連動選択
+            document.getElementById('select-main').value = item.category;
+            updateMiddleCats();
+            document.getElementById('select-mid').value = item.middle_category;
+            updateSmallCats();
+            document.getElementById('select-small').value = item.small_category;
+            
+            // TinyMCEへの値の流し込み
+            if (tinymce.get('richtext-editor')) {
+                tinymce.get('richtext-editor').setContent(item.description || '');
+            }
+            
+            // 画像の必須設定を解除し、メッセージを表示
+            document.getElementById('thumbnail-input').removeAttribute('required');
+            document.getElementById('thumb-hint').innerText = "※編集モード: 新しい画像を選択しない場合は、元の画像が維持されます。";
+            
+            // タイトルとボタンのテキストを変更
+            document.querySelector('#tab-content h2').innerHTML = "コンテンツ編集モード <span style='font-size:0.8rem; color:var(--text-dim);'>(ID: " + item.id + ")</span> <button type='button' class='btn btn-small' onclick='resetForm()' style='margin-left:1rem;'>新規作成に戻る</button>";
+            document.querySelector('button[name="add_content"]').innerText = "データ更新実行";
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('content-form').reset();
+            document.getElementById('edit-id').value = '';
+            document.getElementById('thumbnail-input').setAttribute('required', 'required');
+            document.getElementById('thumb-hint').innerText = '';
+            if (tinymce.get('richtext-editor')) {
+                tinymce.get('richtext-editor').setContent('');
+            }
+            document.querySelector('#tab-content h2').innerText = "新着コンテンツ配備";
+            document.querySelector('button[name="add_content"]').innerText = "データアップロード実行";
+            
+            updateMiddleCats();
+            updateSmallCats();
+        }
 
         function updateMiddleCats() {
             const mainId = document.getElementById('select-main').value;
