@@ -44,18 +44,27 @@
         .about-section {
             padding: 6rem 5%;
             background: rgba(255,255,255,0.01);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
-        .about-container { max-width: 800px; margin: 0 auto; }
+        .about-container { max-width: 900px; margin: 0 auto; }
+        .about-intro {
+            background: var(--surface); padding: 3rem; border-radius: 8px; margin-bottom: 2rem;
+            text-align: center; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .about-intro-text { color: var(--text-main); font-size: 1.1rem; line-height: 1.8; font-weight: 300; }
+        
+        .about-author-area {
+            display: flex; align-items: center; gap: 3rem; padding: 2rem; background: var(--surface);
+            border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        @media (max-width: 768px) { .about-author-area { flex-direction: column; text-align: center; gap: 1.5rem; } }
+        
         .profile-icon {
             width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
-            margin: 0 auto 1.5rem; border: 2px solid var(--accent-red); padding: 4px;
+            border: 2px solid var(--accent-red); padding: 4px; flex-shrink: 0;
         }
-        .about-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 400; margin-bottom: 0.5rem; color: var(--text-main); }
-        .about-subtitle { color: var(--accent-red); font-size: 0.85rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 2rem; display: block; }
-        .about-text { color: var(--text-dim); font-size: 1.1rem; line-height: 1.8; font-weight: 300; text-align: left; padding: 0 20px; }
-        .about-text p { margin-bottom: 1rem; }
+        .about-greeting-text { color: var(--text-dim); font-size: 1rem; line-height: 1.7; text-align: left; }
+        .about-name { display: block; font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--text-main); margin-bottom: 0.5rem; }
 
         /* --- Content Area --- */
         .content-section { padding: 6rem 5%; max-width: 1400px; margin: 0 auto; }
@@ -151,31 +160,6 @@
                 <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
                 OFFICIAL YOUTUBE CHANNEL
             </a>
-        </div>
-    </section>
-
-    <!-- NEW: About Us Section -->
-    <section class="about-section">
-        <div class="about-container">
-            <!-- Icon Image -->
-            <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop" alt="Profile" class="profile-icon">
-            
-            <h2 class="about-title">About Studio 222</h2>
-            <span class="about-subtitle">Creator / Sound Designer</span>
-            
-            <div class="about-text">
-                <p>
-                    はじめまして。Studio 222 Music へようこそ。<br>
-                    私たちは「音の持つ力」を信じ、日々の生活を豊かにするためのサウンドスケープを制作しています。
-                </p>
-                <p>
-                    プログラミングや読書に没頭したい時のための「作業用BGM」、心を落ち着かせ、自分と向き合うための「メディテーション・サウンド」、そして私たち自身の感情を音楽として表現した「オリジナルトラック」。<br>
-                    これら3つの柱を通じて、あなたの日常に寄り添う音をお届けします。
-                </p>
-                <p style="text-align: center; margin-top: 2rem;">
-                    <em>"Music is the silence between the notes."</em>
-                </p>
-            </div>
         </div>
     </section>
 
@@ -279,6 +263,36 @@
 
         </div>
     </main>
+
+    <!-- NEW: About Us Section (Moved above footer) -->
+    <section class="about-section">
+        <div class="about-container">
+            <div class="section-header" style="margin-bottom: 2rem;">
+                <h2>About Us</h2>
+            </div>
+            
+            <!-- 上部：紹介文 -->
+            <div class="about-intro">
+                <p class="about-intro-text">
+                    私たちは「音の持つ力」を信じ、日々の生活を豊かにするためのサウンドスケープを制作しています。<br>
+                    プログラミングや読書に没頭したい時のための「作業用BGM」、心を落ち着かせ自分と向き合うための「メディテーション・サウンド」、そして私たち自身の感情を表現した「オリジナルトラック」。これらを通じて、あなたの日常に寄り添う音をお届けします。
+                </p>
+            </div>
+
+            <!-- 下部：アイコンと挨拶文 -->
+            <div class="about-author-area">
+                <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop" alt="Profile" class="profile-icon">
+                <div class="about-greeting-text">
+                    <span class="about-name">Creator / Sound Designer</span>
+                    <p>
+                        はじめまして。Studio 222 Music へようこそ。<br>
+                        "Music is the silence between the notes."<br>
+                        この空間が、あなたにとって最高のインスピレーションの源となることを願っています。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <footer>
         <div class="social-icons">
