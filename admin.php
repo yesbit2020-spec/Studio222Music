@@ -26,7 +26,7 @@ if (isset($_GET['download_template']) && isset($_SESSION['logged_in']) && $_SESS
     echo "\xEF\xBB\xBF";
     $out = fopen('php://output', 'w');
     fputcsv($out, ['タイトル', '大カテゴリID', '中カテゴリID', '小カテゴリID', '日本語説明文(HTML可)', '英語説明文(HTML可)', 'メインURL', 'PDF資料URL', '画像(ファイル名またはURL)']);
-    fputcsv($out, ['サンプルサウンド', 'original', 'ambient', 'deep-focus', 'ここに日本語の説明を書きます。', 'Here is the English description.', 'https://youtube.com/...', '', 'example.jpg']);
+    fputcsv($out, ['サンプルサウンド', 'original', 'ambient', 'deep-focus', '<p>ここに日本語の説明を書きます。</p>', '<p>Here is the English description.</p>', 'https://youtube.com/...', '', 'example.jpg']);
     fclose($out);
     exit;
 }
@@ -412,22 +412,25 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
                 </form>
             </div>
         <?php else: ?>
-            <div class="header-actions">
-                <h1>COMMAND CENTER</h1>
-                <div>
-                    <a href="?logout=1" class="btn btn-small btn-danger" style="text-decoration:none;">LOGOUT</a>
-                </div>
-            </div>
+            <header style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem;">
+    <h1>Studio 222 Music 司令室</h1>
+    <a href="index.html" target="_blank" style="display: inline-block; padding: 1.2rem 2.5rem; border: 2px dashed #ffd700; border-radius: 8px; text-align: center; color: white; text-decoration: none; transition: all 0.3s ease; background: rgba(0,0,0,0.3);" onmouseover="this.style.background='rgba(255, 215, 0, 0.15)';" onmouseout="this.style.background='rgba(0,0,0,0.3)';">
+        <div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.3rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+            サイトを確認 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+        </div>
+        <small style="color: #ccc; font-size: 0.9rem;">本番のフロントページを別タブで開きます</small>
+    </a>
+</header>
+<!-- Logout Fixed Button -->
+<a href="?logout=1" style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.7); color: var(--text-dim); padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.9rem; z-index: 9999; border: 1px solid #333; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-dim)'">Logout</a>
 
             <?php if ($message): ?><div class="message"><?php echo $message; ?></div><?php endif; ?>
 
             <!-- タブナビゲーション -->
             <div class="nav-tabs">
-                <div class="nav-tab active" onclick="switchTab('content')">コンテンツ配備</div>
-                <div class="nav-tab" onclick="switchTab('list')">コンテンツ一覧・管理</div>
-                <div class="nav-tab" onclick="switchTab('import')">一括インポート</div>
-                <div class="nav-tab" onclick="switchTab('category')">カテゴリ管理</div>
-                <div class="nav-tab" onclick="switchTab('tools')">関連ツール・確認</div>
+                <div class="nav-tab active" onclick="switchTab('content')">1. コンテンツ配備</div>
+                <div class="nav-tab" onclick="switchTab('category')">2. カテゴリ管理</div>
+                <div class="nav-tab" onclick="switchTab('tools')">3. 関連ツール・確認</div>
             </div>
 
             <!-- 1. コンテンツ登録タブ -->
@@ -682,17 +685,41 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
             <!-- 3. 関連ツール・確認タブ -->
             <div id="tab-tools" class="tab-content">
                 <div class="card">
-                    <h2 style="margin-bottom: 1.5rem; font-weight: 300;">システム・ツール</h2>
-                    <div class="tools-grid">
-                        <a href="index.html" target="_blank" class="tool-card" style="border-color:var(--accent);">
-                            <div style="font-size:1.2rem; margin-bottom:0.5rem; color:var(--text);">サイトを確認 ↗</div>
-                            <small>本番のフロントページを別タブで開きます</small>
-                        </a>
+                    <h2 style="margin-bottom: 1.5rem; font-weight: 300;">関連ツール・データ管理</h2>
+                    <p style="color: var(--text-dim); margin-bottom: 2rem;">登録済みデータの管理や、外部連携ツールにアクセスします。</p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
                         
-                        <a href="youtube-generator/index.html" target="_blank" class="tool-card">
-                            <div style="font-size:1.2rem; margin-bottom:0.5rem; color:var(--text);">YouTubeジェネレータ</div>
-                            <small>YouTube Description Maker</small>
+                        <!-- コンテンツ一覧・管理 -->
+                        <div onclick="document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active')); document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.getElementById('tab-list').classList.add('active');" class="tool-card" style="cursor: pointer; display: block; text-decoration: none; padding: 2rem; border: 1px solid var(--border); border-radius: 8px; background: rgba(255,255,255,0.03); transition: all 0.3s ease;" onmouseover="this.style.background='var(--surface)'; this.style.borderColor='#555';" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.borderColor='var(--border)';">
+                            <div style="font-size:1.3rem; margin-bottom:0.5rem; color:var(--text); font-weight:600; display:flex; align-items:center; gap:0.5rem;">
+                                📋 コンテンツ一覧・管理
+                            </div>
+                            <small style="color: var(--text-dim); line-height: 1.5; display: block;">
+                                登録済みの全コンテンツを確認し、個別に「編集」や「削除」を行います。
+                            </small>
+                        </div>
+
+                        <!-- 一括インポート -->
+                        <div onclick="document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active')); document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.getElementById('tab-import').classList.add('active');" class="tool-card" style="cursor: pointer; display: block; text-decoration: none; padding: 2rem; border: 1px solid var(--border); border-radius: 8px; background: rgba(255,255,255,0.03); transition: all 0.3s ease;" onmouseover="this.style.background='var(--surface)'; this.style.borderColor='#555';" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.borderColor='var(--border)';">
+                            <div style="font-size:1.3rem; margin-bottom:0.5rem; color:var(--text); font-weight:600; display:flex; align-items:center; gap:0.5rem;">
+                                📥 CSV一括インポート
+                            </div>
+                            <small style="color: var(--text-dim); line-height: 1.5; display: block;">
+                                スプレッドシートやExcelから出力したCSVを使って、複数データを一瞬で配備します。
+                            </small>
+                        </div>
+
+                        <!-- YouTubeジェネレータ -->
+                        <a href="youtube-generator/index.html" target="_blank" class="tool-card" style="display: block; text-decoration: none; padding: 2rem; border: 1px solid var(--border); border-radius: 8px; background: rgba(255,255,255,0.03); transition: all 0.3s ease;" onmouseover="this.style.background='var(--surface)'; this.style.borderColor='#555';" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.borderColor='var(--border)';">
+                            <div style="font-size:1.3rem; margin-bottom:0.5rem; color:var(--text); font-weight:600; display:flex; align-items:center; gap:0.5rem;">
+                                🎥 YouTubeジェネレータ
+                            </div>
+                            <small style="color: var(--text-dim); line-height: 1.5; display: block;">
+                                YouTube概要欄用のメタデータやタイムスタンプをAIで自動生成するツールです。
+                            </small>
                         </a>
+
                     </div>
                 </div>
             </div>
@@ -705,7 +732,9 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
         function switchTab(tabId) {
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            event.target.classList.add('active');
+            if(event && event.target && event.target.classList.contains('nav-tab')) {
+                event.target.classList.add('active');
+            }
             document.getElementById('tab-' + tabId).classList.add('active');
         }
 
