@@ -114,6 +114,13 @@
             width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
             border: 2px solid rgba(138, 43, 226, 0.6); padding: 4px; flex-shrink: 0;
             box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+        }
+        .creator-icon:hover {
+            box-shadow: 0 0 40px rgba(168, 117, 255, 0.8), 0 0 70px rgba(168, 117, 255, 0.4);
+            transform: scale(1.05);
+            border-color: rgba(168, 117, 255, 1);
         }
         .creator-info { flex: 1; color: var(--text-dim); line-height: 1.7; }
         .about-name { display: block; font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--text-main); margin-bottom: 0.5rem; }
