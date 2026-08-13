@@ -3,20 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio 222 Music - Advanced LP</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    
+    <title>Studio 222 Music</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
+        /* --- Base & Tokens --- */
         :root {
-            --bg-color: #07050f;
-            --surface: #12101a;
-            --surface-hover: #1a1824;
-            --text-main: #ffffff;
-            --text-dim: #9ba1b0;
+            --bg-color: #050505;
+            --surface: #0a0a0a;
+            --surface-light: #151515;
+            --text-main: #f0f0f0;
+            --text-dim: #a0a0a0;
             --accent-red: #e02a24;
+            --border: #222222;
             --glow-color: rgba(224, 42, 36, 0.15);
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
@@ -43,145 +41,106 @@
         .hero p { font-size: 1.1rem; color: #d0d5e0; font-weight: 300; letter-spacing: 1px; line-height: 1.8; margin-bottom: 3rem; max-width: 700px; margin-left: auto; margin-right: auto; }
         .cta-btn { display: inline-flex; align-items: center; background: var(--accent-red); color: #fff; padding: 1.2rem 3rem; font-size: 0.95rem; font-weight: 600; letter-spacing: 2px; text-decoration: none; border-radius: 6px; transition: var(--transition); }
         .cta-btn:hover { background: #f0332b; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(224, 42, 36, 0.3); }
-        .cta-btn svg { width: 18px; height: 18px; margin-right: 10px; fill: currentColor; }
+
+        /* --- Content Section --- */
+        .content-section { padding: 8rem 5%; position: relative; transition: background 1s ease; }
+        /* Dynamic Ambient Glows */
+        .content-section::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 600px; background: radial-gradient(circle at 50% 0%, var(--glow-color), transparent 70%); pointer-events: none; z-index: 0; transition: var(--transition); }
+        .bg-work { --glow-color: rgba(42, 120, 224, 0.15); }
+        .bg-meditation { --glow-color: rgba(42, 224, 120, 0.15); }
+        .bg-original { --glow-color: rgba(224, 42, 224, 0.15); }
+
+        .section-header { text-align: center; margin-bottom: 4rem; position: relative; z-index: 1; }
+        .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 400; letter-spacing: 3px; }
+
+        /* --- Filter Navigation --- */
+        .filter-container { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; margin-bottom: 4rem; position: relative; z-index: 1; }
+        
+        .filter-menu { display: flex; justify-content: center; gap: 2rem; list-style: none; border-bottom: 1px solid var(--border); padding-bottom: 1rem; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .filter-menu::-webkit-scrollbar { display: none; }
+        .filter-menu li { color: var(--text-dim); font-size: 0.9rem; letter-spacing: 2px; cursor: pointer; padding: 0.5rem 0; position: relative; white-space: nowrap; transition: var(--transition); text-transform: uppercase; }
+        .filter-menu li:hover { color: var(--text-main); }
+        .filter-menu li.active { color: var(--text-main); font-weight: 600; }
+        .filter-menu li::after { content: ''; position: absolute; bottom: -1rem; left: 0; width: 0%; height: 2px; background: var(--accent-red); transition: var(--transition); }
+        .filter-menu li.active::after { width: 100%; }
+
+        .select-group { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+        .custom-select { background-color: var(--surface-light); color: var(--text-main); border: 1px solid var(--border); padding: 0.8rem 2rem; border-radius: 30px; font-family: inherit; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; outline: none; cursor: pointer; transition: var(--transition); appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill="%23a0a0a0" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); background-repeat: no-repeat; background-position-x: 95%; background-position-y: 50%; min-width: 200px; }
+        .custom-select:hover, .custom-select:focus { border-color: var(--accent-red); }
+
+        /* --- Grid & Cards --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 3rem 2rem; position: relative; z-index: 1; }
+        
+        .card { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: var(--transition); text-decoration: none; color: inherit; }
+        .card:hover { transform: translateY(-5px); border-color: #444; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card.hidden { display: none; }
+        
+        .card-thumb-wrapper { position: relative; padding-top: 56.25%; /* 16:9 Aspect Ratio */ overflow: hidden; background: #111; }
+        .card-thumb { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; filter: brightness(0.8); }
+        .card:hover .card-thumb { transform: scale(1.05); filter: brightness(1); }
+        
+        .card-info { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-category { font-size: 0.75rem; color: var(--accent-red); letter-spacing: 2px; margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase; }
+        .card-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 400; line-height: 1.4; margin-bottom: 1rem; color: var(--text-main); }
+        
+        /* リッチテキスト用のスタイル */
+        .card-desc { font-size: 0.85rem; color: #888; margin-bottom: 1.5rem; line-height: 1.6; flex-grow: 1; }
+        .card-desc a { color: var(--accent-red); text-decoration: none; border-bottom: 1px solid rgba(224, 42, 36, 0.3); transition: 0.3s; }
+        .card-desc a:hover { border-bottom-color: var(--accent-red); }
+        .card-desc p { margin-bottom: 0.5rem; }
+
+        .card-btn { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 600; color: var(--text-main); letter-spacing: 1px; transition: var(--transition); text-decoration: none; }
+        .card-btn svg { width: 16px; height: 16px; fill: currentColor; }
+        .card:hover .card-btn { color: var(--accent-red); }
 
         /* --- About Us Section --- */
-        .about-section { padding: 4rem 5%; max-width: 1200px; margin: 0 auto; }
-        .about-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
-        .about-card {
-            background: var(--surface); padding: 3rem; border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.05); line-height: 1.8; color: var(--text-main); font-weight: 300;
-        }
+        .about-section { padding: 8rem 5%; background-color: var(--bg-color); border-top: 1px solid var(--border); }
+        .about-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 4rem; }
+        .about-card { background: var(--surface); padding: 3rem; border: 1px solid var(--border); border-radius: 4px; position: relative; }
+        .about-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent-red); }
+        .about-card p { font-size: 1.05rem; line-height: 1.8; color: var(--text-main); margin-bottom: 1.5rem; text-align: justify; }
+        .about-card p.text-en { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0; }
+        
         .creator-card { display: flex; align-items: center; gap: 3rem; }
         @media (max-width: 768px) { .creator-card { flex-direction: column; text-align: center; gap: 1.5rem; } }
         .creator-icon {
             width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
-            border: 2px solid var(--accent-red); padding: 4px; flex-shrink: 0;
+            border: 2px solid rgba(138, 43, 226, 0.6); padding: 4px; flex-shrink: 0;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
         }
         .creator-info { flex: 1; color: var(--text-dim); line-height: 1.7; }
         .about-name { display: block; font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--text-main); margin-bottom: 0.5rem; }
-
-        /* --- Content Area --- */
-        .content-section {
-            padding: 6rem 5%; max-width: 1400px; margin: 0 auto;
-            position: relative;
-            transition: background 0.8s ease;
-        }
-
-        /* Ambient Glow Backgrounds */
-        .content-section.bg-work { background: radial-gradient(circle at center 10%, rgba(15, 45, 120, 0.15) 0%, transparent 70%); }
-        .content-section.bg-meditation { background: radial-gradient(circle at center 10%, rgba(80, 20, 110, 0.15) 0%, transparent 70%); }
-        .content-section.bg-original { background: radial-gradient(circle at center 10%, rgba(150, 20, 30, 0.12) 0%, transparent 70%); }
-        .content-section.bg-all { background: transparent; }
-
-        .section-header { text-align: center; margin-bottom: 4rem; }
-        .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 400; }
-
-        /* Dual Language Typography */
-        .text-en {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-top: 1.5rem;
-            line-height: 1.8;
-            letter-spacing: 0.02em;
-            border-top: 1px solid var(--border);
-            padding-top: 1.5rem;
-        }
-
-        /* Filter Menus (Main & Sub with Swipe support for Mobile) */
-        .filter-container { margin-bottom: 3rem; }
         
-        .filter-menu, .sub-filter-menu {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-            overflow-x: auto;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 1rem;
-            scrollbar-width: none; /* Firefox */
-        }
-        .filter-menu::-webkit-scrollbar, .sub-filter-menu::-webkit-scrollbar { display: none; /* Chrome/Safari */ }
-        
-        /* Main Category Tabs */
-        .filter-menu { gap: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 1.5rem; }
-        .filter-menu li {
-            position: relative; padding-bottom: 1rem; color: var(--text-dim);
-            font-size: 0.85rem; font-weight: 600; letter-spacing: 2px; cursor: pointer; transition: var(--transition);
-        }
-        .filter-menu li:hover { color: var(--text-main); }
-        .filter-menu li.active { color: var(--text-main); }
-        .filter-menu li::after {
-            content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px;
-            background: var(--accent-red); transform: scaleX(0); transition: transform 0.3s ease;
-        }
-        .filter-menu li.active::after { transform: scaleX(1); }
-
-        /* Sub Category Tabs (Pills) */
-        .sub-filter-menu { gap: 1rem; justify-content: center; display: none; }
-        .sub-filter-menu.show { display: flex; }
-        @media (max-width: 768px) { .sub-filter-menu.show { justify-content: flex-start; padding-left: 20px; padding-right: 20px; } .filter-menu { justify-content: flex-start; padding-left: 20px; padding-right: 20px; } }
-        
-        .sub-filter-menu li {
-            padding: 0.5rem 1.2rem; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1);
-            color: var(--text-dim); font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; cursor: pointer; transition: var(--transition);
-        }
-        .sub-filter-menu li:hover { border-color: rgba(255,255,255,0.3); color: var(--text-main); }
-        .sub-filter-menu li.active { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: var(--text-main); }
-
-        /* Grid */
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; min-height: 500px; }
-        @media (max-width: 1024px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
-
-        /* Card */
-        .card { background: var(--surface); border-radius: 8px; overflow: hidden; text-decoration: none; transition: var(--transition); display: flex; flex-direction: column; border: 1px solid transparent; }
-        .card:hover { background: var(--surface-hover); transform: translateY(-5px); border-color: rgba(255,255,255,0.05); box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 20px var(--glow-color); }
-        .card-thumb-wrapper { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
-        .card-thumb { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .card:hover .card-thumb { transform: scale(1.05); }
-        .card-info { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
-        .card-title { font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.5rem; line-height: 1.4; }
-        .card-category { font-size: 0.75rem; color: var(--accent-red); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
-        .card-btn { margin-top: auto; display: inline-flex; align-items: center; font-size: 0.8rem; font-weight: 600; color: var(--text-dim); transition: var(--transition); }
-        .card:hover .card-btn { color: var(--text-main); }
-        .card-btn svg { width: 14px; height: 14px; margin-right: 6px; fill: currentColor; }
-
         /* --- Footer --- */
-        footer { padding: 4rem 5% 2rem; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; position: relative; }
+        footer { padding: 4rem 5%; text-align: center; border-top: 1px solid var(--border); position: relative; }
         .social-icons { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; }
-        .social-icons a { color: var(--text-main); opacity: 0.6; transition: var(--transition); display: inline-block; }
-        .social-icons a:hover { opacity: 1; transform: translateY(-2px); }
-        .social-icons svg { width: 20px; height: 20px; fill: currentColor; }
-        .copyright { font-size: 0.85rem; color: var(--text-dim); }
-        .admin-link { position: absolute; bottom: 2rem; right: 5%; font-size: 10px; color: #222; text-decoration: none; transition: color 0.3s; }
-        .admin-link:hover { color: #555; }
-        .hidden { display: none !important; }
+        .social-icons a { color: var(--text-dim); transition: var(--transition); }
+        .social-icons a:hover { color: var(--text-main); transform: translateY(-3px); }
+        .social-icons svg { width: 24px; height: 24px; fill: currentColor; }
+        .copyright { color: var(--text-dim); font-size: 0.8rem; letter-spacing: 1px; }
+        .admin-link { position: absolute; bottom: 2rem; right: 5%; color: #333; font-size: 0.7rem; text-decoration: none; }
+        .admin-link:hover { color: var(--text-dim); }
 
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-
     <header>
         <a href="#" class="logo-wrapper">
             <!-- ユーザー指定のロゴ画像。黒背景をCSSで透過 -->
-            <img src="../uploads/logo.png" alt="STUDIO 222 MUSIC" class="site-logo">
+            <img src="uploads/logo.png" alt="STUDIO 222 MUSIC" class="site-logo">
         </a>
     </header>
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Crafting Words with AI.<br>Designing Ambience for Focus.</h1>
-            <p>オリジナル楽曲は詞の世界観を最重視し、AIの性能を極限まで引き出して構築。<br>アンビエントは、クリエイター自身が「作業中に本当に聴きたい音」だけを追求して生まれました。</p>
-            <a href="https://youtube.com" target="_blank" class="cta-btn">
-                <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
-                OFFICIAL YOUTUBE CHANNEL
-            </a>
+            <h1>Music for Deep Focus & Meditation</h1>
+            <p>集中とリラックスのための高品質なサウンドスケープ。プログラミング、読書、そして瞑想の時間を特別なものに。</p>
+            <a href="#library" class="cta-btn">LISTEN NOW</a>
         </div>
     </section>
 
-    <main class="content-section">
+    <main class="content-section bg-all" id="library">
         <div class="section-header">
             <h2>Sound Library</h2>
         </div>
@@ -195,20 +154,15 @@
                 <li data-main="original">ORIGINAL</li>
             </ul>
 
-            <!-- Sub Category Filters (Dynamic & Swipeable) -->
-            <ul class="sub-filter-menu" id="sub-filter-work">
-                <li class="active" data-sub="all">ALL WORK</li>
-                <li data-sub="deep-focus">Deep Focus</li>
-                <li data-sub="coding">Coding/Tech</li>
-                <li data-sub="cafe">Cafe Ambience</li>
-            </ul>
-
-            <ul class="sub-filter-menu" id="sub-filter-meditation">
-                <li class="active" data-sub="all">ALL MEDITATION</li>
-                <li data-sub="sleep">Deep Sleep</li>
-                <li data-sub="zen">Zen & Nature</li>
-                <li data-sub="432hz">432Hz Healing</li>
-            </ul>
+            <!-- Middle and Small Selectors -->
+            <div id="select-filters" class="select-group" style="display: none;">
+                <select id="middle-filter" class="custom-select">
+                    <option value="all">全てのカテゴリ</option>
+                </select>
+                <select id="small-filter" class="custom-select" style="display: none;">
+                    <option value="all">全てのサブカテゴリ</option>
+                </select>
+            </div>
         </div>
 
         <!-- Content Grid -->
@@ -229,7 +183,7 @@
             </div>
             
             <div class="about-card creator-card">
-                <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop" alt="Creator Profile" class="creator-icon">
+                <img src="uploads/creator_icon.jpg" alt="Creator Profile" class="creator-icon" onerror="this.src='https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop'">
                 <div class="creator-info">
                     <span class="about-name">Creator / Sound Designer</span>
                     <p>はじめまして。Studio 222 Music へようこそ。AIの演算力から紡ぎ出される「詞の情景」と、静寂をデザインする「アンビエント」。このチャンネルの音が、あなたのインスピレーションを加速させる最高のBGMとなることを願っています。</p>
@@ -244,148 +198,191 @@
             <a href="#" title="YouTube"><svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg></a>
             <a href="#" title="X (Twitter)"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
             <a href="#" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
-        </div>
-        <div class="copyright">&copy; 2026 Studio 222 Music. All Rights Reserved.</div>
-        <a href="../admin.php" class="admin-link">Admin</a>
-    </footer>
-
-    <script>
-        // JSONデータからの動的描画とフィルターロジック
-        document.addEventListener('DOMContentLoaded', () => {
-            const grid = document.getElementById('content-grid');
-            const contentSection = document.querySelector('.content-section');
-            const mainTabs = document.querySelectorAll('#main-filter li');
-            const subMenus = document.querySelectorAll('.sub-filter-menu');
-
-            let currentMain = 'all';
-            let currentSub = 'all';
-            let cardItems = []; // 動的に生成されたカードの配列
-
-            // ローカルファイル（file://）でのCORSエラーを回避するため、モックデータを直接定義
-            const mockData = {
-                "categories": [
-                    { "id": "work", "name": "作業用", "sub_categories": [ {"id": "deep-focus", "name": "Deep Focus"}, {"id": "coding", "name": "Coding/Tech"}, {"id": "cafe", "name": "Cafe Ambience"} ] },
-                    { "id": "meditation", "name": "瞑想", "sub_categories": [ {"id": "sleep", "name": "Deep Sleep"}, {"id": "zen", "name": "Zen & Nature"}, {"id": "432hz", "name": "432Hz Healing"} ] },
-                    { "id": "original", "name": "オリジナル", "sub_categories": [ {"id": "vocal", "name": "Vocal Tracks"}, {"id": "instrumental", "name": "Instrumental"} ] }
-                ],
-                "contents": [
-                    { "id": "c_mock1", "title": "Deep Focus: Ambient for Work", "category": "work", "sub_category": "deep-focus", "description": "プログラミングや執筆作業に最適なアンビエント", "thumbnail": "https://images.unsplash.com/photo-1517511620798-cec17d428bc0?q=80&w=800&auto=format&fit=crop" },
-                    { "id": "c_mock2", "title": "Zen Garden: Meditative Waves", "category": "meditation", "sub_category": "zen", "description": "水滴の音とシンセパッドを組み合わせた瞑想用サウンド", "thumbnail": "https://images.unsplash.com/photo-1520110120835-c96534a4c984?q=80&w=800&auto=format&fit=crop" },
-                    { "id": "c_mock3", "title": "Code & Flow: Electronic Beats", "category": "work", "sub_category": "coding", "description": "リズムに乗りながらコーディングを進めるためのビート", "thumbnail": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop" },
-                    { "id": "c_mock4", "title": "Silent Words", "category": "original", "sub_category": "vocal", "description": "詞の世界観をAIボーカルで表現したオリジナルトラック", "thumbnail": "https://images.unsplash.com/photo-1470229722913-7c090be5c5a4?q=80&w=800&auto=format&fit=crop" }
-                ]
-            };
-
-            const contents = mockData.contents;
-            const categories = mockData.categories;
-
-            // カテゴリ名をIDから引くためのマップ作成
-            const catMap = {};
-            const subCatMap = {};
-            categories.forEach(cat => {
-                catMap[cat.id] = cat.name;
-                if(cat.sub_categories) {
-                    cat.sub_categories.forEach(sub => {
-                        subCatMap[sub.id] = sub.name;
-                    });
-                }
-            });
-
-            // カードの生成
-            contents.forEach(item => {
-                const card = document.createElement('a');
-                card.href = '#';
-                card.className = 'card item';
-                card.setAttribute('data-main', item.category);
-                card.setAttribute('data-sub', item.sub_category || 'all');
-                card.target = "_blank";
-
-                const mainName = catMap[item.category] || item.category;
-                const subName = subCatMap[item.sub_category] ? subCatMap[item.sub_category] : '';
-                const catLabel = subName ? `${mainName.toUpperCase()} / ${subName}` : mainName.toUpperCase();
-
-                card.innerHTML = `
-                    <div class="card-thumb-wrapper">
-                        <img src="${item.thumbnail}" class="card-thumb" alt="${item.title}">
-                    </div>
-                    <div class="card-info">
-                        <span class="card-category">${catLabel}</span>
-                        <h3 class="card-title">${item.title}</h3>
-                        <p style="font-size:0.8rem; color:#888; margin-bottom:1rem; flex-grow:1;">${item.description}</p>
-                        <div class="card-btn">
-                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> WATCH ON YOUTUBE
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-                cardItems.push(card);
-            });
-
-            // 初回フィルター適用
-            filterItems();
-
-            // メインカテゴリのクリックイベント
-            mainTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    mainTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    
-                    currentMain = tab.getAttribute('data-main');
-                    currentSub = 'all';
-
-                    // 背景オーラの切り替え
-                    contentSection.className = `content-section bg-${currentMain}`;
-
-                    // サブメニューの表示切替
-                    subMenus.forEach(menu => menu.classList.remove('show'));
-                    const targetSubMenu = document.getElementById(`sub-filter-${currentMain}`);
-                    if (targetSubMenu) {
-                        targetSubMenu.classList.add('show');
-                        const subTabs = targetSubMenu.querySelectorAll('li');
-                        subTabs.forEach(t => t.classList.remove('active'));
-                        if(subTabs.length > 0) subTabs[0].classList.add('active');
-                    }
-
-                    filterItems();
-                });
-            });
-
-            // サブカテゴリのクリックイベント
-            subMenus.forEach(menu => {
-                const subTabs = menu.querySelectorAll('li');
-                subTabs.forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        subTabs.forEach(t => t.classList.remove('active'));
-                        tab.classList.add('active');
-                        currentSub = tab.getAttribute('data-sub');
-                        filterItems();
-                    });
-                });
-            });
-
-            // フィルター適用関数
-            function filterItems() {
-                cardItems.forEach(item => {
-                    const itemMain = item.getAttribute('data-main');
-                    const itemSub = item.getAttribute('data-sub');
-                    
-                    let show = false;
-                    if (currentMain === 'all') {
-                        show = true;
-                    } else if (itemMain === currentMain) {
-                        if (currentSub === 'all' || itemSub === currentSub) {
-                            show = true;
-                        }
-                    }
-
-                    if (show) {
-                        item.classList.remove('hidden');
-                    } else {
-                        item.classList.add('hidden');
-                    }
-                });
-            }
-        });
-    </script>
-</body>
-</html>
+250:         </div>
+251:         <div class="copyright">&copy; 2026 Studio 222 Music. All Rights Reserved.</div>
+252:         <a href="admin.php" class="admin-link">Admin</a>
+253:     </footer>
+254: 
+255:     <script>
+256:         document.addEventListener('DOMContentLoaded', () => {
+257:             const grid = document.getElementById('content-grid');
+258:             const contentSection = document.querySelector('.content-section');
+259:             const mainTabs = document.querySelectorAll('#main-filter li');
+260:             const selectFiltersGroup = document.getElementById('select-filters');
+261:             const middleSelect = document.getElementById('middle-filter');
+262:             const smallSelect = document.getElementById('small-filter');
+263: 
+264:             let currentMain = 'all';
+265:             let currentMid = 'all';
+266:             let currentSmall = 'all';
+267:             let cardItems = []; 
+268:             let categoriesData = [];
+269: 
+270:             fetch('data.json?t=' + new Date().getTime())
+271:                 .then(res => res.json())
+272:                 .then(data => {
+273:                     const contents = data.contents || [];
+274:                     categoriesData = data.categories || [];
+275: 
+276:                     const catNameMap = {};
+277:                     categoriesData.forEach(c => {
+278:                         catNameMap[c.id] = c.name;
+279:                         if(c.middle_categories) {
+280:                             c.middle_categories.forEach(m => {
+281:                                 catNameMap[m.id] = m.name;
+282:                                 if(m.small_categories) {
+283:                                     m.small_categories.forEach(s => catNameMap[s.id] = s.name);
+284:                                 }
+285:                             });
+286:                         }
+287:                     });
+288: 
+289:                     contents.forEach(item => {
+290:                         // <a>のネスト問題を回避するため、カード全体は div にする。
+291:                         const card = document.createElement('div');
+292:                         card.className = 'card item';
+293:                         card.setAttribute('data-main', item.category || 'all');
+294:                         card.setAttribute('data-mid', item.middle_category || 'all');
+295:                         card.setAttribute('data-small', item.small_category || 'all');
+296: 
+297:                         const mainN = catNameMap[item.category] || '';
+298:                         const midN = catNameMap[item.middle_category] || '';
+299:                         const smallN = catNameMap[item.small_category] || '';
+300:                         
+301:                         let catLabel = mainN.toUpperCase();
+302:                         if (midN) catLabel += ` / ${midN}`;
+303:                         if (smallN) catLabel += ` - ${smallN}`;
+304: 
+305:                         const thumbSrc = item.thumbnail ? item.thumbnail : "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=800&auto=format&fit=crop";
+306:                         const mainLink = item.link_url || '#';
+307: 
+308:                         // リッチテキストのエスケープ解除（descriptionにはHTMLが入る）
+309:                         // scriptタグなどは入らない前提 (admin.phpでstrip_tagsしている)
+310:                         const descHtml = item.description || '';
+311: 
+312:                         card.innerHTML = `
+313:                             <a href="${mainLink}" target="_blank" style="display:block; text-decoration:none; color:inherit; flex-grow:1; display:flex; flex-direction:column;">
+314:                                 <div class="card-thumb-wrapper">
+315:                                     <img src="${thumbSrc}" class="card-thumb" alt="${item.title}">
+316:                                 </div>
+317:                                 <div class="card-info">
+318:                                     <span class="card-category">${catLabel}</span>
+319:                                     <h3 class="card-title">${item.title}</h3>
+320:                                     <!-- description 内のリンクを活かすため、相対配置にしてイベント伝播を止める工夫等が必要だが、
+321:                                          今回はdescription全体をaタグから切り離すのが安全。-->
+322:                                 </div>
+323:                             </a>
+324:                             <div style="padding: 0 1.5rem 0.5rem;">
+325:                                 <div class="card-desc">${descHtml}</div>
+326:                             </div>
+327:                             <div style="padding: 0 1.5rem 1.5rem;">
+328:                                 <a href="${mainLink}" target="_blank" class="card-btn">
+329:                                     <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> WATCH ON YOUTUBE
+330:                                 </a>
+331:                             </div>
+332:                         `;
+333:                         grid.appendChild(card);
+334:                         cardItems.push(card);
+335:                     });
+336: 
+337:                     filterItems();
+338:                 })
+339:                 .catch(err => {
+340:                     console.error(err);
+341:                     grid.innerHTML = '<p style="text-align:center; color:red; grid-column:1/-1;">データの読み込みに失敗しました。</p>';
+342:                 });
+343: 
+344:             function updateMiddleOptions() {
+345:                 middleSelect.innerHTML = '<option value="all">全てのカテゴリ</option>';
+346:                 smallSelect.innerHTML = '<option value="all">全てのサブカテゴリ</option>';
+347:                 smallSelect.style.display = 'none';
+348: 
+349:                 if (currentMain === 'all') {
+350:                     selectFiltersGroup.style.display = 'none';
+351:                     return;
+352:                 }
+353:                 
+354:                 selectFiltersGroup.style.display = 'flex';
+355:                 const cat = categoriesData.find(c => c.id === currentMain);
+356:                 if (cat && cat.middle_categories && cat.middle_categories.length > 0) {
+357:                     cat.middle_categories.forEach(m => {
+358:                         middleSelect.innerHTML += `<option value="${m.id}">${m.name}</option>`;
+359:                     });
+360:                 }
+361:             }
+362: 
+363:             function updateSmallOptions() {
+364:                 smallSelect.innerHTML = '<option value="all">全てのサブカテゴリ</option>';
+365:                 if (currentMid === 'all') {
+366:                     smallSelect.style.display = 'none';
+367:                     return;
+368:                 }
+369:                 
+370:                 const cat = categoriesData.find(c => c.id === currentMain);
+371:                 if (cat && cat.middle_categories) {
+372:                     const mid = cat.middle_categories.find(m => m.id === currentMid);
+373:                     if (mid && mid.small_categories && mid.small_categories.length > 0) {
+374:                         smallSelect.style.display = 'block';
+375:                         mid.small_categories.forEach(s => {
+376:                             smallSelect.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+377:                         });
+378:                     } else {
+379:                         smallSelect.style.display = 'none';
+380:                     }
+381:                 }
+382:             }
+383: 
+384:             // イベントリスナー
+385:             mainTabs.forEach(tab => {
+386:                 tab.addEventListener('click', () => {
+387:                     mainTabs.forEach(t => t.classList.remove('active'));
+388:                     tab.classList.add('active');
+389:                     currentMain = tab.getAttribute('data-main');
+390:                     currentMid = 'all';
+391:                     currentSmall = 'all';
+392:                     contentSection.className = `content-section bg-${currentMain}`;
+393:                     
+394:                     updateMiddleOptions();
+395:                     filterItems();
+396:                 });
+397:             });
+398: 
+399:             middleSelect.addEventListener('change', (e) => {
+400:                 currentMid = e.target.value;
+401:                 currentSmall = 'all';
+402:                 updateSmallOptions();
+403:                 filterItems();
+404:             });
+405: 
+406:             smallSelect.addEventListener('change', (e) => {
+407:                 currentSmall = e.target.value;
+408:                 filterItems();
+409:             });
+410: 
+411:             function filterItems() {
+412:                 cardItems.forEach(item => {
+413:                     const itemMain = item.getAttribute('data-main');
+414:                     const itemMid = item.getAttribute('data-mid');
+415:                     const itemSmall = item.getAttribute('data-small');
+416:                     
+417:                     let show = false;
+418:                     if (currentMain === 'all') {
+419:                         show = true;
+420:                     } else if (itemMain === currentMain) {
+421:                         if (currentMid === 'all') {
+422:                             show = true;
+423:                         } else if (itemMid === currentMid) {
+424:                             if (currentSmall === 'all' || itemSmall === currentSmall) {
+425:                                 show = true;
+426:                             }
+427:                         }
+428:                     }
+429: 
+430:                     if (show) item.classList.remove('hidden');
+431:                     else item.classList.add('hidden');
+432:                 });
+433:             }
+434:         });
+435:     </script>
+436: </body>
+437: </html>
