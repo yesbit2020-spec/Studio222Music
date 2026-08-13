@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio 222 Music - YouTube Meta Generator</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+JP:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <img src="logo.png" alt="STUDIO 222 MUSIC" class="header-logo" onerror="this.onerror=null; this.src='logo.jpg'; if(this.naturalWidth === 0) { this.style.display='none'; document.getElementById('fallback-header').style.display='block'; }">
+        <div id="fallback-header" style="display:none;">
+            <h1 style="font-size: 2.5rem; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Studio 222 Metadata Generator</h1>
+            <p style="color: var(--text-muted);">AI-Powered Music Metadata Assistant</p>
+        </div>
+    </header>
+
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <nav class="tabs" style="display: inline-flex; justify-content: center; border-bottom: none; background: var(--card-bg); border-radius: 12px; padding: 0.5rem; border: var(--border);">
+            <button class="tab-btn active" data-tab="generator-tab">ジェネレーター</button>
+            <button class="tab-btn" data-tab="history-tab">データベース (履歴)</button>
+        </nav>
+        <div class="header-container" style="margin-top: 10px;">
+            <div class="api-status" id="apiStatus">API: 未接続 (ローカルモード)</div>
+        </div>
+    </div>
+
+    <div id="generator-tab" class="tab-content active">
+        <div class="layout">
+            <!-- 入力エリア -->
+            <div class="card">
+                
+                <div class="form-group">
+                    <label for="songTitle">曲名 (Song Title)</label>
+                    <input type="text" id="songTitle" placeholder="例: さよならの設計図">
+                </div>
+
+                <div class="form-group">
+                    <label for="catchphrase">キャッチコピー (Catchphrase)</label>
+                    <input type="text" id="catchphrase" placeholder="例: 切ない男のバラード">
+                </div>
+
+                <div class="form-group">
+                    <label for="lyrics">歌詞 (Lyrics) <span class="badge">AI生成の材料</span></label>
+                    <textarea id="lyrics" rows="6" placeholder="歌詞を入力してください..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-with-action">
+                        <label for="conceptJa">概要欄: 日本語紹介文</label>
+                        <button id="btnGenerateJa" class="btn btn-ai" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.85rem;">✨ AI生成</button>
+                    </div>
+                    <textarea id="conceptJa" rows="4" placeholder="【AI生成用メモ】または【直接入力】..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-with-action">
+                        <label for="conceptEn">概要欄: 英語版紹介文</label>
+                        <button id="btnGenerateEn" class="btn btn-ai" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.85rem;">✨ AI英訳</button>
+                    </div>
+                    <textarea id="conceptEn" rows="3" placeholder="English description..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-with-action">
+                        <label for="tagsInput">検索用タグ (カンマ区切り)</label>
+                        <button id="btnGenerateTags" class="btn btn-ai" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.85rem;">✨ タグ抽出</button>
+                    </div>
+                    <input type="text" id="tagsInput" placeholder="例: バラード, 失恋, アコースティック">
+                </div>
+
+                <div class="form-group settings-section">
+                    <label>フッター設定 (Footer Settings) <span class="badge">GAS連携準備済</span></label>
+                    <textarea id="footerText" rows="6" placeholder="Studio 222 Musicの共通紹介文を入力...">
+■ Studio 222 Music
+音楽で心を彩る。最新の楽曲をお届けします。
+チャンネル登録よろしくお願いします！
+Subscribe to our channel!
+                    </textarea>
+                    
+                    <label style="margin-top: 1.5rem; display: block; color: var(--accent);">スプレッドシート保存 (Save to GAS)</label>
+                    <button id="btnSaveToGas" class="btn btn-primary" style="margin-top: 0.5rem;">現在のデータをスプレッドシートに保存</button>
+                </div>
+                
+                <div class="settings-group" style="margin-top: 1rem;">
+                    <label for="geminiApiKey">Gemini API キー設定 <span class="badge">ブラウザ保存</span></label>
+                    <input type="password" id="geminiApiKey" placeholder="AIzaSy...">
+                </div>
+
+                <div class="settings-group" style="margin-top: 1rem;">
+                    <label for="gasUrl">GAS ウェブアプリ URL <span class="badge">ブラウザ保存</span></label>
+                    <input type="password" id="gasUrl" placeholder="https://script.google.com/macros/s/.../exec">
+                </div>
+                
+                <div class="settings-group" id="modelSelectionGroup" style="display: none; margin-top: 1rem;">
+                    <label for="modelSelect">使用するAIモデル <span class="badge">自動取得</span></label>
+                    <select id="modelSelect" style="width: 100%; padding: 0.75rem; background-color: var(--input-bg); color: var(--text); border: 1px solid var(--input-border); border-radius: 8px;">
+                        <option value="">モデルを取得中...</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 出力・プレビューエリア -->
+            <div class="card preview-pane">
+                <div class="output-header-main">
+                    <h2>生成結果 (Output)</h2>
+                    <button id="btnUpdatePreview" class="btn btn-secondary" style="width: auto;">プレビュー更新</button>
+                </div>
+                
+                <div class="output-card">
+                    <div class="output-header">
+                        <h3>タイトル (Title)</h3>
+                        <button class="btn btn-copy" data-target="outTitle">コピー</button>
+                    </div>
+                    <textarea id="outTitle" class="output-box" rows="2" style="width: 100%; border-radius: 8px; padding: 0.75rem;" readonly></textarea>
+                </div>
+
+                <div class="output-card">
+                    <div class="output-header">
+                        <h3>概要欄 (Description)</h3>
+                        <button class="btn btn-copy" data-target="outDescription">コピー</button>
+                    </div>
+                    <textarea id="outDescription" class="output-box" rows="20" style="width: 100%; border-radius: 8px; padding: 0.75rem;" readonly></textarea>
+                </div>
+
+                <div class="output-card">
+                    <div class="output-header">
+                        <h3>タグ (Tags)</h3>
+                        <button class="btn btn-copy" data-target="outTags">コピー</button>
+                    </div>
+                    <textarea id="outTags" class="output-box" rows="3" style="width: 100%; border-radius: 8px; padding: 0.75rem;" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="history-tab" class="tab-content">
+        <div class="layout" style="grid-template-columns: 1fr;">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="color: var(--accent);">過去の生成履歴 (データベース)</h2>
+                    <button id="btnReloadHistory" class="btn btn-secondary" style="width: auto;">🔄 最新データを取得</button>
+                </div>
+                <div class="table-responsive">
+                    <table id="historyTable" class="history-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;">ID</th>
+                                <th style="width: 10%;">日時/フラグ</th>
+                                <th style="width: 20%; white-space: nowrap;">曲名</th>
+                                <th style="width: 25%;">紹介文(日)</th>
+                                <th style="width: 25%;">紹介文(英)</th>
+                                <th style="width: 10%;">タグ</th>
+                                <th style="width: 5%;">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <tr><td colspan="7" style="text-align:center; padding: 30px;">データを読み込み中、またはデータがありません</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- トースト通知用 -->
+    <div id="toast" class="toast">処理が完了しました</div>
+
+    <script src="app.js?v=18"></script>
+</body>
+</html>

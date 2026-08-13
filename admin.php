@@ -551,9 +551,9 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
                             <div style="font-size:1.2rem; margin-bottom:0.5rem; color:var(--text);">モックアップ・ポータル</div>
                             <small>Design Archive</small>
                         </a>
-                        <a href="#" class="tool-card">
-                            <div style="font-size:1.2rem; margin-bottom:0.5rem; color:var(--text);">説明ジェネレータ</div>
-                            <small>AI Description Maker</small>
+                        <a href="youtube-generator/index.html" target="_blank" class="tool-card">
+                            <div style="font-size:1.2rem; margin-bottom:0.5rem; color:var(--text);">YouTubeジェネレータ</div>
+                            <small>YouTube Description Maker</small>
                         </a>
                     </div>
                 </div>
