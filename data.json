@@ -16,5 +16,36 @@
             "description": "Studio222 オリジナルトラック"
         }
     ],
-    "contents": []
+    "contents": [
+        {
+            "id": "c_dummy1",
+            "title": "Deep Focus Beat",
+            "category": "work",
+            "description": "プログラミングや執筆作業に最適な、一定のBPMを保つディープハウス・トラック。",
+            "link_url": "https://example.com",
+            "pdf_url": "",
+            "thumbnail": "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=600&auto=format&fit=crop",
+            "created_at": "2026-08-13T19:00:00+09:00"
+        },
+        {
+            "id": "c_dummy2",
+            "title": "Zen Garden Sound",
+            "category": "meditation",
+            "description": "水滴の音とシンセパッドを組み合わせた、マインドフルネス瞑想のための環境音。",
+            "link_url": "https://example.com",
+            "pdf_url": "https://example.com/dummy.pdf",
+            "thumbnail": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=600&auto=format&fit=crop",
+            "created_at": "2026-08-13T19:01:00+09:00"
+        },
+        {
+            "id": "c_dummy3",
+            "title": "Ambient Textures Vol.1",
+            "category": "original",
+            "description": "Studio 222 Music 制作のアンビエント素材集。映像作品などにも利用可能。",
+            "link_url": "https://example.com",
+            "pdf_url": "",
+            "thumbnail": "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=600&auto=format&fit=crop",
+            "created_at": "2026-08-13T19:02:00+09:00"
+        }
+    ]
 }
