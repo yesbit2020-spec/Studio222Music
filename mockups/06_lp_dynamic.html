@@ -82,6 +82,17 @@
         .section-header { text-align: center; margin-bottom: 4rem; }
         .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 400; }
 
+        /* Dual Language Typography */
+        .text-en {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 1.5rem;
+            line-height: 1.8;
+            letter-spacing: 0.02em;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+
         /* Filter Menus (Main & Sub with Swipe support for Mobile) */
         .filter-container { margin-bottom: 3rem; }
         
@@ -210,31 +221,23 @@
         </div>
     </main>
 
-    <!-- NEW: About Us Section (Moved above footer) -->
+    <!-- About Us Section -->
     <section class="about-section">
-        <div class="about-container">
-            <div class="section-header" style="margin-bottom: 2rem;">
-                <h2>About Us</h2>
+        <div class="section-header">
+            <h2>About Us</h2>
+        </div>
+        <div class="about-grid">
+            <div class="about-card">
+                <p>私たちは「言葉の持つ力」と「音響空間の心地よさ」を追求するサウンドプロジェクトです。最新のAIテクノロジーと深い叙情性を融合させた「オリジナルトラック」。そして、クリエイター自身が日々のプログラミングや読書の最中に「心から聴きたい」と思えるクオリティだけを追求した「作業用・瞑想用アンビエント」。この2つの柱が、あなたの日常とクリエイティビティに寄り添います。</p>
+                <p class="text-en">We are a sound project pursuing the "power of words" and the "comfort of acoustic spaces." Combining the latest AI technology with deep lyricism in our Original Tracks, and pursuing the highest quality Ambient for work and meditation that creators themselves truly want to listen to during programming and reading. These two pillars accompany your daily life and creativity.</p>
             </div>
             
-            <!-- 上部：紹介文 -->
-            <div class="about-intro">
-                <p class="about-intro-text">
-                    私たちは「言葉の持つ力」と「音響空間の心地よさ」を追求するサウンドプロジェクトです。<br>
-                    最新のAIテクノロジーと深い叙情性を融合させた「オリジナルトラック」。そして、クリエイター自身が日々のプログラミングや読書の最中に「心から聴きたい」と思えるクオリティだけを追求した「作業用・瞑想用アンビエント」。この2つの柱が、あなたの日常とクリエイティビティに寄り添います。
-                </p>
-            </div>
-
-            <!-- 下部：アイコンと挨拶文 -->
-            <div class="about-author-area">
-                <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop" alt="Profile" class="profile-icon">
-                <div class="about-greeting-text">
+            <div class="about-card creator-card">
+                <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop" alt="Creator Profile" class="creator-icon">
+                <div class="creator-info">
                     <span class="about-name">Creator / Sound Designer</span>
-                    <p>
-                        はじめまして。Studio 222 Music へようこそ。<br>
-                        AIの演算力から紡ぎ出される「詞の情景」と、静寂をデザインする「アンビエント」。<br>
-                        このチャンネルの音が、あなたのインスピレーションを加速させる最高のBGMとなることを願っています。
-                    </p>
+                    <p>はじめまして。Studio 222 Music へようこそ。AIの演算力から紡ぎ出される「詞の情景」と、静寂をデザインする「アンビエント」。このチャンネルの音が、あなたのインスピレーションを加速させる最高のBGMとなることを願っています。</p>
+                    <p class="text-en">Nice to meet you. Welcome to Studio 222 Music. The scenery of words spun from the computational power of AI, and the ambient that designs silence. I hope the sounds of this channel will become the ultimate BGM that accelerates your inspiration.</p>
                 </div>
             </div>
         </div>
