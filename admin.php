@@ -500,6 +500,46 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
         /* TinyMCE Dark mode adjustments */
         .tox-tinymce { border-color: var(--border) !important; }
     </style>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <style>
+        /* Select2 Dark Mode Override */
+        .select2-container--default .select2-selection--single {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            height: 40px;
+            color: var(--text);
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: var(--text);
+            line-height: 38px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 38px;
+        }
+        .select2-dropdown {
+            background-color: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+        .select2-container--default .select2-search--dropdown .select2-search__field {
+            background-color: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+            background-color: var(--accent);
+            color: #000;
+        }
+        .select2-container--default .select2-results__option--selected {
+            background-color: rgba(255, 215, 0, 0.2);
+        }
+    </style>
     <!-- TinyMCE CDN (Open Source via cdnjs) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
@@ -564,7 +604,7 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
                         
                         <div class="form-group">
                             <label>大カテゴリ</label>
-                            <select name="category" id="select-main" required onchange="updateMiddleCats()">
+                            <select name="category" id="select-main" required>
                                 <option value="">選択してください</option>
                                 <?php foreach ($categories as $cat): ?>
                                     <option value="<?php echo htmlspecialchars($cat['id']); ?>"><?php echo htmlspecialchars($cat['name']); ?></option>
@@ -574,7 +614,7 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
 
                         <div class="form-group">
                             <label>中カテゴリ</label>
-                            <select name="middle_category" id="select-mid" required onchange="updateSmallCats()">
+                            <select name="middle_category" id="select-mid" required>
                                 <option value="">大カテゴリを選択してください</option>
                             </select>
                         </div>
