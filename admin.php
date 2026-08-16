@@ -237,7 +237,35 @@ if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // --- 中カテゴリ追加 ---
+    
+    // --- 大カテゴリ追加 ---
+    if (isset($_POST['add_main_cat'])) {
+        $main_id = preg_replace('/[^a-z0-9-]/', '', $_POST['main_id'] ?? '');
+        $main_name = htmlspecialchars($_POST['main_name'] ?? '');
+        
+        if ($main_id && $main_name) {
+            $exists = false;
+            foreach ($data['categories'] as $cat) {
+                if ($cat['id'] === $main_id) { $exists = true; break; }
+            }
+            if (!$exists) {
+                $data['categories'][] = [
+                    'id' => $main_id,
+                    'name' => $main_name,
+                    'description' => '',
+                    'middle_categories' => []
+                ];
+                file_put_contents($json_file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+                $message = "大カテゴリを追加しました。";
+            } else {
+                $message = "エラー: そのIDの大カテゴリは既に存在します。";
+            }
+        } else {
+            $message = "エラー: IDは半角英数字ハイフンのみで入力してください。";
+        }
+    }
+
+    // --- 中カテゴリ追加 (修正) ---
     if (isset($_POST['add_mid_cat'])) {
         $parent_id = $_POST['parent_cat_id'];
         $mid_id = preg_replace('/[^a-z0-9-]/', '', $_POST['mid_id']); // 英数字ハイフンのみ
@@ -257,10 +285,12 @@ if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             file_put_contents($json_file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
             $message = "中カテゴリを追加しました。";
+        } else {
+            $message = "エラー: IDは半角英数字ハイフンのみで入力してください。";
         }
     }
 
-    // --- 小カテゴリ追加 ---
+    // --- 小カテゴリ追加 (修正) ---
     if (isset($_POST['add_small_cat'])) {
         $parent_cat = $_POST['parent_cat'];
         $parent_mid = $_POST['parent_mid'];
@@ -284,11 +314,106 @@ if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             file_put_contents($json_file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
             $message = "小カテゴリを追加しました。";
+        } else {
+            $message = "エラー: IDは半角英数字ハイフンのみで入力してください。";
         }
+    }
+
+    // --- カテゴリ表示名変更 ---
+    if (isset($_POST['edit_cat_name'])) {
+        $type = $_POST['edit_type'];
+        $cat_id = $_POST['cat_id'];
+        $mid_id = $_POST['mid_id'] ?? '';
+        $small_id = $_POST['small_id'] ?? '';
+        $new_name = htmlspecialchars($_POST['new_name']);
+        
+        if ($new_name) {
+            foreach ($data['categories'] as &$cat) {
+                if ($type === 'main' && $cat['id'] === $cat_id) {
+                    $cat['name'] = $new_name;
+                    break;
+                } elseif ($cat['id'] === $cat_id && isset($cat['middle_categories'])) {
+                    foreach ($cat['middle_categories'] as &$mid) {
+                        if ($type === 'mid' && $mid['id'] === $mid_id) {
+                            $mid['name'] = $new_name;
+                            break 2;
+                        } elseif ($type === 'small' && $mid['id'] === $mid_id && isset($mid['small_categories'])) {
+                            foreach ($mid['small_categories'] as &$small) {
+                                if ($small['id'] === $small_id) {
+                                    $small['name'] = $new_name;
+                                    break 3;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            file_put_contents($json_file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+            $message = "カテゴリ表示名を変更しました。";
+        }
+    }
+
+    // --- カテゴリ並び替え ---
+    if (isset($_POST['move_cat'])) {
+        $type = $_POST['move_type'];
+        $dir = $_POST['move_dir']; // 'up' or 'down'
+        $cat_id = $_POST['cat_id'];
+        $mid_id = $_POST['mid_id'] ?? '';
+        $small_id = $_POST['small_id'] ?? '';
+        
+        function swap(&$array, $index, $dir) {
+            if ($dir === 'up' && $index > 0) {
+                $tmp = $array[$index - 1];
+                $array[$index - 1] = $array[$index];
+                $array[$index] = $tmp;
+            } elseif ($dir === 'down' && $index < count($array) - 1) {
+                $tmp = $array[$index + 1];
+                $array[$index + 1] = $array[$index];
+                $array[$index] = $tmp;
+            }
+        }
+        
+        if ($type === 'main') {
+            foreach ($data['categories'] as $idx => $cat) {
+                if ($cat['id'] === $cat_id) { swap($data['categories'], $idx, $dir); break; }
+            }
+        } elseif ($type === 'mid') {
+            foreach ($data['categories'] as &$cat) {
+                if ($cat['id'] === $cat_id && isset($cat['middle_categories'])) {
+                    foreach ($cat['middle_categories'] as $idx => $mid) {
+                        if ($mid['id'] === $mid_id) { swap($cat['middle_categories'], $idx, $dir); break 2; }
+                    }
+                }
+            }
+        } elseif ($type === 'small') {
+            foreach ($data['categories'] as &$cat) {
+                if ($cat['id'] === $cat_id && isset($cat['middle_categories'])) {
+                    foreach ($cat['middle_categories'] as &$mid) {
+                        if ($mid['id'] === $mid_id && isset($mid['small_categories'])) {
+                            foreach ($mid['small_categories'] as $idx => $small) {
+                                if ($small['id'] === $small_id) { swap($mid['small_categories'], $idx, $dir); break 3; }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        file_put_contents($json_file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        $message = "カテゴリの順番を入れ替えました。";
     }
 
     // --- カテゴリ削除 ---
     if (isset($_POST['delete_cat'])) {
+        $type = $_POST['type'];
+        $cat_id = $_POST['cat_id'];
+        $mid_id = $_POST['mid_id'] ?? '';
+        $small_id = $_POST['small_id'] ?? '';
+
+        if ($type === 'main') {
+            $data['categories'] = array_filter($data['categories'], function($c) use ($cat_id) { return $c['id'] !== $cat_id; });
+            $data['categories'] = array_values($data['categories']);
+        } elseif ($type === 'mid') {
+
         $type = $_POST['type'];
         $cat_id = $_POST['cat_id'];
         $mid_id = $_POST['mid_id'] ?? '';
@@ -583,96 +708,154 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
                 <div class="card">
                     <h2 style="margin-bottom: 1.5rem; font-weight: 300;">カテゴリ構造管理</h2>
                     
-                    <div style="margin-bottom: 3rem;">
-                        <h3 style="margin-bottom: 1rem; color: var(--accent);">■ 新規 中カテゴリ追加</h3>
-                        <form method="post" style="display:flex; gap:10px; align-items:flex-end;">
-                            <div style="flex:1;">
-                                <label>親（大カテゴリ）</label>
+                    <!-- 隠しフォーム群 (JavaScriptから送信) -->
+                    <form id="edit-cat-form" method="post" style="display:none;">
+                        <input type="hidden" name="edit_type" id="edit_type">
+                        <input type="hidden" name="cat_id" id="edit_cat_id">
+                        <input type="hidden" name="mid_id" id="edit_mid_id">
+                        <input type="hidden" name="small_id" id="edit_small_id">
+                        <input type="hidden" name="new_name" id="edit_new_name">
+                        <input type="hidden" name="edit_cat_name" value="1">
+                    </form>
+                    <form id="move-cat-form" method="post" style="display:none;">
+                        <input type="hidden" name="move_type" id="move_type">
+                        <input type="hidden" name="move_dir" id="move_dir">
+                        <input type="hidden" name="cat_id" id="move_cat_id">
+                        <input type="hidden" name="mid_id" id="move_mid_id">
+                        <input type="hidden" name="small_id" id="move_small_id">
+                        <input type="hidden" name="move_cat" value="1">
+                    </form>
+
+                    <!-- 新規カテゴリ追加フォーム -->
+                    <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 3rem;">
+                        <!-- 大カテゴリ追加 -->
+                        <div style="flex: 1; min-width: 300px; background: rgba(255,255,255,0.02); padding: 1.5rem; border: 1px solid var(--border); border-radius: 8px;">
+                            <h3 style="margin-bottom: 1rem; color: var(--accent); font-size: 1.1rem;">＋ 新規 大カテゴリ追加</h3>
+                            <form method="post" style="display:flex; flex-direction:column; gap:10px;">
+                                <label style="font-size: 0.9rem;">ID (英数字ハイフン)</label>
+                                <input type="text" name="main_id" placeholder="例: genre-rock" required>
+                                <label style="font-size: 0.9rem;">表示名</label>
+                                <input type="text" name="main_name" placeholder="例: ロック" required>
+                                <button type="submit" name="add_main_cat" class="btn btn-small" style="margin-top: 0.5rem;">追加</button>
+                            </form>
+                        </div>
+                        <!-- 中カテゴリ追加 -->
+                        <div style="flex: 1; min-width: 300px; background: rgba(255,255,255,0.02); padding: 1.5rem; border: 1px solid var(--border); border-radius: 8px;">
+                            <h3 style="margin-bottom: 1rem; color: var(--accent); font-size: 1.1rem;">＋ 新規 中カテゴリ追加</h3>
+                            <form method="post" style="display:flex; flex-direction:column; gap:10px;">
+                                <label style="font-size: 0.9rem;">親（大カテゴリ）</label>
                                 <select name="parent_cat_id" required>
                                     <?php foreach ($categories as $cat): ?>
                                         <option value="<?php echo htmlspecialchars($cat['id']); ?>"><?php echo htmlspecialchars($cat['name']); ?></option>
                                     <?php endforeach; ?>
                                 </select>
-                            </div>
-                            <div style="flex:1;">
-                                <label>ID (英数字ハイフン)</label>
-                                <input type="text" name="mid_id" placeholder="例: ambient" required>
-                            </div>
-                            <div style="flex:1;">
-                                <label>表示名</label>
-                                <input type="text" name="mid_name" placeholder="例: アンビエント" required>
-                            </div>
-                            <button type="submit" name="add_mid_cat" class="btn btn-small">追加</button>
-                        </form>
-                    </div>
-
-                    <div style="margin-bottom: 3rem;">
-                        <h3 style="margin-bottom: 1rem; color: var(--accent);">■ 新規 小カテゴリ追加</h3>
-                        <form method="post" style="display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap;">
-                            <div style="flex:1; min-width: 150px;">
-                                <label>親（大カテ）</label>
-                                <select name="parent_cat" id="add-small-cat" required onchange="updateAddSmallMid()">
-                                    <option value="">選択</option>
-                                    <?php foreach ($categories as $cat): ?>
-                                        <option value="<?php echo htmlspecialchars($cat['id']); ?>"><?php echo htmlspecialchars($cat['name']); ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div style="flex:1; min-width: 150px;">
-                                <label>親（中カテ）</label>
-                                <select name="parent_mid" id="add-small-mid" required>
-                                    <option value="">大カテを選択</option>
-                                </select>
-                            </div>
-                            <div style="flex:1; min-width: 150px;">
-                                <label>ID (英数)</label>
-                                <input type="text" name="small_id" placeholder="例: deep-focus" required>
-                            </div>
-                            <div style="flex:1; min-width: 150px;">
-                                <label>表示名</label>
-                                <input type="text" name="small_name" placeholder="例: Deep Focus" required>
-                            </div>
-                            <button type="submit" name="add_small_cat" class="btn btn-small" style="height:45px;">追加</button>
-                        </form>
+                                <label style="font-size: 0.9rem;">ID (英数字ハイフン)</label>
+                                <input type="text" name="mid_id" placeholder="例: hard-rock" required>
+                                <label style="font-size: 0.9rem;">表示名</label>
+                                <input type="text" name="mid_name" placeholder="例: ハードロック" required>
+                                <button type="submit" name="add_mid_cat" class="btn btn-small" style="margin-top: 0.5rem;">追加</button>
+                            </form>
+                        </div>
+                        <!-- 小カテゴリ追加 -->
+                        <div style="flex: 1; min-width: 300px; background: rgba(255,255,255,0.02); padding: 1.5rem; border: 1px solid var(--border); border-radius: 8px;">
+                            <h3 style="margin-bottom: 1rem; color: var(--accent); font-size: 1.1rem;">＋ 新規 小カテゴリ追加</h3>
+                            <form method="post" style="display:flex; flex-direction:column; gap:10px;">
+                                <div style="display: flex; gap: 10px;">
+                                    <div style="flex: 1;">
+                                        <label style="font-size: 0.9rem;">大カテ</label>
+                                        <select name="parent_cat" id="add-small-cat" required onchange="updateAddSmallMid()">
+                                            <option value="">選択</option>
+                                            <?php foreach ($categories as $cat): ?>
+                                                <option value="<?php echo htmlspecialchars($cat['id']); ?>"><?php echo htmlspecialchars($cat['name']); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <label style="font-size: 0.9rem;">中カテ</label>
+                                        <select name="parent_mid" id="add-small-mid" required>
+                                            <option value="">選択</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <label style="font-size: 0.9rem;">ID (英数)</label>
+                                <input type="text" name="small_id" placeholder="例: 80s" required>
+                                <label style="font-size: 0.9rem;">表示名</label>
+                                <input type="text" name="small_name" placeholder="例: 80年代" required>
+                                <button type="submit" name="add_small_cat" class="btn btn-small" style="margin-top: 0.5rem;">追加</button>
+                            </form>
+                        </div>
                     </div>
 
                     <h3 style="margin-bottom: 1rem; border-top: 1px solid var(--border); padding-top: 2rem;">■ 登録済みカテゴリ一覧</h3>
                     <ul class="cat-list">
-                        <?php foreach ($categories as $cat): ?>
+                        <?php foreach ($categories as $cat_idx => $cat): ?>
                             <li style="flex-direction:column; align-items:flex-start;">
-                                <div style="font-weight:bold; font-size:1.1rem; color:var(--accent);">[大] <?php echo htmlspecialchars($cat['name']); ?> (<?php echo htmlspecialchars($cat['id']); ?>)</div>
+                                <div style="display:flex; justify-content:space-between; width:100%; align-items:center; flex-wrap:wrap; gap:10px;">
+                                    <div style="font-weight:bold; font-size:1.1rem; color:var(--accent);">
+                                        <span class="cat-badge" style="background:var(--accent); color:#000;">大</span> 
+                                        <?php echo htmlspecialchars($cat['name']); ?> <span style="font-size:0.8rem; color:var(--text-dim); font-weight:normal;">(<?php echo htmlspecialchars($cat['id']); ?>)</span>
+                                    </div>
+                                    <div style="display:flex; gap:0.5rem;">
+                                        <button class="btn btn-small" onclick="moveCategory('main', 'up', '<?php echo $cat['id']; ?>')" style="padding:0.2rem 0.6rem; min-width:auto;">↑</button>
+                                        <button class="btn btn-small" onclick="moveCategory('main', 'down', '<?php echo $cat['id']; ?>')" style="padding:0.2rem 0.6rem; min-width:auto;">↓</button>
+                                        <button class="btn btn-small" onclick="editCategoryName('main', '<?php echo $cat['id']; ?>', '', '', '<?php echo htmlspecialchars($cat['name'], ENT_QUOTES); ?>')">表示名変更</button>
+                                        <form method="post" onsubmit="return confirm('本当に削除しますか？紐づく中・小カテゴリも全て消えます。');" style="margin:0;">
+                                            <input type="hidden" name="type" value="main">
+                                            <input type="hidden" name="cat_id" value="<?php echo $cat['id']; ?>">
+                                            <button type="submit" name="delete_cat" class="btn btn-small btn-danger" style="padding:0.2rem 0.6rem;">削除</button>
+                                        </form>
+                                    </div>
+                                </div>
+
                                 <?php if (!empty($cat['middle_categories'])): ?>
-                                    <ul>
+                                    <ul style="width: 100%;">
                                     <?php foreach ($cat['middle_categories'] as $mid): ?>
                                         <li style="background:var(--surface);">
-                                            <div>
-                                                <span class="cat-badge">中</span> <?php echo htmlspecialchars($mid['name']); ?> (<?php echo htmlspecialchars($mid['id']); ?>)
-                                            </div>
-                                            <form method="post" onsubmit="return confirm('削除しますか？');" style="margin:0;">
-                                                <input type="hidden" name="type" value="mid">
-                                                <input type="hidden" name="cat_id" value="<?php echo $cat['id']; ?>">
-                                                <input type="hidden" name="mid_id" value="<?php echo $mid['id']; ?>">
-                                                <button type="submit" name="delete_cat" class="btn btn-small btn-danger" style="padding:0.2rem 0.5rem; font-size:0.7rem;">削除</button>
-                                            </form>
-                                        </li>
-                                        <?php if (!empty($mid['small_categories'])): ?>
-                                            <ul>
-                                            <?php foreach ($mid['small_categories'] as $small): ?>
-                                                <li style="background:var(--bg);">
-                                                    <div>
-                                                        <span class="cat-badge" style="background:#444;">小</span> <?php echo htmlspecialchars($small['name']); ?> (<?php echo htmlspecialchars($small['id']); ?>)
-                                                    </div>
-                                                    <form method="post" onsubmit="return confirm('削除しますか？');" style="margin:0;">
-                                                        <input type="hidden" name="type" value="small">
+                                            <div style="display:flex; justify-content:space-between; width:100%; align-items:center; flex-wrap:wrap; gap:10px;">
+                                                <div>
+                                                    <span class="cat-badge">中</span> 
+                                                    <?php echo htmlspecialchars($mid['name']); ?> <span style="font-size:0.8rem; color:var(--text-dim);"> (<?php echo htmlspecialchars($mid['id']); ?>)</span>
+                                                </div>
+                                                <div style="display:flex; gap:0.5rem;">
+                                                    <button class="btn btn-small" onclick="moveCategory('mid', 'up', '<?php echo $cat['id']; ?>', '<?php echo $mid['id']; ?>')" style="padding:0.2rem 0.6rem; min-width:auto;">↑</button>
+                                                    <button class="btn btn-small" onclick="moveCategory('mid', 'down', '<?php echo $cat['id']; ?>', '<?php echo $mid['id']; ?>')" style="padding:0.2rem 0.6rem; min-width:auto;">↓</button>
+                                                    <button class="btn btn-small" onclick="editCategoryName('mid', '<?php echo $cat['id']; ?>', '<?php echo $mid['id']; ?>', '', '<?php echo htmlspecialchars($mid['name'], ENT_QUOTES); ?>')">表示名変更</button>
+                                                    <form method="post" onsubmit="return confirm('本当に削除しますか？紐づく小カテゴリも全て消えます。');" style="margin:0;">
+                                                        <input type="hidden" name="type" value="mid">
                                                         <input type="hidden" name="cat_id" value="<?php echo $cat['id']; ?>">
                                                         <input type="hidden" name="mid_id" value="<?php echo $mid['id']; ?>">
-                                                        <input type="hidden" name="small_id" value="<?php echo $small['id']; ?>">
-                                                        <button type="submit" name="delete_cat" class="btn btn-small btn-danger" style="padding:0.2rem 0.5rem; font-size:0.7rem;">削除</button>
+                                                        <button type="submit" name="delete_cat" class="btn btn-small btn-danger" style="padding:0.2rem 0.6rem;">削除</button>
                                                     </form>
-                                                </li>
-                                            <?php endforeach; ?>
-                                            </ul>
-                                        <?php endif; ?>
+                                                </div>
+                                            </div>
+
+                                            <?php if (!empty($mid['small_categories'])): ?>
+                                                <ul style="width: 100%;">
+                                                <?php foreach ($mid['small_categories'] as $small): ?>
+                                                    <li style="background:var(--bg);">
+                                                        <div style="display:flex; justify-content:space-between; width:100%; align-items:center; flex-wrap:wrap; gap:10px;">
+                                                            <div>
+                                                                <span class="cat-badge" style="background:#444;">小</span> 
+                                                                <?php echo htmlspecialchars($small['name']); ?> <span style="font-size:0.8rem; color:var(--text-dim);"> (<?php echo htmlspecialchars($small['id']); ?>)</span>
+                                                            </div>
+                                                            <div style="display:flex; gap:0.5rem;">
+                                                                <button class="btn btn-small" onclick="moveCategory('small', 'up', '<?php echo $cat['id']; ?>', '<?php echo $mid['id']; ?>', '<?php echo $small['id']; ?>')" style="padding:0.2rem 0.6rem; min-width:auto;">↑</button>
+                                                                <button class="btn btn-small" onclick="moveCategory('small', 'down', '<?php echo $cat['id']; ?>', '<?php echo $mid['id']; ?>', '<?php echo $small['id']; ?>')" style="padding:0.2rem 0.6rem; min-width:auto;">↓</button>
+                                                                <button class="btn btn-small" onclick="editCategoryName('small', '<?php echo $cat['id']; ?>', '<?php echo $mid['id']; ?>', '<?php echo $small['id']; ?>', '<?php echo htmlspecialchars($small['name'], ENT_QUOTES); ?>')">表示名変更</button>
+                                                                <form method="post" onsubmit="return confirm('本当に削除しますか？');" style="margin:0;">
+                                                                    <input type="hidden" name="type" value="small">
+                                                                    <input type="hidden" name="cat_id" value="<?php echo $cat['id']; ?>">
+                                                                    <input type="hidden" name="mid_id" value="<?php echo $mid['id']; ?>">
+                                                                    <input type="hidden" name="small_id" value="<?php echo $small['id']; ?>">
+                                                                    <button type="submit" name="delete_cat" class="btn btn-small btn-danger" style="padding:0.2rem 0.6rem;">削除</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                                </ul>
+                                            <?php endif; ?>
+                                        </li>
                                     <?php endforeach; ?>
                                     </ul>
                                 <?php endif; ?>
@@ -681,7 +864,7 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
                     </ul>
                 </div>
             </div>
-
+            
             <!-- 3. 関連ツール・確認タブ -->
             <div id="tab-tools" class="tab-content">
                 <div class="card">
@@ -728,7 +911,32 @@ $categories_json = json_encode($categories, JSON_UNESCAPED_UNICODE);
     </div>
 
     <script>
+        
+        // -------------------------
+        // カテゴリ操作用JS
+        // -------------------------
+        function editCategoryName(type, catId, midId, smallId, oldName) {
+            const newName = prompt("新しい表示名を入力してください:", oldName);
+            if (newName !== null && newName.trim() !== "") {
+                document.getElementById('edit_type').value = type;
+                document.getElementById('edit_cat_id').value = catId;
+                document.getElementById('edit_mid_id').value = midId;
+                document.getElementById('edit_small_id').value = smallId;
+                document.getElementById('edit_new_name').value = newName.trim();
+                document.getElementById('edit-cat-form').submit();
+            }
+        }
+        function moveCategory(type, dir, catId, midId = '', smallId = '') {
+            document.getElementById('move_type').value = type;
+            document.getElementById('move_dir').value = dir;
+            document.getElementById('move_cat_id').value = catId;
+            document.getElementById('move_mid_id').value = midId;
+            document.getElementById('move_small_id').value = smallId;
+            document.getElementById('move-cat-form').submit();
+        }
+
         // タブ切り替えロジック
+
         function switchTab(tabId) {
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
