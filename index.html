@@ -200,9 +200,7 @@
             <!-- Main Category Filter (Swipeable on Mobile) -->
             <ul class="filter-menu" id="main-filter">
                 <li class="active" data-main="all">ALL</li>
-                <li data-main="work">FOR WORK</li>
-                <li data-main="meditation">MEDITATION</li>
-                <li data-main="original">ORIGINAL</li>
+                <!-- JavaScriptで動的生成されます -->
             </ul>
 
             <!-- Middle and Small Selectors -->
@@ -258,7 +256,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const grid = document.getElementById('content-grid');
             const contentSection = document.querySelector('.content-section');
-            const mainTabs = document.querySelectorAll('#main-filter li');
+            
             const selectFiltersGroup = document.getElementById('select-filters');
             const middleSelect = document.getElementById('middle-filter');
             const smallSelect = document.getElementById('small-filter');
@@ -274,6 +272,31 @@
                 .then(data => {
                     const contents = data.contents || [];
                     categoriesData = data.categories || [];
+
+                    const mainFilterUl = document.getElementById('main-filter');
+                    mainFilterUl.innerHTML = '<li class="active" data-main="all">ALL</li>';
+                    categoriesData.forEach(c => {
+                        const li = document.createElement('li');
+                        li.setAttribute('data-main', c.id);
+                        li.textContent = c.name.toUpperCase();
+                        mainFilterUl.appendChild(li);
+                    });
+
+                    // タブイベントリスナーの登録
+                    const mainTabs = document.querySelectorAll('#main-filter li');
+                    mainTabs.forEach(tab => {
+                        tab.addEventListener('click', () => {
+                            mainTabs.forEach(t => t.classList.remove('active'));
+                            tab.classList.add('active');
+                            currentMain = tab.getAttribute('data-main');
+                            currentMid = 'all';
+                            currentSmall = 'all';
+                            contentSection.className = 'content-section bg-' + currentMain;
+                            
+                            updateMiddleOptions();
+                            filterItems();
+                        });
+                    });
 
                     const catNameMap = {};
                     categoriesData.forEach(c => {
@@ -391,19 +414,7 @@
                 }
             }
 
-            mainTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    mainTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    currentMain = tab.getAttribute('data-main');
-                    currentMid = 'all';
-                    currentSmall = 'all';
-                    contentSection.className = `content-section bg-${currentMain}`;
-                    
-                    updateMiddleOptions();
-                    filterItems();
-                });
-            });
+
 
             middleSelect.addEventListener('change', (e) => {
                 currentMid = e.target.value;
