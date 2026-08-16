@@ -413,13 +413,6 @@ if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $data['categories'] = array_filter($data['categories'], function($c) use ($cat_id) { return $c['id'] !== $cat_id; });
             $data['categories'] = array_values($data['categories']);
         } elseif ($type === 'mid') {
-
-        $type = $_POST['type'];
-        $cat_id = $_POST['cat_id'];
-        $mid_id = $_POST['mid_id'] ?? '';
-        $small_id = $_POST['small_id'] ?? '';
-
-        if ($type === 'mid') {
             foreach ($data['categories'] as &$cat) {
                 if ($cat['id'] === $cat_id && isset($cat['middle_categories'])) {
                     $cat['middle_categories'] = array_filter($cat['middle_categories'], function($m) use ($mid_id) {
